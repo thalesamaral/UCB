@@ -1,2 +1,2 @@
-# Lista-1
-Estrutura de dados
+# Estrutura de dados
+Disciplina
