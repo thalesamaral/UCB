@@ -2,8 +2,10 @@
 #define LIN 2
 #define COL 2
 
-int main(){
-// Declara��es	
+void tabela(int, int, int[LIN][COL]);
+
+void main(){
+// Declarações	
 	
 	int mat[LIN][COL] = {0};
 	int l, c;
@@ -15,6 +17,7 @@ int main(){
 
 	//LEITURA
 	for(l=0; l<LIN; l++){
+		tabela(l,c,mat);
 		for(c=0; c<COL; c++){
 			printf("Linha %d - Coluna %d: ",l+1, c+1);
 			scanf("%d",&mat[l][c]);
@@ -57,5 +60,18 @@ int main(){
 		printf("\nAs duas diagonais apresentam soma equivalentes de impares.\n");
 	}
 
-	return 0;
+	//return 0;
+}
+
+void tabela(int l, int c, int mat[l][c]){
+	for(l=0; l<LIN; l++){
+		for(c=0; c<COL; c++){
+			if(mat[l][c] == 0){
+				printf("[ ]");
+			}else{
+				printf("[%d]",mat[l][c]);
+			}
+		}
+		printf("\n");
+	}
 }
