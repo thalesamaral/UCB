@@ -7,13 +7,13 @@ int main(){
 	
 	int mat[LIN][COL] = {0};
 	int l, c;
-	int somaPri, somaSec=0;
+	int somaPri=0, somaSec=0;
 	
 // Principal
-	
 	//printf("");
 	//scanf("%",&);
 
+	//LEITURA
 	for(l=0; l<LIN; l++){
 		for(c=0; c<COL; c++){
 			printf("Linha %d - Coluna %d: ",l+1, c+1);
@@ -21,7 +21,7 @@ int main(){
 		}
 		printf("\n");
 	}
-	
+	//VISUALIZAÇÃO MATRIZ
 	for(l=0; l<LIN; l++){
 		for(c=0; c<COL; c++){
 			printf("[%d]", mat[l][c]);
@@ -29,12 +29,14 @@ int main(){
 		printf("\n");
 	}
 	
+	//DIAGONAL PRINCIPAL
 	for(l=0; l<LIN; l++){
 		if(mat[l][l]%2!=0){
 			somaPri += mat[l][l];
 		}
 	}
 	
+	//DIAGONAL SECUNDÁRIA
 	c = COL-1;
 	for(l=0; l<LIN; l++){
 		if(mat[l][c]%2!=0){
@@ -43,6 +45,7 @@ int main(){
 		c--;
 	}
 	
+	//RESULTADO
 	printf("\nSoma Principal: %d",somaPri);
 	printf("\nSoma Secundaria: %d\n",somaSec);
 	
