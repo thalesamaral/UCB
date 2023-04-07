@@ -6,7 +6,6 @@ void viewTable(int, int, int [][COL]);
 
 int main(){
 // Declarações
-	
 	int mat[LIN][COL] = {0};
 	int l, c;
 	int somaPri=0, somaSec=0;
@@ -76,4 +75,5 @@ void viewTable(int l, int c, int mat[][COL]){
 		}
 		printf("\n");
 	}
+	printf("\n");
 }

@@ -2,7 +2,7 @@
 #define TAM 4
 
 void main(){
-// Declarações
+// DeclaraÃ§Ãµes
 	int numero[TAM];
 	int par[TAM/2], impar[TAM/2];
 	int i, j=0, k=0;
@@ -38,5 +38,3 @@ void main(){
 	}
 	
 }
-
-
