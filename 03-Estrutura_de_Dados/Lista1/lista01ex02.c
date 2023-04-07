@@ -2,10 +2,10 @@
 #define LIN 2
 #define COL 2
 
-void tabela(int, int, int[LIN][COL]);
+void viewTable(int, int, int [][COL]);
 
-void main(){
-// Declarações	
+int main(){
+// Declarações
 	
 	int mat[LIN][COL] = {0};
 	int l, c;
@@ -17,13 +17,14 @@ void main(){
 
 	//LEITURA
 	for(l=0; l<LIN; l++){
-		tabela(l,c,mat);
+		viewTable(l,c,mat);
 		for(c=0; c<COL; c++){
 			printf("Linha %d - Coluna %d: ",l+1, c+1);
 			scanf("%d",&mat[l][c]);
 		}
 		printf("\n");
 	}
+
 	//VISUALIZAÇÃO MATRIZ
 	for(l=0; l<LIN; l++){
 		for(c=0; c<COL; c++){
@@ -49,8 +50,9 @@ void main(){
 	}
 	
 	//RESULTADO
-	printf("\nSoma Principal: %d",somaPri);
-	printf("\nSoma Secundaria: %d\n",somaSec);
+	printf("\n** SOMA DE IMPARES **");
+	printf("\nDiagonal Principal: %d",somaPri);
+	printf("\nDiagonal Secundaria: %d\n",somaSec);
 	
 	if(somaPri > somaSec){
 		printf("\nA diagonal principal apresenta soma maior de impares.\n");
@@ -60,10 +62,10 @@ void main(){
 		printf("\nAs duas diagonais apresentam soma equivalentes de impares.\n");
 	}
 
-	//return 0;
+	return 0;
 }
 
-void tabela(int l, int c, int mat[l][c]){
+void viewTable(int l, int c, int mat[][COL]){
 	for(l=0; l<LIN; l++){
 		for(c=0; c<COL; c++){
 			if(mat[l][c] == 0){
