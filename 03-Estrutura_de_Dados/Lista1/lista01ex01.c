@@ -9,9 +9,6 @@ void main(){
 	
 // Principal
 	
-	//printf("");
-	//scanf("%",&);
-	
 	//printf("Digite um numero: ");
 	
 	for(i=0; i<TAM; i++){

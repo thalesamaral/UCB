@@ -11,8 +11,6 @@ int main(){
 	int somaPri=0, somaSec=0;
 	
 // Principal
-	//printf("");
-	//scanf("%",&);
 
 	//LEITURA
 	for(l=0; l<LIN; l++){
