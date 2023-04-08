@@ -15,7 +15,7 @@ int main(){
     //printf("Digite o Nome completo: ");
     //setbuf(stdin, 0);iniciais
     //gets(nome);
-    printf("\n\n*** Nome completo(%s)",nome);
+    printf("\n\n*** Nome completo: %s",nome);
 
     //PROCURA ULTIMO NOME ************************************************
     pos = strlen(nome);
@@ -37,7 +37,7 @@ int main(){
             nomeRef[j] = '\0';
         }*/
     }
-    printf("\n\n*** Ultimo nome(%s)",nomeRef);
+    printf("\n\n*** Ultimo nome: %s",nomeRef);
 
     //COLETAR LETRA INICIAL & FORMATAR EM iniciais ************************
     j=0;
@@ -66,11 +66,11 @@ int main(){
     //CONCATENAÇÃO DE nomRef e iniciais em result ************************
     strcat(result, nomeRef);
     strcat(result, iniciais);
-    printf("\n\n*** Resultado(%s)\n\n",result);
+    printf("\n\n*** Resultado: %s\n\n",result);
 
     //EXERCÍCIO 4
-    //token(result);
-    token("ALVES J. P.");
+    token(result);
+    //token("ALVES J. P.");
 
     return 0;
 }
@@ -88,7 +88,7 @@ void token(char resultTK[]){
             j++;
        }
     }
-    printf("\nToken: %s\n",token);
+    printf("\n*** Token: %s\n",token);
 
     //INVERTER O TOKEN
     tamTK = strlen(token);
@@ -97,8 +97,16 @@ void token(char resultTK[]){
 		token[i] = token[j];
 		token[j] = aux[0];
 	}
-    printf("\nToken: %s\n",token);
+    printf("\n*** Token invertido: %s\n",token);
 
     //MODIFICAR VOGAIS PELO CODIGO ASCII
-    
+    printf("\n*** Token vogais: ");
+    for(i=0; token[i] != '\0'; i++){
+        if(token[i] == 'A' || token[i] == 'E' || token[i] == 'I' || token[i] == 'O' || token[i] == 'U'){
+            //token[i] = (int)token[i];
+            printf("%d",token[i]);
+        }else
+            printf("%c",token[i]);
+    }
+    //printf("\nToken vogais: %s\n",token);
 }
