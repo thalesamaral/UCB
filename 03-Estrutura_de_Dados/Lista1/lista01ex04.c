@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #define TAM 100
+
+void token(char []);
 
 int main(){
 // Declarações
-	char nome[TAM]= {"Joaquim Pedro Alves"}, nomeRef[TAM]={"\0"}, iniciais[TAM]={"\0"}, result[TAM*2]={"\0"};
+	char nome[TAM]= {"Joaquim Pedro Alves"}, nomeRef[TAM]={"\0"}, iniciais[TAM]={"\0"}, result[TAM]={"\0"};
 	int i, pos, j=0;
 	
 // Principal
@@ -67,5 +68,37 @@ int main(){
     strcat(result, iniciais);
     printf("\n\n*** Resultado(%s)\n\n",result);
 
+    //EXERCÍCIO 4
+    //token(result);
+    token("ALVES J. P.");
+
     return 0;
+}
+
+void token(char resultTK[]){
+    int i, j=0;
+    int tamTK;
+    char token[TAM] = {"\0"}, aux[1];
+
+    //TIRANDO ' ' e '.'
+    tamTK = strlen(resultTK);
+    for(i=0; i<tamTK; i++){
+       if((resultTK[i] != ' ') && (resultTK[i] != '.')){
+            token[j] = resultTK[i];
+            j++;
+       }
+    }
+    printf("\nToken: %s\n",token);
+
+    //INVERTER O TOKEN
+    tamTK = strlen(token);
+    for(i=0, j=tamTK-1; i<tamTK/2; i++, j--){
+		aux[0] = token[i];
+		token[i] = token[j];
+		token[j] = aux[0];
+	}
+    printf("\nToken: %s\n",token);
+
+    //MODIFICAR VOGAIS PELO CODIGO ASCII
+    
 }
