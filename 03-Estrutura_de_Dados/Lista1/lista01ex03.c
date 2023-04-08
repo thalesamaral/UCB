@@ -6,7 +6,7 @@
 
 int main(){
 // Declarações
-	char nome[TAM]= {"Joaquim Pedro Alves"}, nomeRef[TAM]={"\0"}, iniciais[TAM]={"\0"}, result[TAM*2]={"\0"};
+	char nome[TAM]= {"Joaquim Pedro Alves"}, nomeRef[TAM]={"\0"}, iniciais[TAM]={"\0"}, result[TAM]={"\0"};
 	int i, pos, j=0;
 	
 // Principal
@@ -14,7 +14,7 @@ int main(){
     //printf("Digite o Nome completo: ");
     //setbuf(stdin, 0);iniciais
     //gets(nome);
-    printf("\n\n*** Nome completo(%s)",nome);
+    printf("\n\n*** Nome completo: %s",nome);
 
     //PROCURA ULTIMO NOME ************************************************
     pos = strlen(nome);
@@ -36,7 +36,7 @@ int main(){
             nomeRef[j] = '\0';
         }*/
     }
-    printf("\n\n*** Ultimo nome(%s)",nomeRef);
+    printf("\n\n*** Ultimo nome: %s",nomeRef);
 
     //COLETAR LETRA INICIAL & FORMATAR EM iniciais ************************
     j=0;
@@ -65,7 +65,7 @@ int main(){
     //CONCATENAÇÃO DE nomRef e iniciais em result ************************
     strcat(result, nomeRef);
     strcat(result, iniciais);
-    printf("\n\n*** Resultado(%s)\n\n",result);
+    printf("\n\n*** Resultado: %s\n\n",result);
 
     return 0;
 }
