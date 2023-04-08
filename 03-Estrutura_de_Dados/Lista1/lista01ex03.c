@@ -2,17 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define TAM 30
+#define TAM 100
 
 int main(){
 // Declarações
-	char nome[TAM]= {"Joaquim Pedro Alves"}, nomeRef[TAM]={"\0"}, aInicial[TAM]={"\0"}, result[TAM*2]={"\0"};
+	char nome[TAM]= {"Joaquim Pedro Alves"}, nomeRef[TAM]={"\0"}, iniciais[TAM]={"\0"}, result[TAM*2]={"\0"};
 	int i, pos, j=0;
 	
 // Principal
 
     //printf("Digite o Nome completo: ");
-    //setbuf(stdin, 0);
+    //setbuf(stdin, 0);iniciais
     //gets(nome);
     printf("\n\n*** Nome completo(%s)",nome);
 
@@ -38,33 +38,33 @@ int main(){
     }
     printf("\n\n*** Ultimo nome(%s)",nomeRef);
 
-    //COLETAR LETRA INICIAL & FORMATA EM aInicial ************************
+    //COLETAR LETRA INICIAL & FORMATAR EM iniciais ************************
     j=0;
     for(i=0; i<=strlen(nome); i++){
 		if(i == 0){
-            aInicial[j] = ' ';
+            iniciais[j] = ' ';
             j++;
-            aInicial[j] = nome[i];
+            iniciais[j] = nome[i];
             j++;
-            aInicial[j] = '.';            
+            iniciais[j] = '.';            
         }
 		else if((nome[i] == ' ') && (i+1 != pos)){
                 j++;
-                aInicial[j] = ' ';
+                iniciais[j] = ' ';
                 j++;
-                aInicial[j] = nome[i+1];
+                iniciais[j] = nome[i+1];
                 j++;
-                aInicial[j] = '.';
+                iniciais[j] = '.';
             }
             /*else if((nome[i] == ' ') && (i+1 == pos)){
                 j++;
-                aInicial[j] = '\0';
+                iniciais[j] = '\0';
             }*/
 	}
 
-    //CONCATENAÇÃO DE nomRef e aInicial em result ************************
+    //CONCATENAÇÃO DE nomRef e iniciais em result ************************
     strcat(result, nomeRef);
-    strcat(result, aInicial);
+    strcat(result, iniciais);
     printf("\n\n*** Resultado(%s)\n\n",result);
 
     return 0;
