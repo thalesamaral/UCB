@@ -2,6 +2,7 @@
 #include <string.h>
 #define TAM 10
 
+void novosVetores(int[], int[], int);
 void imprimirVetor(int[], int);
 void bubbleSort(int[], int);
 void bubbleSortInvertido(int[], int);
@@ -41,30 +42,28 @@ int main(){
 		printf("Vetor Impar: %d\n",impar[i]);
 	}
 
-    //numeros_ordenados
-    for(i=0; i<TAM; i++){
-        numeros_ordenados[i] = numero[i];
-    }
-    bubbleSort(numeros_ordenados, TAM);
+    //NUMEROS_ORDENADOS
     printf("\n*** numeros_ordenados ***\n");
-    imprimirVetor(numeros_ordenados, TAM);
+    novosVetores(numeros_ordenados, numero, TAM);
 
-    //pares_ordenados
-    for(i=0; i<j; i++){
-        pares_ordenados[i] = par[i];
-    }
-    bubbleSort(pares_ordenados, j);
-    printf("\n*** pares_ordenados ***\n");
-    imprimirVetor(pares_ordenados, j);
+    //PARES_ORDENADOS
+    printf("\n\n*** pares_ordenados ***\n");
+    novosVetores(pares_ordenados, par, j);
 
-    //impares_ordenados
-    for(i=0; i<k; i++){
-        impares_ordenados[i] = impar[i];
-    }
-    bubbleSortInvertido(impares_ordenados, k);
-    printf("\n*** pares_ordenados ***\n");
-    imprimirVetor(impares_ordenados, k);
+    //IMPARES_ORDENADOS
+    printf("\n*** impares_ordenados ***\n");
+    novosVetores(impares_ordenados, impar, k);
+
 	return 0;
+}
+
+//*** Novos vetores ***************************************
+void novosVetores(int vet1[], int vet2[], int tamanho){
+    for(int i=0; i<tamanho; i++){
+        vet1[i] = vet2[i];
+    }
+    bubbleSort(vet1, tamanho);
+    imprimirVetor(vet1, tamanho);
 }
 
 //*** Imprime os valores do vetor *************************
@@ -78,38 +77,30 @@ void imprimirVetor(int vet[], int n){
 
 //*** Bubble Sort *****************************************
 void bubbleSort(int vet[], int n){
-    int bolha, borda, aux, compara=0, troca=0;
+    int bolha, borda, aux;
 	
 	for(borda=n-1; borda>0; borda--){
 		for(bolha=0; bolha<borda; bolha++){
-			compara++;
 			if(vet[bolha] > vet[bolha+1]){ 
 				aux = vet[bolha];
 				vet[bolha] = vet[bolha+1];
 				vet[bolha+1] = aux;
-				troca++;
 			}
 		}
 	}
-	//printf("\nBubble Sort Comparacoes: %i\n",compara);
-	//printf("Bubble Sort Troca: %i\n\n",troca);
 }
 
 //*** Bubble Sort Invertido *******************************
 void bubbleSortInvertido(int vet[], int n){
-    int bolha, borda, aux, compara=0, troca=0;
+    int bolha, borda, aux;
 	
 	for(borda=n-1; borda>0; borda--){
 		for(bolha=0; bolha<borda; bolha++){
-			compara++;
 			if(vet[bolha] < vet[bolha+1]){ 
 				aux = vet[bolha];
 				vet[bolha] = vet[bolha+1];
 				vet[bolha+1] = aux;
-				troca++;
 			}
 		}
 	}
-	//printf("\nBubble Sort Comparacoes: %i\n",compara);
-	//printf("Bubble Sort Troca: %i\n\n",troca);
 }
