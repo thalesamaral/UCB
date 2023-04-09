@@ -6,10 +6,10 @@ void imprimirVetor(int[], int);
 void bubbleSort(int[], int);
 void bubbleSortInvertido(int[], int);
 
-
 int main(){
 // Declarações
 	int numero[TAM] = {5,7,8,1,3,9,2,10,4,6};
+    int numeros_ordenados[TAM], pares_ordenados[TAM], impares_ordenados[TAM];
 	int par[TAM], impar[TAM];
 	int i, j=0, k=0;
 	
@@ -41,17 +41,29 @@ int main(){
 		printf("Vetor Impar: %d\n",impar[i]);
 	}
 
-    bubbleSort(numero, TAM);
+    //numeros_ordenados
+    for(i=0; i<TAM; i++){
+        numeros_ordenados[i] = numero[i];
+    }
+    bubbleSort(numeros_ordenados, TAM);
     printf("\n*** numeros_ordenados ***\n");
-    imprimirVetor(numero, TAM);
+    imprimirVetor(numeros_ordenados, TAM);
 
-    bubbleSort(par, j);
+    //pares_ordenados
+    for(i=0; i<j; i++){
+        pares_ordenados[i] = par[i];
+    }
+    bubbleSort(pares_ordenados, j);
     printf("\n*** pares_ordenados ***\n");
-    imprimirVetor(par, j);
+    imprimirVetor(pares_ordenados, j);
 
-    bubbleSortInvertido(impar, k);
+    //impares_ordenados
+    for(i=0; i<k; i++){
+        impares_ordenados[i] = impar[i];
+    }
+    bubbleSortInvertido(impares_ordenados, k);
     printf("\n*** pares_ordenados ***\n");
-    imprimirVetor(impar, k);
+    imprimirVetor(impares_ordenados, k);
 	return 0;
 }
 
