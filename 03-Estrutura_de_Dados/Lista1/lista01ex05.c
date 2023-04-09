@@ -4,6 +4,8 @@
 
 void imprimirVetor(int[], int);
 void bubbleSort(int[], int);
+void bubbleSortInvertido(int[], int);
+
 
 int main(){
 // Declarações
@@ -45,9 +47,18 @@ int main(){
     bubbleSort(par, j);
     imprimirVetor(par, j);
 
-    bubbleSort(impar, k);
+    bubbleSortInvertido(impar, k);
     imprimirVetor(impar, k);
 	return 0;
+}
+
+//*** Imprime os valores do vetor *************************
+void imprimirVetor(int vet[], int n){
+	int i;
+
+	for(i=0; i<n; i++){
+		printf("vetor[%d] = %d\n", i, vet[i]);
+    }
 }
 
 //*** Bubble Sort *****************************************
@@ -70,11 +81,22 @@ void bubbleSort(int vet[], int n){
 
 }
 
-//*** Imprime os valores do vetor *************************
-void imprimirVetor(int vet[], int n){
-	int i;
+//*** Bubble Sort Invertido *****************************************
+void bubbleSortInvertido(int vet[], int n){
+    int bolha, borda, aux, compara=0, troca=0;
+	
+	for(borda=n-1; borda>0; borda--){
+		for(bolha=0; bolha<borda; bolha++){
+			compara++;
+			if(vet[bolha] < vet[bolha+1]){ 
+				aux = vet[bolha];
+				vet[bolha] = vet[bolha+1];
+				vet[bolha+1] = aux;
+				troca++;
+			}
+		}
+	}
+	printf("\nBubble Sort Comparacoes: %i\n",compara);
+	printf("Bubble Sort Troca: %i\n\n",troca);
 
-	for(i=0; i<n; i++){
-		printf("vetor[%d] = %d\n", i, vet[i]);
-    }
 }
