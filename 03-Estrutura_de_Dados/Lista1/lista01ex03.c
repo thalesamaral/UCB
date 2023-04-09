@@ -1,7 +1,10 @@
+//  Sintese
+//  Nome....: "Thales Amaral Lima"
+//  Data....: "08/04/2023"
+/*	Objetivo: Elabore um programa que receba um nome completo por exemplo "Joaquim Pedro Alves" e retorne configurado para uma referência conforme apresentado abaixo: ALVES J. P.*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #define TAM 100
 
 int main(){
@@ -16,7 +19,7 @@ int main(){
     //gets(nome);
     printf("\n\n*** Nome completo: %s",nome);
 
-    //PROCURA ULTIMO NOME ************************************************
+    //PROCURA ULTIMO NOME -------------------------------------------
     pos = strlen(nome);
     //printf("\npos = %d\n",pos);
 
@@ -24,7 +27,7 @@ int main(){
         pos--;
     }
 
-    //ULTIMO NOME FICA MAIUSCULO & O ADICIONA SEPARADO EM nomeRef ********
+    //ULTIMO NOME FICA MAIUSCULO & O ADICIONA SEPARADO EM nomeRef ---
     pos += 1;
     //printf("\npos = %d\n",pos);
 
@@ -38,7 +41,7 @@ int main(){
     }
     printf("\n\n*** Ultimo nome: %s",nomeRef);
 
-    //COLETAR LETRA INICIAL & FORMATAR EM iniciais ************************
+    //COLETAR LETRA INICIAL & FORMATAR EM iniciais ------------------
     j=0;
     for(i=0; i<=strlen(nome); i++){
 		if(i == 0){
@@ -62,7 +65,7 @@ int main(){
             }*/
 	}
 
-    //CONCATENAÇÃO DE nomRef e iniciais em result ************************
+    //CONCATENAÇÃO DE nomRef e iniciais em result -------------------
     strcat(result, nomeRef);
     strcat(result, iniciais);
     printf("\n\n*** Resultado: %s\n\n",result);

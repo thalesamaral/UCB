@@ -1,3 +1,7 @@
+//  Sintese
+//  Nome....: "Thales Amaral Lima"
+//  Data....: "09/04/2023"
+/*	Objetivo: Com base no resultado do exercício 1, elabore o programa que apresente outros três vetores "numeros_ordenados", "pares_ordenados", "impares_ordenados", sendo os ímpares apresentados na ordem inversa, pesquise e utilize o bubble sort (método da bolha) para as ordenações.*/
 #include <stdio.h>
 #include <string.h>
 #define TAM 10
@@ -16,14 +20,14 @@ int main(){
 	
 // Principal
 
-	//LEITURA
+	//LEITURA -------------------------------------------------------
 	printf("*** Digite %d Numeros ***\n\n",TAM);
 	/*for(i=0; i<TAM; i++){
 		printf("%do numero: ",i+1);
 		scanf("%d",&numero[i]);
 	}*/
 
-	//DISTRIBUIÇÃO DE PAR E IMPAR
+	//DISTRIBUIÇÃO DE PAR E IMPAR -----------------------------------
 	for(i=0; i<TAM; i++){
 		if(numero[i]%2==0){
 			par[j++] = numero[i];
@@ -34,7 +38,7 @@ int main(){
 
 	printf("\n*************************\n\n");
 
-	//APRESENTAÇÃO DE PAR E IMPAR
+	//APRESENTAÇÃO DE PAR E IMPAR -----------------------------------
 	for(i=0; i<j; i++){
 		printf("Vetor Par: %d\n",par[i]);
 	}
@@ -42,22 +46,22 @@ int main(){
 		printf("Vetor Impar: %d\n",impar[i]);
 	}
 
-    //NUMEROS_ORDENADOS
+    //NUMEROS_ORDENADOS ---------------------------------------------
     printf("\n*** numeros_ordenados ***\n");
     novosVetores(numeros_ordenados, numero, TAM);
 
-    //PARES_ORDENADOS
+    //PARES_ORDENADOS -----------------------------------------------
     printf("\n\n*** pares_ordenados ***\n");
     novosVetores(pares_ordenados, par, j);
 
-    //IMPARES_ORDENADOS
+    //IMPARES_ORDENADOS ---------------------------------------------
     printf("\n*** impares_ordenados ***\n");
     novosVetores(impares_ordenados, impar, k);
 
 	return 0;
 }
 
-//*** Novos vetores ***************************************
+//*** Novos vetores *************************************************
 void novosVetores(int vet1[], int vet2[], int tamanho){
     for(int i=0; i<tamanho; i++){
         vet1[i] = vet2[i];
@@ -66,7 +70,7 @@ void novosVetores(int vet1[], int vet2[], int tamanho){
     imprimirVetor(vet1, tamanho);
 }
 
-//*** Imprime os valores do vetor *************************
+//*** Imprime os valores do vetor ***********************************
 void imprimirVetor(int vet[], int n){
 	int i;
 
@@ -75,7 +79,7 @@ void imprimirVetor(int vet[], int n){
     }
 }
 
-//*** Bubble Sort *****************************************
+//*** Bubble Sort ***************************************************
 void bubbleSort(int vet[], int n){
     int bolha, borda, aux;
 	
@@ -90,7 +94,7 @@ void bubbleSort(int vet[], int n){
 	}
 }
 
-//*** Bubble Sort Invertido *******************************
+//*** Bubble Sort Invertido *****************************************
 void bubbleSortInvertido(int vet[], int n){
     int bolha, borda, aux;
 	

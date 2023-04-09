@@ -1,3 +1,7 @@
+//  Sintese
+//  Nome....: "Thales Amaral Lima"
+//  Data....: "09/04/2023"
+/*	Objetivo: Com base no resultado acima gere um token para o usuário seguindo os seguintes passos:- desconsidere os espaços em branco e os pontos: "ALVESJP"- inverta a string: "PJSEVLA"- substitua as vogais pelo código decimal do respectivo caractere (ascii table) "PJS69VL65".*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,7 +21,7 @@ int main(){
     //gets(nome);
     printf("\n\n*** Nome completo: %s",nome);
 
-    //PROCURA ULTIMO NOME ************************************************
+    //PROCURA ULTIMO NOME -------------------------------------------
     pos = strlen(nome);
     //printf("\npos = %d\n",pos);
 
@@ -25,7 +29,7 @@ int main(){
         pos--;
     }
 
-    //ULTIMO NOME FICA MAIUSCULO & O ADICIONA SEPARADO EM nomeRef ********
+    //ULTIMO NOME MAIUSCULO & ADICIONA EM nomeRef -------------------
     pos += 1;
     //printf("\npos = %d\n",pos);
 
@@ -39,7 +43,7 @@ int main(){
     }
     printf("\n\n*** Ultimo nome: %s",nomeRef);
 
-    //COLETAR LETRA INICIAL & FORMATAR EM iniciais ************************
+    //COLETAR LETRA INICIAL & FORMATAR EM iniciais ------------------
     j=0;
     for(i=0; i<=strlen(nome); i++){
 		if(i == 0){
@@ -63,24 +67,25 @@ int main(){
             }*/
 	}
 
-    //CONCATENAÇÃO DE nomRef e iniciais em result ************************
+    //CONCATENAÇÃO DE nomRef e iniciais em result -------------------
     strcat(result, nomeRef);
     strcat(result, iniciais);
     printf("\n\n*** Resultado: %s\n\n",result);
 
-    //EXERCÍCIO 4
+    //EXERCÍCIO 4 ---------------------------------------------------
     token(result);
     //token("ALVES J. P.");
 
     return 0;
 }
 
+//*** Exercício 4 Token *********************************************
 void token(char resultTK[]){
     int i, j=0;
     int tamTK;
     char token[TAM] = {"\0"}, aux[1];
 
-    //TIRANDO ' ' e '.'
+    //TIRANDO ' ' e '.' ---------------------------------------------
     tamTK = strlen(resultTK);
     for(i=0; i<tamTK; i++){
        if((resultTK[i] != ' ') && (resultTK[i] != '.')){
@@ -90,7 +95,7 @@ void token(char resultTK[]){
     }
     printf("\n*** Token: %s\n",token);
 
-    //INVERTER O TOKEN
+    //INVERTER O TOKEN ----------------------------------------------
     tamTK = strlen(token);
     for(i=0, j=tamTK-1; i<tamTK/2; i++, j--){
 		aux[0] = token[i];
@@ -99,7 +104,7 @@ void token(char resultTK[]){
 	}
     printf("\n*** Token invertido: %s\n",token);
 
-    //MODIFICAR VOGAIS PELO CODIGO ASCII
+    //MODIFICAR VOGAIS PELO CODIGO ASCII ----------------------------
     printf("\n*** Token vogais: ");
     for(i=0; token[i] != '\0'; i++){
         if(token[i] == 'A' || token[i] == 'E' || token[i] == 'I' || token[i] == 'O' || token[i] == 'U'){
