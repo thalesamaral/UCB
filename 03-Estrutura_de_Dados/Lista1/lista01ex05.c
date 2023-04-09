@@ -10,7 +10,7 @@ void bubbleSortInvertido(int[], int);
 int main(){
 // Declarações
 	int numero[TAM] = {5,7,8,1,3,9,2,10,4,6};
-	int par[TAM], impar[TAM], a[TAM];
+	int par[TAM], impar[TAM];
 	int i, j=0, k=0;
 	
 // Principal
