@@ -10,13 +10,13 @@ void bubbleSortInvertido(int[], int);
 int main(){
 // Declarações
 	int numero[TAM] = {5,7,8,1,3,9,2,10,4,6};
-	int par[TAM], impar[TAM];
+	int par[TAM], impar[TAM], a[TAM];
 	int i, j=0, k=0;
 	
 // Principal
 
 	//LEITURA
-	printf("** Digite %d Numeros **\n\n",TAM);
+	printf("*** Digite %d Numeros ***\n\n",TAM);
 	/*for(i=0; i<TAM; i++){
 		printf("%do numero: ",i+1);
 		scanf("%d",&numero[i]);
@@ -31,7 +31,7 @@ int main(){
 		}
 	}
 
-	printf("\n***********************\n\n");
+	printf("\n*************************\n\n");
 
 	//APRESENTAÇÃO DE PAR E IMPAR
 	for(i=0; i<j; i++){
@@ -42,12 +42,15 @@ int main(){
 	}
 
     bubbleSort(numero, TAM);
+    printf("\n*** numeros_ordenados ***\n");
     imprimirVetor(numero, TAM);
 
     bubbleSort(par, j);
+    printf("\n*** pares_ordenados ***\n");
     imprimirVetor(par, j);
 
     bubbleSortInvertido(impar, k);
+    printf("\n*** pares_ordenados ***\n");
     imprimirVetor(impar, k);
 	return 0;
 }
@@ -76,12 +79,11 @@ void bubbleSort(int vet[], int n){
 			}
 		}
 	}
-	printf("\nBubble Sort Comparacoes: %i\n",compara);
-	printf("Bubble Sort Troca: %i\n\n",troca);
-
+	//printf("\nBubble Sort Comparacoes: %i\n",compara);
+	//printf("Bubble Sort Troca: %i\n\n",troca);
 }
 
-//*** Bubble Sort Invertido *****************************************
+//*** Bubble Sort Invertido *******************************
 void bubbleSortInvertido(int vet[], int n){
     int bolha, borda, aux, compara=0, troca=0;
 	
@@ -96,7 +98,6 @@ void bubbleSortInvertido(int vet[], int n){
 			}
 		}
 	}
-	printf("\nBubble Sort Comparacoes: %i\n",compara);
-	printf("Bubble Sort Troca: %i\n\n",troca);
-
+	//printf("\nBubble Sort Comparacoes: %i\n",compara);
+	//printf("Bubble Sort Troca: %i\n\n",troca);
 }
