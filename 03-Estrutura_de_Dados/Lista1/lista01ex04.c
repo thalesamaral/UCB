@@ -17,7 +17,7 @@ int main(){
 // Principal
 
     //printf("Digite o Nome completo: ");
-    //setbuf(stdin, 0);iniciais
+    //setbuf(stdin, 0);
     //gets(nome);
     printf("\n\n*** Nome completo: %s",nome);
 
@@ -47,18 +47,14 @@ int main(){
     j=0;
     for(i=0; i<=strlen(nome); i++){
 		if(i == 0){
-            iniciais[j] = ' ';
-            j++;
-            iniciais[j] = nome[i];
-            j++;
+            iniciais[j++] = ' ';
+            iniciais[j++] = nome[i];
             iniciais[j] = '.';            
         }
 		else if((nome[i] == ' ') && (i+1 != pos)){
                 j++;
-                iniciais[j] = ' ';
-                j++;
-                iniciais[j] = nome[i+1];
-                j++;
+                iniciais[j++] = ' ';
+                iniciais[j++] = nome[i+1];
                 iniciais[j] = '.';
             }
             /*else if((nome[i] == ' ') && (i+1 == pos)){
@@ -89,8 +85,7 @@ void token(char resultTK[]){
     tamTK = strlen(resultTK);
     for(i=0; i<tamTK; i++){
        if((resultTK[i] != ' ') && (resultTK[i] != '.')){
-            token[j] = resultTK[i];
-            j++;
+            token[j++] = resultTK[i];
        }
     }
     printf("\n*** Token: %s\n",token);
@@ -104,14 +99,13 @@ void token(char resultTK[]){
 	}
     printf("\n*** Token invertido: %s\n",token);
 
-    //MODIFICAR VOGAIS PELO CODIGO ASCII ----------------------------
+    //APRESENTAR VOGAIS EM CODIGO DECIMAL ASCII ---------------------
     printf("\n*** Token vogais: ");
-    for(i=0; token[i] != '\0'; i++){
+    for(i=0; i<tamTK; i++){
         if(token[i] == 'A' || token[i] == 'E' || token[i] == 'I' || token[i] == 'O' || token[i] == 'U'){
             //token[i] = (int)token[i];
             printf("%d",token[i]);
         }else
             printf("%c",token[i]);
     }
-    //printf("\nToken vogais: %s\n",token);
 }
