@@ -56,18 +56,22 @@ int main(){
 
     //IMPARES_ORDENADOS ---------------------------------------------
     printf("\n*** impares_ordenados ***\n");
-    novosVetores(impares_ordenados, impar, k);
+	for(int i=0; i<k; i++){
+        impares_ordenados[i] = impar[i];
+    }
+    bubbleSortInvertido(impares_ordenados, k);
+    imprimirVetor(impares_ordenados, k);
 
 	return 0;
 }
 
 //*** Novos vetores *************************************************
-void novosVetores(int vet1[], int vet2[], int tamanho){
+void novosVetores(int vetOrdenado[], int vetOriginal[], int tamanho){
     for(int i=0; i<tamanho; i++){
-        vet1[i] = vet2[i];
+        vetOrdenado[i] = vetOriginal[i];
     }
-    bubbleSort(vet1, tamanho);
-    imprimirVetor(vet1, tamanho);
+    bubbleSort(vetOrdenado, tamanho);
+    imprimirVetor(vetOrdenado, tamanho);
 }
 
 //*** Imprime os valores do vetor ***********************************
@@ -100,7 +104,7 @@ void bubbleSortInvertido(int vet[], int n){
 	
 	for(borda=n-1; borda>0; borda--){
 		for(bolha=0; bolha<borda; bolha++){
-			if(vet[bolha] < vet[bolha+1]){ 
+			if(vet[bolha] < vet[bolha+1]){ // linha alterada "<"
 				aux = vet[bolha];
 				vet[bolha] = vet[bolha+1];
 				vet[bolha+1] = aux;
