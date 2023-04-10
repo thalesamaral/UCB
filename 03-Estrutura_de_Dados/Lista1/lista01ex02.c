@@ -27,12 +27,7 @@ int main(){
 	}
 
 	//VISUALIZAÇÃO MATRIZ -------------------------------------------
-	for(l=0; l<LIN; l++){
-		for(c=0; c<COL; c++){
-			printf("[%d]", mat[l][c]);
-		}
-		printf("\n");
-	}
+	viewTable(l,c,mat);
 	
 	//DIAGONAL PRINCIPAL --------------------------------------------
 	for(l=0; l<LIN; l++){
@@ -51,14 +46,14 @@ int main(){
 	}
 	
 	//RESULTADO -----------------------------------------------------
-	printf("\n** SOMA DE IMPARES **");
+	printf("** SOMA DE IMPARES **");
 	printf("\nDiagonal Principal: %d",somaPri);
 	printf("\nDiagonal Secundaria: %d\n",somaSec);
 	
 	if(somaPri > somaSec){
-		printf("\nA diagonal principal apresenta soma maior de impares.\n");
+		printf("\nA Diagonal Principal apresenta soma maior de impares.\n");
 	}else if(somaSec > somaPri){
-		printf("\nA diagonal secundaria apresenta soma maior de impares.\n");
+		printf("\nA Diagonal Secundaria apresenta soma maior de impares.\n");
 	}else{
 		printf("\nAs duas diagonais apresentam soma equivalentes de impares.\n");
 	}
