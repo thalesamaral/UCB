@@ -9,7 +9,7 @@
 
 int main(){
 // Declarações
-	char nome[TAM]= {"Joaquim Pedro Alves"}, nomeRef[TAM]={"\0"}, iniciais[TAM]={"\0"}, result[TAM]={"\0"};
+	char nome[TAM]= {"Joaquim Pedro Alves Lima"}, nomeRef[TAM]/*={"\0"}*/, iniciais[TAM]/*={"\0"}*/, result[TAM]={"\0"};
 	int i, pos, j=0;
 	
 // Principal
@@ -33,11 +33,10 @@ int main(){
 
     for(i=pos; i < strlen(nome); i++){
         nome[i] = toupper(nome[i]);
-        nomeRef[j] = nome[i];
-        j++;
-        /*if(i+1 == strlen(nome)){
+        nomeRef[j++] = nome[i];
+        if(i+1 == strlen(nome)){ //IF feito para não usar nomeRef[TAM]={"\0"}
             nomeRef[j] = '\0';
-        }*/
+        }
     }
     printf("\n\n*** Ultimo nome: %s",nomeRef);
 
@@ -45,24 +44,20 @@ int main(){
     j=0;
     for(i=0; i<=strlen(nome); i++){
 		if(i == 0){
-            iniciais[j] = ' ';
-            j++;
-            iniciais[j] = nome[i];
-            j++;
+            iniciais[j++] = ' ';
+            iniciais[j++] = nome[i];
             iniciais[j] = '.';            
         }
 		else if((nome[i] == ' ') && (i+1 != pos)){
                 j++;
-                iniciais[j] = ' ';
-                j++;
-                iniciais[j] = nome[i+1];
-                j++;
+                iniciais[j++] = ' ';
+                iniciais[j++] = nome[i+1];
                 iniciais[j] = '.';
             }
-            /*else if((nome[i] == ' ') && (i+1 == pos)){
+            else if((nome[i] == ' ') && (i+1 == pos)){ //IF feito para não usar iniciais[TAM]={"\0"}
                 j++;
                 iniciais[j] = '\0';
-            }*/
+            }
 	}
 
     //CONCATENAÇÃO DE nomRef e iniciais em result -------------------
