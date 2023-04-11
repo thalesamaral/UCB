@@ -9,7 +9,7 @@
 
 int main(){
 // Declarações
-	char nome[TAM]= {"Joaquim Pedro Alves Lima"}, nomeRef[TAM]/*={"\0"}*/, iniciais[TAM]/*={"\0"}*/, result[TAM]={"\0"};
+	char nome[TAM]= {"Joaquim Pedro Alves"}, nomeRef[TAM]/*={"\0"}*/, iniciais[TAM]/*={"\0"}*/, result[TAM]={"\0"};
 	int i, pos, j=0;
 	
 // Principal
