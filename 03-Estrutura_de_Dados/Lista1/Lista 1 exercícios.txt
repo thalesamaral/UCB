@@ -1,0 +1,16 @@
+Lista 1
+Deverá ser realizada em grupos (até 4 integrantes), apenas um integrante deverá enviar a atividade, deverá conter um arquivo INTEGRANTES.txt com os nomes e matrículas.
+
+1 - Elabore um programa que receba 10 números, armazene os respectivos números em um vetor "numeros", após a leitura distribua os valores entre outros dois vetores "impares" e "pares", ao final apresente os pares armazenados no vetor.
+
+2 - Desenvolva um programa com uma matriz 5x5 onde os usuários informarão os valores para cada posição. Ao final apresente qual diagonal (principal ou secundária) tem a maior soma dos valores ímpares.
+
+3 - Elabore um programa que receba um nome completo por exemplo "Joaquim Pedro Alves" e retorne configurado para uma referência conforme apresentado abaixo:
+ALVES J. P.
+
+4 - Com base no resultado acima gere um token para o usuário seguindo os seguintes passos:
+- desconsidere os espaços em branco e os pontos: "ALVESJP"
+- inverta a string: "PJSEVLA"
+- substitua as vogais pelo código decimal do respectivo caractere (ascii table) "PJS69VL65"
+
+5 - Com base no resultado do exercício 1, elabore o programa que apresente outros três vetores "numeros_ordenados", "pares_ordenados", "impares_ordenados", sendo os ímpares apresentados na ordem inversa, pesquise e utilize o bubble sort (método da bolha) para as ordenações.
