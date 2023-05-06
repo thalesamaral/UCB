@@ -21,8 +21,11 @@ int main(){
 // Principal
 	//printf("");
 	
-	printf("*** Digite de 10 a 20 numeros! ***\n");
-	printf("*** Valores de 1 a 99!!! ***\n");
+	printf("****** REGRAS\n");
+	printf("*** Digite de 10 a 20 numeros!\n");
+	printf("*** Valores de 1 a 99!!!\n");
+	printf("*** Valor deve ser Impar\n");
+	printf("*** Valor nao pode ser multiplo de 3\n");
 	do{
 		do{
 			printf("\nDigite o %d numero: ",i+1);
