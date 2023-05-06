@@ -1,7 +1,7 @@
 //  Sintese
 //  Nome....: "Thales Amaral Lima"
 //  Data....: "05/05/2023"
-/*	Objetivo: Digite de 10 a 20 numeros, valores de 1 a 99 e imprimir o vetor de forma crescente utilizando bubble sort */
+/*	Objetivo: Digite de 10 a 20 numeros, valores de 1 a 99. Ao final imprimir o vetor de forma crescente utilizando bubble sort */
 #include <stdio.h>
 #include <string.h>
 #define MIN 2
@@ -19,8 +19,8 @@ int main(){
 	int i=0;
 		
 // Principal
-	printf("");
-	
+	//printf("");
+	printf("****** REGRAS\n");
 	printf("*** Digite de 10 a 20 numeros! ***\n");
 	printf("*** Valores de 1 a 99!!! ***\n");
 	do{
@@ -36,8 +36,8 @@ int main(){
 	//Impressão de vetor de forma crescente -------------------------
 	//imprimirVetor(numero, MAX);
 	printf("\nImpressão de vetor de forma crescente!\n");
-	bubbleSort(numero, MAX);
-	imprimirVetor(numero, MAX);
+	bubbleSort(numero, i);
+	imprimirVetor(numero, i);
 
 	return 0;
 }
@@ -69,10 +69,10 @@ int le_valida_num(int num){
 }
 
 //*** Imprime os valores do vetor ***********************************
-void imprimirVetor(int vet[], int n){
+void imprimirVetor(int vet[], int tam){
 	int i;
 
-	for(i=0; i<n; i++){
+	for(i=0; i<tam; i++){
 		printf("vetor[%d] = %d\n", i, vet[i]);
     }
 }
