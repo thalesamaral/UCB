@@ -4,6 +4,7 @@
 /*	Objetivo: Digite de 2 a 10 numeros; Opção de sair após o minimo ser informado; Valores de 1 a 99, somente números pares e que não sejam múltiplos de 5 por meio de uma função "le_valida_num". Ao final apresente o vetor de forma crescente e decrescente utilizando selection sort */
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h> //Idioma
 #define MIN 2
 #define MAX 5
 
