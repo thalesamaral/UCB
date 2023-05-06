@@ -10,7 +10,8 @@
 int valida_opcaoSair(int);
 int le_valida_num(int);
 void imprimirVetor(int[], int);
-void insertionSort(int[], int);
+void selectionSort(int[], int);
+void selectionSortInvertido(int[], int);
 
 //=== BLOCO PRINCIPAL ===============================================
 int main(){
@@ -35,9 +36,13 @@ int main(){
 		
 	}while((i < MAX) && (valida_opcaoSair(i) == 0)); //MIN e MAX
 
+	//vetor de forma crescente com Selection Sort -----------------
+	printf("\nImpressao de vetor de forma Crescente! Selection Sort\n");
+	selectionSort(numero, i);
+	imprimirVetor(numero, i);
 	//vetor de forma decrescente com Selection Sort -----------------
-	printf("\nImpressao de vetor de forma decrescente!\n");
-	//insertionSort(numero, i);
+	printf("\nImpressao de vetor de forma Decrescente! Selection Sort\n");
+	selectionSortInvertido(numero, i);
 	imprimirVetor(numero, i);
 
 	return 0;
@@ -99,20 +104,34 @@ void imprimirVetor(int vet[], int tam){
     }
 }
 
-//*** Insertion Sort ************************************************
-void insertionSort(int vet[], int tam){
-	int parte, elemento, i;
-	
-	/*"parte" marca o primeiro elemento da parte nao ordenada = vet[1]
-	o vet[0] é o primeiro da parte ordenada */
-
-	for(parte=1; parte<tam; parte++){
-		elemento = vet[parte];
-		i = parte-1;
-		while((i >= 0) && (vet[i] < elemento)){ // linha alterada "<". para Decrescente
-			vet[i+1] = vet[i];
-			i--;
+//*** Selection Sort ************************************************
+void selectionSort(int vet[], int tam) {
+	int bolha, borda, aux, maior;
+	for (borda=tam-1; borda>=0; borda--) {
+		maior = 0;
+		for (bolha=1; bolha<=borda; bolha++) {
+			if (vet[bolha] > vet[maior]) {
+				maior = bolha;
+			}
 		}
-		vet[i+1] = elemento;
+		aux = vet[borda];
+		vet[borda] = vet[maior];
+		vet[maior] = aux;
+	}
+}
+
+//*** Selection Sort Invertido **************************************
+void selectionSortInvertido(int vet[], int tam) {
+	int bolha, borda, aux, maior;
+	for (borda=tam-1; borda>=0; borda--) {
+		maior = 0;
+		for (bolha=1; bolha<=borda; bolha++) {
+			if (vet[bolha] < vet[maior]) {// linha alterada "<". para Decrescente
+				maior = bolha;
+			}
+		}
+		aux = vet[borda];
+		vet[borda] = vet[maior];
+		vet[maior] = aux;
 	}
 }
