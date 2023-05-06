@@ -19,7 +19,7 @@ int main(){
 	int i=0;
 		
 // Principal
-	printf("");
+	//printf("");
 	
 	printf("*** Digite de 10 a 20 numeros! ***\n");
 	printf("*** Valores de 1 a 99!!! ***\n");
@@ -35,9 +35,9 @@ int main(){
 
 	//Impressão de vetor de forma crescente -------------------------
 	//imprimirVetor(numero, MAX);
-	printf("\nImpressão de vetor de forma crescente!\n");
-	bubbleSort(numero, MAX);
-	imprimirVetor(numero, MAX);
+	printf("\nImpressao de vetor de forma crescente!\n");
+	bubbleSort(numero, i);
+	imprimirVetor(numero, i);
 
 	return 0;
 }
@@ -58,21 +58,42 @@ int valida_opcaoSair(int i){
 	return opcaoSair;
 }
 
-//*** Valida tamanho do número de 1 a 99 ****************************
+//*** Valida regras para os valores *********************************
 int le_valida_num(int num){
-	
+	int erro=0;
+
 	if((num < 1) || (num > 99)){
-		printf("ERRO!!!");
-		return 1;
+		erro = 1;
+	}else if(num % 2 == 0){
+		erro = 2;
+	}else if(num % 3 == 0){
+		erro = 3;
 	}
-	return 0;
+
+	switch (erro){
+	case 1:
+		printf("ERRO 1: Fora do limite de 1 a 99!!!\n");
+		return 1;
+		break;
+	case 2:
+		printf("ERRO 2: Numero Par!!!\n");
+		return 1;
+		break;
+	case 3:
+		printf("ERRO 3: Numero Impar e multiplo de 3!!!\n");
+		return 1;
+		break;
+	default:
+		return 0;
+		break;
+	}
 }
 
 //*** Imprime os valores do vetor ***********************************
-void imprimirVetor(int vet[], int n){
+void imprimirVetor(int vet[], int tam){
 	int i;
 
-	for(i=0; i<n; i++){
+	for(i=0; i<tam; i++){
 		printf("vetor[%d] = %d\n", i, vet[i]);
     }
 }
