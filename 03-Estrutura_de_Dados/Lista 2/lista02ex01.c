@@ -14,6 +14,7 @@ void bubbleSort(int [], int);
 
 //=== BLOCO PRINCIPAL ===============================================
 int main(){
+	setlocale(LC_ALL,"Portuguese");
 // Declarações
 	int numero[MAX];
 	int i=0;
