@@ -1,9 +1,9 @@
 //  Sintese
 //  Nome....: "Thales Amaral Lima"
 //  Data....: "05/05/2023"
-/*	Objetivo: Digite de 10 a 20 numeros, valores de 1 a 99. Ao final imprimir o vetor de forma crescente utilizando bubble sort */
+/*	Objetivo: Digite de 10 a 20 numeros; Opção de sair após o minimo ser informado; Valores de 1 a 99. Ao final apresente o vetor de forma crescente utilizando bubble sort */
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 #define MIN 2
 #define MAX 4
 
@@ -12,7 +12,7 @@ int le_valida_num(int);
 void imprimirVetor(int[], int);
 void bubbleSort(int [], int);
 
-//=== INICIO =========================================================
+//=== BLOCO PRINCIPAL ===============================================
 int main(){
 // Declarações
 	int numero[MAX];
@@ -21,8 +21,8 @@ int main(){
 // Principal
 	//printf("");
 	printf("****** REGRAS\n");
-	printf("*** Digite de 10 a 20 numeros! ***\n");
-	printf("*** Valores de 1 a 99!!! ***\n");
+	printf("*** Digite de 10 a 20 numeros!\n");
+	printf("*** Valores de 1 a 99!!!\n");
 	do{
 		do{
 			printf("\nDigite o %d numero: ",i+1);
@@ -33,15 +33,14 @@ int main(){
 		
 	}while((i < MAX) && (valida_opcaoSair(i) == 0)); //MIN e MAX
 
-	//Impressão de vetor de forma crescente -------------------------
-	//imprimirVetor(numero, MAX);
-	printf("\nImpressão de vetor de forma crescente!\n");
+	//Impressão de vetor de forma crescente. Bubble Sort ------------
+	printf("\nImpressão de vetor de forma crescente! Bubble Sort\n");
 	bubbleSort(numero, i);
 	imprimirVetor(numero, i);
 
 	return 0;
 }
-//=== FIM ===========================================================
+//=== FIM DO BLOCO ==================================================
 
 //*** Valida opção para sair ****************************************
 int valida_opcaoSair(int i){
@@ -62,7 +61,7 @@ int valida_opcaoSair(int i){
 int le_valida_num(int num){
 	
 	if((num < 1) || (num > 99)){
-		printf("ERRO!!!");
+		printf("ERRO: Fora do limite 1 a 99!!!");
 		return 1;
 	}
 	return 0;

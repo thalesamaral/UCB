@@ -1,7 +1,7 @@
 //  Sintese
 //  Nome....: "Thales Amaral Lima"
 //  Data....: "06/05/2023"
-/*	Objetivo: Digite de 2 a 10 numeros; opção de sair após o minimo ser informado; valores de 1 a 99, somente números pares e que não sejam múltiplos de 5 por meio de uma função "le_valida_num". Ao final apresente o vetor de forma crescente e decrescente utilizando selection sort */
+/*	Objetivo: Digite de 2 a 10 numeros; Opção de sair após o minimo ser informado; Valores de 1 a 99, somente números pares e que não sejam múltiplos de 5 por meio de uma função "le_valida_num". Ao final apresente o vetor de forma crescente e decrescente utilizando selection sort */
 #include <stdio.h>
 #include <stdlib.h>
 #define MIN 2
@@ -47,7 +47,7 @@ int main(){
 
 	return 0;
 }
-//=== FIM ===========================================================
+//=== FIM DO BLOCO ==================================================
 
 //*** Valida opção para sair ****************************************
 int valida_opcaoSair(int i){

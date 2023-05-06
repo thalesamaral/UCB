@@ -1,8 +1,9 @@
 //  Sintese
 //  Nome....: "Thales Amaral Lima"
 //  Data....: "05/05/2023"
-/*	Objetivo: Digite de 10 a 20 numeros, valores de 1 a 99, somente números ímpares e que não sejam múltiplos de 3 por meio de uma função "le_valida_num". Ao final imprimir o vetor de forma decrescente utilizando insertion sort */
+/*	Objetivo: Digite de 10 a 20 numeros; Opção de sair após o minimo ser informado; Valores de 1 a 99, somente números ímpares e que não sejam múltiplos de 3 por meio de uma função "le_valida_num". Ao final apresente o vetor de forma decrescente utilizando insertion sort */
 #include <stdio.h>
+#include <stdlib.h>
 #define MIN 2
 #define MAX 5
 
@@ -35,13 +36,13 @@ int main(){
 	}while((i < MAX) && (valida_opcaoSair(i) == 0)); //MIN e MAX
 
 	//vetor de forma decrescente com Insertion Sort -----------------
-	printf("\nImpressao de vetor de forma decrescente!\n");
+	printf("\nImpressao de vetor de forma decrescente! Insertion Sort\n");
 	insertionSort(numero, i);
 	imprimirVetor(numero, i);
 
 	return 0;
 }
-//=== FIM ===========================================================
+//=== FIM DO BLOCO ==================================================
 
 //*** Valida opção para sair ****************************************
 int valida_opcaoSair(int i){
@@ -76,11 +77,11 @@ int le_valida_num(int num){
 		return 1;
 		break;
 	case 2:
-		printf("ERRO 2: Numero Par!!!\n");
+		printf("ERRO 2: Numero Par. Invalido!!!\n");
 		return 1;
 		break;
 	case 3:
-		printf("ERRO 3: Numero Impar e multiplo de 3!!!\n");
+		printf("ERRO 3: Numero Impar e multiplo de 3. Invalido!!!\n");
 		return 1;
 		break;
 	default:
