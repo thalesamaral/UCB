@@ -3,24 +3,22 @@
 //  Data....: "05/05/2023"
 /*	Objetivo: Digite de 10 a 20 numeros, valores de 1 a 99, somente números ímpares e que não sejam múltiplos de 3 por meio de uma função "le_valida_num". Ao final imprimir o vetor de forma decrescente utilizando insertion sort */
 #include <stdio.h>
-#include <string.h>
 #define MIN 2
-#define MAX 4
+#define MAX 5
 
 int valida_opcaoSair(int);
 int le_valida_num(int);
 void imprimirVetor(int[], int);
-void bubbleSort(int [], int);
+void insertionSort(int[], int);
 
-//=== INICIO =========================================================
+//=== BLOCO PRINCIPAL ===============================================
 int main(){
 // Declarações
-	int numero[MAX];
+	int numero[MAX];//= {12, 11, 13, 5, 6};
 	int i=0;
 		
 // Principal
 	//printf("");
-	
 	printf("****** REGRAS\n");
 	printf("*** Digite de 10 a 20 numeros!\n");
 	printf("*** Valores de 1 a 99!!!\n");
@@ -36,10 +34,9 @@ int main(){
 		
 	}while((i < MAX) && (valida_opcaoSair(i) == 0)); //MIN e MAX
 
-	//Impressão de vetor de forma crescente -------------------------
-	//imprimirVetor(numero, MAX);
-	printf("\nImpressao de vetor de forma crescente!\n");
-	bubbleSort(numero, i);
+	//vetor de forma decrescente com Insertion Sort -----------------
+	printf("\nImpressao de vetor de forma decrescente!\n");
+	insertionSort(numero, i);
 	imprimirVetor(numero, i);
 
 	return 0;
@@ -101,17 +98,20 @@ void imprimirVetor(int vet[], int tam){
     }
 }
 
-//*** Bubble Sort ***************************************************
-void bubbleSort(int vet[], int tam){
-	int bolha, borda, aux;
+//*** Insertion Sort ************************************************
+void insertionSort(int vet[], int tam){
+	int parte, elemento, i;
 	
-	for(borda=tam-1; borda>0; borda--){
-		for(bolha=0; bolha<borda; bolha++){
-			if(vet[bolha] > vet[bolha+1]){ 
-				aux = vet[bolha];
-				vet[bolha] = vet[bolha+1];
-				vet[bolha+1] = aux;
-			}
+	/*"parte" marca o primeiro elemento da parte nao ordenada = vet[1]
+	o vet[0] é o primeiro da parte ordenada */
+
+	for(parte=1; parte<tam; parte++){
+		elemento = vet[parte];
+		i = parte-1;
+		while((i >= 0) && (vet[i] < elemento)){ // linha alterada "<". para Decrescente
+			vet[i+1] = vet[i];
+			i--;
 		}
+		vet[i+1] = elemento;
 	}
 }
