@@ -65,9 +65,9 @@ int le_valida_num(int num){
 
 	if((num < 1) || (num > 99)){
 		erro = 1;
-	}else if(num % 2 == 0){
+	}else if(num % 2 != 0){
 		erro = 2;
-	}else if(num % 3 == 0){
+	}else if(num % 5 == 0){
 		erro = 3;
 	}
 
@@ -77,11 +77,11 @@ int le_valida_num(int num){
 		return 1;
 		break;
 	case 2:
-		printf("ERRO 2: Numero Par!!!\n");
+		printf("ERRO 2: Numero Impar. Invalido!!!\n");
 		return 1;
 		break;
 	case 3:
-		printf("ERRO 3: Numero Impar e multiplo de 3!!!\n");
+		printf("ERRO 3: Numero Par e multiplo de 5. Invalido!!!\n");
 		return 1;
 		break;
 	default:
