@@ -4,6 +4,7 @@
 /*	Objetivo: Digite de 10 a 20 numeros; Opção de sair após o minimo ser informado; Valores de 1 a 99. Ao final apresente o vetor de forma crescente utilizando bubble sort */
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h> //Idioma
 #define MIN 2
 #define MAX 4
 
