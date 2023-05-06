@@ -15,6 +15,7 @@ void selectionSortInvertido(int[], int);
 
 //=== BLOCO PRINCIPAL ===============================================
 int main(){
+	setlocale(LC_ALL,"Portuguese");
 // Declarações
 	int numero[MAX];//= {12, 11, 13, 5, 6};
 	int i=0;
