@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <locale.h> //Idioma
 #define TAM 10
 
 int valida_nota(int);
@@ -19,7 +18,6 @@ struct tAluno{
 
 //=== BLOCO PRINCIPAL ===============================================
 int main(){
-	setlocale(LC_ALL,"Portuguese");
 // Declarações
 	int i=0;
 	int maior, qtdA1=0, qtdB2=0, qtdC3=0, qtdD4=0;
