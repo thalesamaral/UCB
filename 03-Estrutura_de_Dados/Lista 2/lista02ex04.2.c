@@ -15,7 +15,7 @@ struct tProduto{
 	float valorVenda;
 	float valorLucro;
 	float porcentoLucro;
-	struct tFabricante fabricante;
+	//struct tFabricante fabricante[MAXF];
 };
 struct tFabricante{
 	char marca[50];
@@ -29,11 +29,11 @@ int main(){
 // Declarações
 	int i=0;
 	struct tProduto produto[MAXP];
-	//struct tFabricante
+	struct tFabricante fabricante[MAXF];
 
 // Principal
-
-	
+	fabricante[0].telefone = 123;
+	printf("%d",fabricante[0].telefone);
 
 	return 0;
 }
