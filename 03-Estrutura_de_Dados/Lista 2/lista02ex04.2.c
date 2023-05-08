@@ -9,6 +9,13 @@
 #define MAXF 5
 
 //*** Declaracoes de tipos ******************************************
+/*struct tFabricante{
+	char marca[50];
+	char site[50];
+	int telefone;
+	char uf[2];
+};*/
+
 struct tProduto{
 	char descricao[50];
 	float peso;
@@ -18,12 +25,7 @@ struct tProduto{
 	float porcentoLucro;
 	//struct tFabricante fabricante[MAXF];
 };
-struct tFabricante{
-	char marca[50];
-	char site[50];
-	int telefone;
-	char uf[2];
-};
+
 //*** Prototipos de funcoes *****************************************
 int menu(void);
 
@@ -32,11 +34,10 @@ int main(void){
 // Declarações
 	int i, opcao, qtdProdutos=0;
 	struct tProduto produto[MAXP];
-	//struct tFabricante fabricante[MAXF];
 
 // Principal
-	/*fabricante[0].telefone = 123;
-	printf("%d",fabricante[0].telefone);*/
+	/*produto[0].fabricante.telefone = 123;
+	printf("%d",produto[0].fabricante.telefone);*/
 
 	do {
         opcao = menu();
@@ -54,7 +55,7 @@ int main(void){
 						printf("Digite o valor da venda....: ");
                     	scanf("%f",&produto[qtdProdutos].valorVenda);
 						produto[qtdProdutos].valorLucro = produto[qtdProdutos].valorCompra - produto[qtdProdutos].valorVenda;
-						produto[qtdProdutos].porcentoLucro = (produto[qtdProdutos].valorVenda*100)/produto[qtdProdutos].valorCompra;
+						produto[qtdProdutos].porcentoLucro = (produto[qtdProdutos].valorLucro*100)/produto[qtdProdutos].valorCompra;
                     	qtdProdutos++;
 					}
 					else
