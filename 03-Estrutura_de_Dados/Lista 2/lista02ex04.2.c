@@ -1,6 +1,6 @@
 //  Sintese
 //  Nome....: "Thales Amaral Lima"
-//  Data....: "07/05/2023"
+//  Data....: "09/05/2023"
 /*	Objetivo: Elabore um programa onde o usuário armazenará por meio de Structs os dados de "Produto" e "Fabricante", deverão serem cadastrados no mínimo 2 fabricantes (máximo 5) e no mínimo 5 produtos (máximo 50). */
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,12 +9,12 @@
 #define MAXF 5
 
 //*** Declaracoes de tipos ******************************************
-/*struct tFabricante{
+struct tFabricante{
 	char marca[50];
 	char site[50];
-	int telefone;
+	int telefone[11];
 	char uf[2];
-};*/
+};
 
 struct tProduto{
 	char descricao[50];
@@ -23,7 +23,7 @@ struct tProduto{
 	float valorVenda;
 	float valorLucro;
 	float porcentoLucro;
-	//struct tFabricante fabricante[MAXF];
+	struct tFabricante fabricante[MAXF];
 };
 
 //*** Prototipos de funcoes *****************************************
@@ -32,44 +32,66 @@ int menu(void);
 //=== BLOCO PRINCIPAL ===============================================
 int main(void){
 // Declarações
-	int i, opcao, qtdProdutos=0;
+	int i, opcao, qtdP=0, qtdF=0;
 	struct tProduto produto[MAXP];
 
 // Principal
-	/*produto[0].fabricante.telefone = 123;
-	printf("%d",produto[0].fabricante.telefone);*/
+	/*produto[0].fabricante[0].telefone = 123;
+	printf("%d",produto[0].fabricante[0].telefone);*/
 
 	do {
         opcao = menu();
         switch (opcao) {
                case 1: 
                     printf("\n\n*** Inclusao ***\n\n");
-                    if (qtdProdutos < MAXP) {
-                    	printf("Digite a descricao: ");
+                    if (qtdP < MAXP) {
+						printf("Produto %d:\n", qtdP + 1);
+                    	printf("  Descricao: ");
+						setbuf(stdin, 0);
                     	fflush(stdin);
-                    	gets(produto[qtdProdutos].descricao);
-						printf("Digite o peso...: ");
-                    	scanf("%f",&produto[qtdProdutos].peso);
-                    	printf("Digite o valor da compra....: ");
-                    	scanf("%f",&produto[qtdProdutos].valorCompra);
-						printf("Digite o valor da venda....: ");
-                    	scanf("%f",&produto[qtdProdutos].valorVenda);
-						produto[qtdProdutos].valorLucro = produto[qtdProdutos].valorCompra - produto[qtdProdutos].valorVenda;
-						produto[qtdProdutos].porcentoLucro = (produto[qtdProdutos].valorLucro*100)/produto[qtdProdutos].valorCompra;
-                    	qtdProdutos++;
+                    	gets(produto[qtdP].descricao);
+						printf("  Peso: ");
+                    	scanf("%f",&produto[qtdP].peso);
+                    	printf("  Valor Compra: ");
+                    	scanf("%f",&produto[qtdP].valorCompra);
+						printf("  Valor Venda: ");
+                    	scanf("%f",&produto[qtdP].valorVenda);
+						produto[qtdP].valorLucro = produto[qtdP].valorCompra - produto[qtdP].valorVenda;
+						produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;
+                    	if (qtdF < MAXF){
+							printf("Fabricante %d:\n", qtdF + 1);
+							printf("  Marca: ");
+							setbuf(stdin, 0);
+							fflush(stdin);
+							gets(produto[qtdP].fabricante[qtdF].marca);
+							printf("  Site: ");
+							gets(produto[qtdP].fabricante[qtdF].site);
+							printf("  Telefone: ");
+							scanf("%d", produto[qtdP].fabricante[qtdF].telefone);
+							printf("  UF: ");
+							fflush(stdin);
+							gets(produto[qtdP].fabricante[qtdF].uf);
+							qtdF++;
+						}else{
+								printf("Vetor cheio!\n");
+							}
+						qtdP++;
 					}
-					else
-						printf("Vetor cheio!\n");
+					else{
+							printf("Vetor cheio!\n");
+						}
 	                break;
                case 2: 
                     printf("\n\n*** Listagem ***\n\n");
-                    for (i=0; i<qtdProdutos; i++){
-                    	printf("descricao: %s\n", produto[i].descricao);
-						printf("peso: %.2f\n", produto[i].peso);
-						printf("valorCompra: %.2f\n", produto[i].valorCompra);
-						printf("valorVenda: %.2f\n", produto[i].valorVenda);
-						printf("valorLucro: %.2f\n", produto[i].valorLucro);
-						printf("porcentoLucro: %.2f%%\n", produto[i].porcentoLucro);
+                    for (i=0; i<qtdP; i++){
+						printf("\n*** Produto ***\n");
+                    	printf("Descricao: %s\n", produto[i].descricao);
+						printf("Peso: %.2f\n", produto[i].peso);
+						printf("Valor Compra: %.2f\n", produto[i].valorCompra);
+						printf("Valor Venda: %.2f\n", produto[i].valorVenda);
+						printf("Valor Lucro: %.2f\n", produto[i].valorLucro);
+						printf("Porcento Lucro: %.2f%%\n", produto[i].porcentoLucro);
+						printf("Fabricante Marca: %s\n", produto[i].fabricante[i].marca);
 					}
 	                break;
         }
@@ -79,7 +101,7 @@ int main(void){
 }
 //=== FIM DO BLOCO ==================================================
 
-//*** Menu *********************************************************************
+//*** Menu **********************************************************
 int menu(void) {
     int op;
     printf("\n\n*** MENU ***\n\n");
