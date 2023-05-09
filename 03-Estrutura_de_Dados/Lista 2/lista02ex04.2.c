@@ -23,7 +23,7 @@ struct tProduto{
 	float valorVenda;
 	float valorLucro;
 	float porcentoLucro;
-	tFabricante fabricanteFK[MAXF];
+	tFabricante fabricanteFK;
 };
 
 //*** Prototipos de funcoes *****************************************
@@ -32,8 +32,9 @@ int menu(void);
 //=== BLOCO PRINCIPAL ===============================================
 int main(void){
 // Declarações
-	int i=0, j, k=0;
+	int i=0, j;
 	int opcao, qtdP=0, qtdF=0;//, flag=0;
+	char marca[50];
 	struct tProduto produto[MAXP];
 	tFabricante fabricante[MAXF];
 
@@ -49,14 +50,14 @@ int main(void){
 					if (qtdF < MAXF){
 						//flag = 1;
 						printf("Fabricante %d:\n", qtdF + 1);
-						/*printf("  Marca: ");
+						printf("  Marca: ");
 						setbuf(stdin, 0);
 						fflush(stdin);
-						gets(fabricante[qtdF].marca);*/
+						gets(fabricante[qtdF].marca);
 						//printf("  Site: ");
 						//gets(fabricante[qtdF].site);
-						printf("  Telefone: ");
-						scanf("%d", &fabricante[qtdF].telefone);
+						//printf("  Telefone: ");
+						//scanf("%d", &fabricante[qtdF].telefone);
 						//printf("  UF: ");
 						//fflush(stdin);
 						//gets(fabricante[qtdF].uf);
@@ -87,7 +88,7 @@ int main(void){
 						if (j < 1 || j > qtdF) {
 							printf("Fabricante inválido!\n");
 						}
-						produto[qtdP].fabricanteFK[j-1] = fabricante[j-1];
+						produto[qtdP].fabricanteFK = fabricante[j-1];
 						qtdP++;
 					}
 					else{
@@ -105,15 +106,29 @@ int main(void){
 						printf("Valor Venda: %.2f\n", produto[i].valorVenda);
 						printf("Valor Lucro: %.2f\n", produto[i].valorLucro);
 						printf("Porcento Lucro: %.2f%%\n", produto[i].porcentoLucro);*/
-						//printf("Fabricante Marca: %s\n", produto[i].fabricanteFK[i].marca);
-						//printf("Fabricante Site: %s\n", produto[i].fabricanteFK[i].site);
-						printf("Fabricante Telefone: %d\n", produto[i].fabricanteFK[i].telefone);
-						//printf("Fabricante UF: %s\n", produto[i].fabricanteFK[i].uf);
+						printf("Fabricante Marca: %s\n", produto[i].fabricanteFK.marca);
+						//printf("Fabricante Site: %s\n", produto[i].fabricanteFK.site);
+						//printf("Fabricante Telefone: %d\n", produto[i].fabricanteFK.telefone);
+						//printf("Fabricante UF: %s\n", produto[i].fabricanteFK.uf);
 					}
 	                break;
 				case 4:
+					printf("\n\n*** Listagem Marcas ***\n\n");
 					for (i=0; i<qtdF; i++){
-						printf("Fabricante Marca: %d\n", produto[i].fabricanteFK[i].telefone);//contador k
+						printf("Fabricante Telefone: %s\n", fabricante[i].marca);
+					}
+					break;
+				case 5:
+					printf("\n\n*** Listagem Produtos de uma Marca ***\n\n"); //*criar função para listagem
+					printf("  Marca: ");
+						setbuf(stdin, 0);
+						fflush(stdin);
+						gets(marca);
+					for(i=0; i<qtdP; i++){
+						if(strcmp(marca,produto[i].fabricanteFK.marca)==0){
+							printf(" Produto %d:\n",i+1);
+                    		printf("Descricao: %s\n", produto[i].descricao);
+						}
 					}
 					break;
         }
@@ -132,10 +147,10 @@ int menu(void) {
 	printf("3. Listagem Produtos\n");
     printf("4. Listagem Marcas\n");
 	printf("5. Listagem Produtos de uma Marca\n");
-	printf("6. Estado dos produtos mais caro\n");
-	printf("7. Fabricantes com Produto mais barato\n");
-	printf("8. Produtos Ordem crescente Valor\n");
-	printf("9. Produtos Ordem crescente Valor Lucro\n");
+	//printf("6. Estado dos produtos mais caro\n");
+	//printf("7. Fabricantes com Produto mais barato\n");
+	//printf("8. Produtos Ordem crescente Valor\n");
+	//printf("9. Produtos Ordem crescente Valor Lucro\n");
     printf("0. Sair\n\n");
     printf("Escolha sua opcao: ");
     scanf("%d", &op);
