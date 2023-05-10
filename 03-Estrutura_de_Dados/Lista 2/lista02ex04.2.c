@@ -46,7 +46,7 @@ int validaUF(tFabricante f){
 int main(void){
 // Declarações
 	int i=0, j;
-	int opcao, qtdP=0, qtdF=0;//, flag=0;
+	int opcao, qtdP=0, qtdF=0, maisCaro, maisBarato;//, flag=0;
 	char marcaPesquisa[50], ufPesquisa[2];
 	struct tProduto produto[MAXP];
 	tFabricante fabricante[MAXF];
@@ -90,14 +90,14 @@ int main(void){
 						setbuf(stdin, 0);
                     	fflush(stdin);
                     	gets(produto[qtdP].descricao);
-						/*printf("  Peso: ");
-                    	scanf("%f",&produto[qtdP].peso);
+						//printf("  Peso: ");
+                    	//scanf("%f",&produto[qtdP].peso);
                     	printf("  Valor Compra: ");
                     	scanf("%f",&produto[qtdP].valorCompra);
-						printf("  Valor Venda: ");
-                    	scanf("%f",&produto[qtdP].valorVenda);
-						produto[qtdP].valorLucro = produto[qtdP].valorCompra - produto[qtdP].valorVenda;
-						produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;*/
+						//printf("  Valor Venda: ");
+                    	//scanf("%f",&produto[qtdP].valorVenda);
+						//produto[qtdP].valorLucro = produto[qtdP].valorCompra - produto[qtdP].valorVenda;
+						//produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;
 						// Seleção do fabricante
 						printf("  Fabricante (1-%d): ",qtdF);
 						scanf("%d", &j);
@@ -117,15 +117,15 @@ int main(void){
 						printf("\n*** Produto ***\n");
 						printf(" Produto %d:\n",i+1);
                     	printf("Descricao: %s\n", produto[i].descricao);
-						/*printf("Peso: %.2f\n", produto[i].peso);
+						//printf("Peso: %.2f\n", produto[i].peso);
 						printf("Valor Compra: %.2f\n", produto[i].valorCompra);
-						printf("Valor Venda: %.2f\n", produto[i].valorVenda);
-						printf("Valor Lucro: %.2f\n", produto[i].valorLucro);
-						printf("Porcento Lucro: %.2f%%\n", produto[i].porcentoLucro);*/
+						//printf("Valor Venda: %.2f\n", produto[i].valorVenda);
+						//printf("Valor Lucro: %.2f\n", produto[i].valorLucro);
+						//printf("Porcento Lucro: %.2f%%\n", produto[i].porcentoLucro);
 						printf("Fabricante Marca: %s\n", produto[i].fabricanteFK.marca);
 						//printf("Fabricante Site: %s\n", produto[i].fabricanteFK.site);
 						//printf("Fabricante Telefone: %d\n", produto[i].fabricanteFK.telefone);
-						//printf("Fabricante UF: %s\n", produto[i].fabricanteFK.uf);
+						printf("Fabricante UF: %s\n", produto[i].fabricanteFK.uf);
 					}
 	                break;
 				case 4:
@@ -135,7 +135,7 @@ int main(void){
 					}
 					break;
 				case 5:
-					printf("\n\n*** Listagem Produtos de uma Marca ***\n\n"); //*criar função para listagem
+					printf("\n\n*** Listagem Produtos de uma Marca ***\n\n"); 
 					printf("  Produtos de uma Marca: ");
 						setbuf(stdin, 0);
 						fflush(stdin);
@@ -148,18 +148,22 @@ int main(void){
 					}
 					break;
 				case 6:
-				printf("\n\n*** Estado dos produtos mais caro ***\n\n"); //*criar função para listagem
+				printf("\n\n*** Estado dos produtos mais caro ***\n\n");
 				printf("  Estado dos produtos mais caro: ");
-					/*setbuf(stdin, 0);
-					fflush(stdin);
-					gets(ufPesquisa);
-				for(i=0; i<qtdP; i++){
-					if(strcmp(ufPesquisa,produto[i].fabricanteFK.uf)==0){
-						printf(" Produto %d:\n",i+1);
-						printf("UF: %s\n", produto[i].fabricanteFK.uf);
+				for(i=0;i<qtdP;i++){
+					if(i == 0){
+						maisCaro = produto[i].valorCompra;
+					}else if(produto[i].valorCompra > maisCaro){
+								maisCaro = produto[i].valorCompra;
+							}
+				}
+				for(i=0;i<qtdP;i++){
+					if(produto[i].valorCompra == maisCaro){
+						printf("\nEstado: %s",produto[i].fabricanteFK.uf);
+						printf("\nProduto: %s",produto[i].descricao);
+						printf("\nValor Compra: %.2f",produto[i].valorCompra);
 					}
-				}*/
-				
+				}
 				break;
         }
     } while (opcao != 0);
@@ -194,3 +198,10 @@ int menu(void) {
 	}else
 		return 0;
 }*/
+/*for(i=0;i<TAM;i++){
+					if(i == 0){
+						menor = produto[i].valorCompra;
+					}else if(produto[i].valorCompra < menor){
+								menor = produto[i].valorCompra;
+							}
+				}*/
