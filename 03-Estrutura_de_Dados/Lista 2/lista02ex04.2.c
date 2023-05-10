@@ -41,13 +41,19 @@ int validaUF(tFabricante f){
 	}else
 		return 0;
 }
+int compararValor(const void* a, const void* b){
+	const struct tProduto* produtoA = (const struct tProduto*)a;
+    const struct tProduto* produtoB = (const struct tProduto*)b;
+    
+    return produtoA->valorCompra - produtoB->valorCompra;
+}
 
 //=== BLOCO PRINCIPAL ===============================================
 int main(void){
 // Declarações
 	int i=0, j;
 	int opcao, qtdP=0, qtdF=0, maisCaro, maisBarato;//, flag=0;
-	char marcaPesquisa[50], ufPesquisa[2];
+	char marcaPesquisa[50];
 	struct tProduto produto[MAXP];
 	tFabricante fabricante[MAXF];
 
@@ -94,10 +100,10 @@ int main(void){
                     	//scanf("%f",&produto[qtdP].peso);
                     	printf("  Valor Compra: ");
                     	scanf("%f",&produto[qtdP].valorCompra);
-						//printf("  Valor Venda: ");
-                    	//scanf("%f",&produto[qtdP].valorVenda);
-						//produto[qtdP].valorLucro = produto[qtdP].valorCompra - produto[qtdP].valorVenda;
-						//produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;
+						printf("  Valor Venda: ");
+                    	scanf("%f",&produto[qtdP].valorVenda);
+						produto[qtdP].valorLucro = produto[qtdP].valorCompra - produto[qtdP].valorVenda;
+						produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;
 						// Seleção do fabricante
 						printf("  Fabricante (1-%d): ",qtdF);
 						scanf("%d", &j);
@@ -119,9 +125,9 @@ int main(void){
                     	printf("Descricao: %s\n", produto[i].descricao);
 						//printf("Peso: %.2f\n", produto[i].peso);
 						printf("Valor Compra: %.2f\n", produto[i].valorCompra);
-						//printf("Valor Venda: %.2f\n", produto[i].valorVenda);
-						//printf("Valor Lucro: %.2f\n", produto[i].valorLucro);
-						//printf("Porcento Lucro: %.2f%%\n", produto[i].porcentoLucro);
+						printf("Valor Venda: %.2f\n", produto[i].valorVenda);
+						printf("Valor Lucro: %.2f\n", produto[i].valorLucro);
+						printf("Porcento Lucro: %.2f%%\n", produto[i].porcentoLucro);
 						printf("Fabricante Marca: %s\n", produto[i].fabricanteFK.marca);
 						//printf("Fabricante Site: %s\n", produto[i].fabricanteFK.site);
 						//printf("Fabricante Telefone: %d\n", produto[i].fabricanteFK.telefone);
@@ -148,8 +154,8 @@ int main(void){
 					}
 					break;
 				case 6:
-				printf("\n\n*** Estado dos produtos mais caro ***\n\n");
-				printf("  Estado dos produtos mais caro: ");
+				printf("\n\n*** Estado dos produtos mais caros ***\n\n");
+				printf("  Estado dos produtos mais caros: ");
 				for(i=0;i<qtdP;i++){
 					if(i == 0){
 						maisCaro = produto[i].valorCompra;
@@ -164,6 +170,36 @@ int main(void){
 						printf("\nValor Compra: %.2f",produto[i].valorCompra);
 					}
 				}
+				break;
+				case 7:
+				printf("\n\n*** Fabricante dos produtos mais baratos ***\n\n");
+				printf("  Fabricante dos produtos mais baratos: ");
+				for(i=0;i<qtdP;i++){
+					if(i == 0){
+						maisBarato = produto[i].valorCompra;
+					}else if(produto[i].valorCompra < maisBarato){
+								maisBarato = produto[i].valorCompra;
+							}
+				}
+				for(i=0;i<qtdP;i++){
+					if(produto[i].valorCompra == maisBarato){
+						printf("\nFabricante: %s",produto[i].fabricanteFK.marca);
+						printf("\nProduto: %s",produto[i].descricao);
+						printf("\nValor Compra: %.2f",produto[i].valorCompra);
+					}
+				}
+				break;
+				case 8:
+					qsort(produto, qtdP, sizeof(struct tProduto), compararValor);
+					for (i=0; i<qtdP; i++) {
+						printf("descricao: %s, valorCompra: %.2f\n", produto[i].descricao, produto[i].valorCompra);
+					}
+				break;
+				case 9:
+					qsort(produto, qtdP, sizeof(struct tProduto), compararValor);
+					for (i=0; i<qtdP; i++) {
+						printf("Descricao: %s, Valor Lucro: %.2f\n", produto[i].descricao, produto[i].valorLucro);
+					}
 				break;
         }
     } while (opcao != 0);
@@ -182,9 +218,9 @@ int menu(void) {
     printf("4. Listagem Marcas\n");
 	printf("5. Listagem Produtos de uma Marca\n");
 	printf("6. Estado dos produtos mais caro\n");
-	//printf("7. Fabricantes com Produto mais barato\n");
-	//printf("8. Produtos Ordem crescente Valor\n");
-	//printf("9. Produtos Ordem crescente Valor Lucro\n");
+	printf("7. Fabricantes com Produto mais barato\n");
+	printf("8. Produtos Ordem crescente Valor\n");
+	printf("9. Produtos Ordem crescente Valor Lucro\n");
     printf("0. Sair\n\n");
     printf("Escolha sua opcao: ");
     scanf("%d", &op);
@@ -198,10 +234,3 @@ int menu(void) {
 	}else
 		return 0;
 }*/
-/*for(i=0;i<TAM;i++){
-					if(i == 0){
-						menor = produto[i].valorCompra;
-					}else if(produto[i].valorCompra < menor){
-								menor = produto[i].valorCompra;
-							}
-				}*/
