@@ -28,13 +28,26 @@ struct tProduto{
 
 //*** Prototipos de funcoes *****************************************
 int menu(void);
+int validaUF(tFabricante f){
+	if((strcmp(f.uf,"RO")!=0) && (strcmp(f.uf,"AC")!=0) && (strcmp(f.uf,"AM")!=0) && (strcmp(f.uf,"RR")!=0)
+	&& (strcmp(f.uf,"PA")!=0) && (strcmp(f.uf,"AP")!=0) && (strcmp(f.uf,"TO")!=0) && (strcmp(f.uf,"MA")!=0)
+	&& (strcmp(f.uf,"PI")!=0) && (strcmp(f.uf,"CE")!=0) && (strcmp(f.uf,"RN")!=0) && (strcmp(f.uf,"PB")!=0)
+	&& (strcmp(f.uf,"PE")!=0) && (strcmp(f.uf,"AL")!=0) && (strcmp(f.uf,"SE")!=0) && (strcmp(f.uf,"BA")!=0)
+	&& (strcmp(f.uf,"MG")!=0) && (strcmp(f.uf,"ES")!=0) && (strcmp(f.uf,"RJ")!=0) && (strcmp(f.uf,"SP")!=0)
+	&& (strcmp(f.uf,"PR")!=0) && (strcmp(f.uf,"SC")!=0) && (strcmp(f.uf,"RS")!=0) && (strcmp(f.uf,"MS")!=0)
+	&& (strcmp(f.uf,"MT")!=0) && (strcmp(f.uf,"GO")!=0) && (strcmp(f.uf,"DF")!=0))
+	{
+		return 1;
+	}else
+		return 0;
+}
 
 //=== BLOCO PRINCIPAL ===============================================
 int main(void){
 // Declarações
 	int i=0, j;
 	int opcao, qtdP=0, qtdF=0;//, flag=0;
-	char marca[50];
+	char marcaPesquisa[50], ufPesquisa[2];
 	struct tProduto produto[MAXP];
 	tFabricante fabricante[MAXF];
 
@@ -58,9 +71,12 @@ int main(void){
 						//gets(fabricante[qtdF].site);
 						//printf("  Telefone: ");
 						//scanf("%d", &fabricante[qtdF].telefone);
-						//printf("  UF: ");
-						//fflush(stdin);
-						//gets(fabricante[qtdF].uf);
+						do{
+							printf("  UF: ");
+							fflush(stdin);
+							gets(fabricante[qtdF].uf);
+							//validaUF(fabricante[qtdF]);
+						}while(validaUF(fabricante[qtdF]));
 						qtdF++;
 					}else{
 							printf("Vetor cheio!\n");
@@ -115,22 +131,36 @@ int main(void){
 				case 4:
 					printf("\n\n*** Listagem Marcas ***\n\n");
 					for (i=0; i<qtdF; i++){
-						printf("Fabricante Telefone: %s\n", fabricante[i].marca);
+						printf("Fabricante Marcas: %s\n", fabricante[i].marca);
 					}
 					break;
 				case 5:
 					printf("\n\n*** Listagem Produtos de uma Marca ***\n\n"); //*criar função para listagem
-					printf("  Marca: ");
+					printf("  Produtos de uma Marca: ");
 						setbuf(stdin, 0);
 						fflush(stdin);
-						gets(marca);
+						gets(marcaPesquisa);
 					for(i=0; i<qtdP; i++){
-						if(strcmp(marca,produto[i].fabricanteFK.marca)==0){
+						if(strcmp(marcaPesquisa,produto[i].fabricanteFK.marca)==0){
 							printf(" Produto %d:\n",i+1);
                     		printf("Descricao: %s\n", produto[i].descricao);
 						}
 					}
 					break;
+				case 6:
+				printf("\n\n*** Estado dos produtos mais caro ***\n\n"); //*criar função para listagem
+				printf("  Estado dos produtos mais caro: ");
+					/*setbuf(stdin, 0);
+					fflush(stdin);
+					gets(ufPesquisa);
+				for(i=0; i<qtdP; i++){
+					if(strcmp(ufPesquisa,produto[i].fabricanteFK.uf)==0){
+						printf(" Produto %d:\n",i+1);
+						printf("UF: %s\n", produto[i].fabricanteFK.uf);
+					}
+				}*/
+				
+				break;
         }
     } while (opcao != 0);
 
@@ -147,7 +177,7 @@ int menu(void) {
 	printf("3. Listagem Produtos\n");
     printf("4. Listagem Marcas\n");
 	printf("5. Listagem Produtos de uma Marca\n");
-	//printf("6. Estado dos produtos mais caro\n");
+	printf("6. Estado dos produtos mais caro\n");
 	//printf("7. Fabricantes com Produto mais barato\n");
 	//printf("8. Produtos Ordem crescente Valor\n");
 	//printf("9. Produtos Ordem crescente Valor Lucro\n");
@@ -156,3 +186,11 @@ int menu(void) {
     scanf("%d", &op);
     return op;
 }
+
+//
+/*int validaUF(struct tFabricante f){
+	if(strcmp(f.uf,"DF")!=0){
+		return 1;
+	}else
+		return 0;
+}*/
