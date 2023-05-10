@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAXP 10
-#define MAXF 5
+#define MAXP 15
+#define MAXF 10
 
 //*** Declaracoes de tipos ******************************************
 typedef struct {
@@ -20,9 +20,9 @@ struct tProduto{
 	char descricao[50];
 	float peso;
 	float valorCompra;
-	float valorVenda;
+	//float valorVenda;
 	float valorLucro;
-	float porcentoLucro;
+	//float porcentoLucro;
 	tFabricante fabricanteFK;
 };
 
@@ -52,14 +52,32 @@ int compararValor(const void* a, const void* b){
 int main(void){
 // Declarações
 	int i=0, j;
-	int opcao, qtdP=0, qtdF=0, maisCaro, maisBarato;//, flag=0;
+	int opcao, qtdP=10, qtdF=8, maisCaro, maisBarato;//, flag=0;
 	char marcaPesquisa[50];
-	struct tProduto produto[MAXP];
-	tFabricante fabricante[MAXF];
+	struct tProduto produto[MAXP]= {
+		{"aaa", 80, 10, 6, 1},
+		{"bbb", 80, 50, 45, 2},
+		{"ccc", 80, 11, 10, 3},
+		{"ddd", 80, 18, 9, 4},
+		{"eee", 80, 48, 8, 5},
+		{"fff", 80, 99, 80, 5},
+		{"ggg", 80, 99, 8, 1},
+		{"hhh", 80, 65, 50, 6},
+		{"iii", 80, 33, 22, 7},
+		{"jjj", 80, 27, 9, 8}
+	};
+	tFabricante fabricante[MAXF]= {
+		{"AAA", "Aemail", 123, "DF"},
+		{"BBB", "Bemail", 321, "GO"},
+		{"CCC", "Cemail", 456, "RJ"},
+		{"DDD", "Demail", 654, "SP"},
+		{"EEE", "Eemail", 789, "AM"},
+		{"FFF", "Femail", 987, "RS"},
+		{"GGG", "Gemail", 159, "ES"},
+		{"HHH", "Hemail", 951, "TO"}
+	};
 
 // Principal
-	/*produto[0].fabricante[0].telefone = 123;
-	printf("%d",produto[0].fabricante[0].telefone);*/
 
 	do {
         opcao = menu();
@@ -67,7 +85,6 @@ int main(void){
                	case 1: 
                     printf("\n\n*** Inclusao Fabricante ***\n\n");
 					if (qtdF < MAXF){
-						//flag = 1;
 						printf("Fabricante %d:\n", qtdF + 1);
 						printf("  Marca: ");
 						setbuf(stdin, 0);
@@ -81,7 +98,6 @@ int main(void){
 							printf("  UF: ");
 							fflush(stdin);
 							gets(fabricante[qtdF].uf);
-							//validaUF(fabricante[qtdF]);
 						}while(validaUF(fabricante[qtdF]));
 						qtdF++;
 					}else{
@@ -96,14 +112,14 @@ int main(void){
 						setbuf(stdin, 0);
                     	fflush(stdin);
                     	gets(produto[qtdP].descricao);
-						//printf("  Peso: ");
-                    	//scanf("%f",&produto[qtdP].peso);
+						printf("  Peso: ");
+                    	scanf("%f",&produto[qtdP].peso);
                     	printf("  Valor Compra: ");
                     	scanf("%f",&produto[qtdP].valorCompra);
-						printf("  Valor Venda: ");
+						/*printf("  Valor Venda: ");
                     	scanf("%f",&produto[qtdP].valorVenda);
 						produto[qtdP].valorLucro = produto[qtdP].valorCompra - produto[qtdP].valorVenda;
-						produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;
+						produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;*/
 						// Seleção do fabricante
 						printf("  Fabricante (1-%d): ",qtdF);
 						scanf("%d", &j);
@@ -123,14 +139,14 @@ int main(void){
 						printf("\n*** Produto ***\n");
 						printf(" Produto %d:\n",i+1);
                     	printf("Descricao: %s\n", produto[i].descricao);
-						//printf("Peso: %.2f\n", produto[i].peso);
+						printf("Peso: %.2f\n", produto[i].peso);
 						printf("Valor Compra: %.2f\n", produto[i].valorCompra);
-						printf("Valor Venda: %.2f\n", produto[i].valorVenda);
+						//printf("Valor Venda: %.2f\n", produto[i].valorVenda);
 						printf("Valor Lucro: %.2f\n", produto[i].valorLucro);
-						printf("Porcento Lucro: %.2f%%\n", produto[i].porcentoLucro);
+						//printf("Porcento Lucro: %.2f%%\n", produto[i].porcentoLucro);
 						printf("Fabricante Marca: %s\n", produto[i].fabricanteFK.marca);
-						//printf("Fabricante Site: %s\n", produto[i].fabricanteFK.site);
-						//printf("Fabricante Telefone: %d\n", produto[i].fabricanteFK.telefone);
+						printf("Fabricante Site: %s\n", produto[i].fabricanteFK.site);
+						printf("Fabricante Telefone: %d\n", produto[i].fabricanteFK.telefone);
 						printf("Fabricante UF: %s\n", produto[i].fabricanteFK.uf);
 					}
 	                break;
@@ -233,4 +249,28 @@ int menu(void) {
 		return 1;
 	}else
 		return 0;
+}*/
+
+/*struct fabricante[] = {
+	{"AAA", "Aemail", 123, "DF"},
+	{"BBB", "Bemail", 321, "GO"},
+	{"CCC", "Cemail", 456, "RJ"},
+	{"DDD", "Demail", 654, "SP"},
+	{"EEE", "Eemail", 789, "AM"},
+	{"FFF", "Femail", 987, "RS"},
+	{"GGG", "Gemail", 159, "ES"},
+	{"HHH", "Hemail", 951, "TO"},
+}
+
+struct tProduto produto[] = {
+	{"aaa", 80, 10, 6, 1},
+	{"bbb", 80, 50, 45, 2},
+	{"ccc", 80, 11, 10, 3},
+	{"ddd", 80, 18, 9, 4},
+	{"eee", 80, 48, 8, 5},
+	{"fff", 80, 99, 80, 5},
+	{"ggg", 80, 99, 8, 1},
+	{"hhh", 80, 65, 50, 6},
+	{"iii", 80, 33, 22, 7},
+	{"jjj", 80, 27, 9, 8}
 }*/
