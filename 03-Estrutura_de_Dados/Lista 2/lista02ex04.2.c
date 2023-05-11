@@ -54,18 +54,6 @@ int main(void){
 	int i=0, j;
 	int opcao, qtdP=10, qtdF=8, maisCaro, maisBarato;//, flag=0;
 	char marcaPesquisa[50];
-	struct tProduto produto[MAXP]= {
-		{"aaa", 80, 10, 6, 1},
-		{"bbb", 80, 50, 45, 2},
-		{"ccc", 80, 11, 10, 3},
-		{"ddd", 80, 18, 9, 4},
-		{"eee", 80, 48, 8, 5},
-		{"fff", 80, 99, 80, 5},
-		{"ggg", 80, 99, 8, 1},
-		{"hhh", 80, 65, 50, 6},
-		{"iii", 80, 33, 22, 7},
-		{"jjj", 80, 27, 9, 8}
-	};
 	tFabricante fabricante[MAXF]= {
 		{"AAA", "Aemail", 123, "DF"},
 		{"BBB", "Bemail", 321, "GO"},
@@ -76,6 +64,19 @@ int main(void){
 		{"GGG", "Gemail", 159, "ES"},
 		{"HHH", "Hemail", 951, "TO"}
 	};
+	struct tProduto produto[MAXP]= {
+		{"aaa", 80, 10, 6, fabricante[0]},
+		{"bbb", 80, 50, 45, fabricante[2]},
+		{"ccc", 80, 11, 10, fabricante[3]},
+		{"ddd", 80, 18, 9, fabricante[4]},
+		{"eee", 80, 48, 8, fabricante[5]},
+		{"fff", 80, 99, 80, fabricante[5]},
+		{"ggg", 80, 99, 8, fabricante[1]},
+		{"hhh", 80, 65, 50, fabricante[6]},
+		{"iii", 80, 33, 22, fabricante[7]},
+		{"jjj", 80, 27, 9, fabricante[0]}
+	};
+	
 
 // Principal
 
