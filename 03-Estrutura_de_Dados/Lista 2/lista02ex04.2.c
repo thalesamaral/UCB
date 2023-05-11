@@ -1,6 +1,6 @@
 //  Sintese
 //  Nome....: "Thales Amaral Lima"
-//  Data....: "09/05/2023"
+//  Data....: "11/05/2023"
 /*	Objetivo: Elabore um programa onde o usuário armazenará por meio de Structs os dados de "Produto" e "Fabricante", deverão serem cadastrados no mínimo 2 fabricantes (máximo 5) e no mínimo 5 produtos (máximo 50). */
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,19 +28,7 @@ struct tProduto{
 
 //*** Prototipos de funcoes *****************************************
 int menu(void);
-int validaUF(tFabricante f){
-	if((strcmp(f.uf,"RO")!=0) && (strcmp(f.uf,"AC")!=0) && (strcmp(f.uf,"AM")!=0) && (strcmp(f.uf,"RR")!=0)
-	&& (strcmp(f.uf,"PA")!=0) && (strcmp(f.uf,"AP")!=0) && (strcmp(f.uf,"TO")!=0) && (strcmp(f.uf,"MA")!=0)
-	&& (strcmp(f.uf,"PI")!=0) && (strcmp(f.uf,"CE")!=0) && (strcmp(f.uf,"RN")!=0) && (strcmp(f.uf,"PB")!=0)
-	&& (strcmp(f.uf,"PE")!=0) && (strcmp(f.uf,"AL")!=0) && (strcmp(f.uf,"SE")!=0) && (strcmp(f.uf,"BA")!=0)
-	&& (strcmp(f.uf,"MG")!=0) && (strcmp(f.uf,"ES")!=0) && (strcmp(f.uf,"RJ")!=0) && (strcmp(f.uf,"SP")!=0)
-	&& (strcmp(f.uf,"PR")!=0) && (strcmp(f.uf,"SC")!=0) && (strcmp(f.uf,"RS")!=0) && (strcmp(f.uf,"MS")!=0)
-	&& (strcmp(f.uf,"MT")!=0) && (strcmp(f.uf,"GO")!=0) && (strcmp(f.uf,"DF")!=0))
-	{
-		return 1;
-	}else
-		return 0;
-}
+int validaUF(tFabricante);
 int compararValor(const void* a, const void* b){
 	const struct tProduto* produtoA = (const struct tProduto*)a;
     const struct tProduto* produtoB = (const struct tProduto*)b;
@@ -54,7 +42,7 @@ int main(void){
 	int i=0, j;
 	int opcao, qtdP=10, qtdF=8, maisCaro, maisBarato;//, flag=0;
 	char marcaPesquisa[50];
-	tFabricante fabricante[MAXF]= {
+	tFabricante fabricante[MAXF] = {
 		{"AAA", "Aemail", 123, "DF"},
 		{"BBB", "Bemail", 321, "GO"},
 		{"CCC", "Cemail", 456, "RJ"},
@@ -64,7 +52,7 @@ int main(void){
 		{"GGG", "Gemail", 159, "ES"},
 		{"HHH", "Hemail", 951, "TO"}
 	};
-	struct tProduto produto[MAXP]= {
+	struct tProduto produto[MAXP] = {
 		{"aaa", 80, 10, 6, fabricante[0]},
 		{"bbb", 80, 50, 45, fabricante[2]},
 		{"ccc", 80, 11, 10, fabricante[3]},
@@ -122,13 +110,16 @@ int main(void){
 						produto[qtdP].valorLucro = produto[qtdP].valorCompra - produto[qtdP].valorVenda;
 						produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;*/
 						// Seleção do fabricante
-						printf("  Fabricante (1-%d): ",qtdF);
-						scanf("%d", &j);
-						if (j < 1 || j > qtdF) {
-							printf("Fabricante inválido!\n");
-						}
-						produto[qtdP].fabricanteFK = fabricante[j-1];
-						qtdP++;
+						do{
+							printf("  Fabricante (1-%d): ",qtdF);
+							scanf("%d", &j);
+							if (j < 1 || j > qtdF) {
+								printf("Fabricante inválido!\n");
+							}else{
+								produto[qtdP].fabricanteFK = fabricante[j-1];
+								qtdP++;
+							}
+						}while(j < 1 || j > qtdF);
 					}
 					else{
 							printf("Vetor cheio!\n");
@@ -164,10 +155,14 @@ int main(void){
 						fflush(stdin);
 						gets(marcaPesquisa);
 					for(i=0; i<qtdP; i++){
-						if(strcmp(marcaPesquisa,produto[i].fabricanteFK.marca)==0){
-							printf(" Produto %d:\n",i+1);
-                    		printf("Descricao: %s\n", produto[i].descricao);
-						}
+						do{
+							if(strcmp(marcaPesquisa,produto[i].fabricanteFK.marca)==0){
+								printf(" Produto %d:\n",i+1);
+								printf("Descricao: %s\n", produto[i].descricao);
+							}else{
+								printf("ERRO: digite uma MARCA existente!!!");
+							}
+						}while(strcmp(marcaPesquisa,produto[i].fabricanteFK.marca)!=0);
 					}
 					break;
 				case 6:
@@ -190,7 +185,6 @@ int main(void){
 				break;
 				case 7:
 				printf("\n\n*** Fabricante dos produtos mais baratos ***\n\n");
-				printf("  Fabricante dos produtos mais baratos: ");
 				for(i=0;i<qtdP;i++){
 					if(i == 0){
 						maisBarato = produto[i].valorCompra;
@@ -207,12 +201,14 @@ int main(void){
 				}
 				break;
 				case 8:
+				printf("\n\n*** Listar produtos em ordem crescente de Valor de Compra***\n\n");
 					qsort(produto, qtdP, sizeof(struct tProduto), compararValor);
 					for (i=0; i<qtdP; i++) {
 						printf("descricao: %s, valorCompra: %.2f\n", produto[i].descricao, produto[i].valorCompra);
 					}
 				break;
 				case 9:
+				printf("\n\n*** Listar produtos em ordem crescente de Valor de Lucro ***\n\n");
 					qsort(produto, qtdP, sizeof(struct tProduto), compararValor);
 					for (i=0; i<qtdP; i++) {
 						printf("Descricao: %s, Valor Lucro: %.2f\n", produto[i].descricao, produto[i].valorLucro);
@@ -228,31 +224,41 @@ int main(void){
 //*** Menu **********************************************************
 int menu(void) {
     int op;
-    printf("\n\n*** MENU ***\n\n");
-    printf("1. Inclusao Fabricante\n");
-	printf("2. Inclusao Produtos\n");
-	printf("3. Listagem Produtos\n");
-    printf("4. Listagem Marcas\n");
-	printf("5. Listagem Produtos de uma Marca\n");
-	printf("6. Estado dos produtos mais caro\n");
-	printf("7. Fabricantes com Produto mais barato\n");
-	printf("8. Produtos Ordem crescente Valor\n");
-	printf("9. Produtos Ordem crescente Valor Lucro\n");
-    printf("0. Sair\n\n");
-    printf("Escolha sua opcao: ");
-    scanf("%d", &op);
-    return op;
+
+		printf("\n\n*** MENU ***\n\n");
+		printf("1. Inclusao Fabricante\n");
+		printf("2. Inclusao Produto\n");
+		printf("3. Listagem Produtos\n");
+		printf("4. Listagem Marcas\n");
+		printf("5. Listagem Produtos de uma Marca\n");
+		printf("6. Estados dos Produtos mais caro\n");
+		printf("7. Fabricantes com Produtos mais barato\n");
+		printf("8. Listar Produtos em Ordem crescente Valor Compra\n");
+		printf("9. Listar Produtos em Ordem crescente Valor Lucro\n");
+		printf("0. Sair\n\n");
+		printf("Escolha sua opcao: ");
+		scanf("%d", &op);
+		return op;
 }
 
 //
-/*int validaUF(struct tFabricante f){
-	if(strcmp(f.uf,"DF")!=0){
+int validaUF(tFabricante f){
+	if((strcmp(f.uf,"RO")!=0) && (strcmp(f.uf,"AC")!=0) && (strcmp(f.uf,"AM")!=0) && (strcmp(f.uf,"RR")!=0)
+	&& (strcmp(f.uf,"PA")!=0) && (strcmp(f.uf,"AP")!=0) && (strcmp(f.uf,"TO")!=0) && (strcmp(f.uf,"MA")!=0)
+	&& (strcmp(f.uf,"PI")!=0) && (strcmp(f.uf,"CE")!=0) && (strcmp(f.uf,"RN")!=0) && (strcmp(f.uf,"PB")!=0)
+	&& (strcmp(f.uf,"PE")!=0) && (strcmp(f.uf,"AL")!=0) && (strcmp(f.uf,"SE")!=0) && (strcmp(f.uf,"BA")!=0)
+	&& (strcmp(f.uf,"MG")!=0) && (strcmp(f.uf,"ES")!=0) && (strcmp(f.uf,"RJ")!=0) && (strcmp(f.uf,"SP")!=0)
+	&& (strcmp(f.uf,"PR")!=0) && (strcmp(f.uf,"SC")!=0) && (strcmp(f.uf,"RS")!=0) && (strcmp(f.uf,"MS")!=0)
+	&& (strcmp(f.uf,"MT")!=0) && (strcmp(f.uf,"GO")!=0) && (strcmp(f.uf,"DF")!=0))
+	{
+		printf("ERRO: digite um UF existente!!!");
 		return 1;
 	}else
 		return 0;
-}*/
+}
 
-/*struct fabricante[] = {
+/*
+struct fabricante[] = {
 	{"AAA", "Aemail", 123, "DF"},
 	{"BBB", "Bemail", 321, "GO"},
 	{"CCC", "Cemail", 456, "RJ"},
@@ -274,4 +280,5 @@ struct tProduto produto[] = {
 	{"hhh", 80, 65, 50, 6},
 	{"iii", 80, 33, 22, 7},
 	{"jjj", 80, 27, 9, 8}
-}*/
+}
+*/
