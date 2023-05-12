@@ -30,12 +30,8 @@ struct tProduto{
 int menu(void);
 int validaUF(tFabricante);
 void listarProduto(struct tProduto);
-int compararValor(const void* a, const void* b){
-	const struct tProduto* produtoA = (const struct tProduto*)a;
-    const struct tProduto* produtoB = (const struct tProduto*)b;
-    
-    return produtoA->valorCompra - produtoB->valorCompra;
-}
+int compararValor(const void*, const void*);
+int compararValor2(const void*, const void*);
 
 //=== BLOCO PRINCIPAL ===============================================
 int main(void){
@@ -198,7 +194,7 @@ int main(void){
 				break;
 				case 9:
 				printf("\n*** Listar produtos em ordem crescente de Valor de Lucro ***\n\n");
-					qsort(produto, qtdP, sizeof(struct tProduto), compararValor);
+					qsort(produto, qtdP, sizeof(struct tProduto), compararValor2);
 					for (i=0; i<qtdP; i++) {
 						//printf("\n|Produto   | Descricao: %s; Valor Lucro: %.2f\n",produto[i].descricao,produto[i].valorLucro);
 						listarProduto(produto[i]);
@@ -231,7 +227,7 @@ int menu(void) {
 		return op;
 }
 
-//
+// Validar Estado (UF) **********************************************
 int validaUF(tFabricante f){
 	if((strcmp(f.uf,"RO")!=0) && (strcmp(f.uf,"AC")!=0) && (strcmp(f.uf,"AM")!=0) && (strcmp(f.uf,"RR")!=0)
 	&& (strcmp(f.uf,"PA")!=0) && (strcmp(f.uf,"AP")!=0) && (strcmp(f.uf,"TO")!=0) && (strcmp(f.uf,"MA")!=0)
@@ -246,7 +242,7 @@ int validaUF(tFabricante f){
 	}else
 		return 0;
 }
-//
+// Listagem geral dos Produtos **************************************
 void listarProduto(struct tProduto p){
 	printf("\n*** PRODUTO ***\n");
 	printf(" Descricao: %s\n", p.descricao);
@@ -260,6 +256,20 @@ void listarProduto(struct tProduto p){
 	printf(" Site: %s\n", p.fabricanteFK.site);
 	printf(" Telefone: %d\n", p.fabricanteFK.telefone);
 	printf(" UF: %s\n", p.fabricanteFK.uf);
+}
+
+// Comparar Valor para Ordenação ************************************
+int compararValor(const void* a, const void* b){
+	const struct tProduto* produtoA = (const struct tProduto*)a;
+    const struct tProduto* produtoB = (const struct tProduto*)b;
+    
+    return produtoA->valorCompra - produtoB->valorCompra;
+}
+int compararValor2(const void* a, const void* b){
+	const struct tProduto* produtoA = (const struct tProduto*)a;
+    const struct tProduto* produtoB = (const struct tProduto*)b;
+    
+    return produtoA->valorLucro - produtoB->valorLucro;
 }
 
 /*
