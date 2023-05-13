@@ -69,7 +69,7 @@ int main(void){
 	do {
         opcao = menu();
         switch (opcao) {
-               	case 1: 
+               	case 1:
                     printf("\n*** Inclusao Fabricante (MINIMO %d - MAXIMO %d) ***\n",MINF, MAXF);
 					do{
 						if (qtdF < MAXF){
@@ -169,6 +169,7 @@ int main(void){
 				}
 				for(i=0;i<qtdP;i++){
 					if(produto[i].valorCompra == maisCaro){
+						printf("****************************************\n");
 						printf("Estado (UF): %s\n",produto[i].fabricanteFK.uf);
 						printf("PRODUTO - Descricao: %s; Valor Compra: %.2f\n\n",produto[i].descricao,produto[i].valorCompra);
 					}
@@ -185,6 +186,7 @@ int main(void){
 				}
 				for(i=0;i<qtdP;i++){
 					if(produto[i].valorCompra == maisBarato){
+						printf("****************************************\n");
 						printf("FABRICANTE - Marca: %s\n",produto[i].fabricanteFK.marca);
 						printf("PRODUTO - Descricao: %s; Valor Compra: %.2f\n\n",produto[i].descricao,produto[i].valorCompra);
 					}
@@ -251,14 +253,16 @@ int validaUF(tFabricante f){
 
 // Listagem geral dos Produtos **************************************
 void listarProduto(struct tProduto p){
-	printf("\n*** PRODUTO ***\n");
+	printf("\n****************************************\n");
+	printf("*** PRODUTO\n");
 	printf(" Descricao: %s\n", p.descricao);
 	printf(" Peso: %.2f\n", p.peso);
 	printf(" Valor Compra: %.2f\n", p.valorCompra);
 	//printf(" Valor Venda: %.2f\n", p.valorVenda);
 	printf(" Valor Lucro: %.2f\n", p.valorLucro);
 	//printf(" Porcento Lucro: %.2f%%\n", p.porcentoLucro);
-	printf("\n FABRICANTE\n");
+	printf("--------------------\n");
+	printf("--- FABRICANTE\n");
 	printf(" Marca: %s\n", p.fabricanteFK.marca);
 	printf(" Site: %s\n", p.fabricanteFK.site);
 	printf(" Telefone: %d\n", p.fabricanteFK.telefone);
