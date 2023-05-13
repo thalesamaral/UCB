@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAXP 15
 #define MAXF 10
 #define MINF 2
+#define MAXP 15
 #define MINP 3
 
 //*** Declaracoes de tipos ******************************************
@@ -31,19 +31,17 @@ struct tProduto{
 //*** Prototipos de funcoes *****************************************
 int menu(void);
 int validaUF(tFabricante);
-void validaMarca(struct tProduto);
 void listarProduto(struct tProduto);
-//int compararValor(const void*, const void*);
-//int compararValor2(const void*, const void*);
+int compararValor(const void*, const void*);
+int compararValor2(const void*, const void*);
 
 //=== BLOCO PRINCIPAL ===============================================
 int main(void){
 // Declarações
 	int i=0, j;
-	int opcao, qtdP=0, qtdF=0, maisCaro, maisBarato, flag=0;
+	int opcao, qtdF=8, qtdP=10, maisCaro, maisBarato, flag=0;
 	char marcaPesquisa[50];
-	tFabricante fabricante[MAXF];
-	/*= {
+	tFabricante fabricante[MAXF] = {
 		{"AAA", "Aemail", 123, "DF"},
 		{"BBB", "Bemail", 321, "GO"},
 		{"CCC", "Cemail", 456, "RJ"},
@@ -52,9 +50,8 @@ int main(void){
 		{"FFF", "Femail", 987, "RS"},
 		{"GGG", "Gemail", 159, "ES"},
 		{"HHH", "Hemail", 951, "TO"}
-	};*/
-	struct tProduto produto[MAXP];
-	/*= {
+	};
+	struct tProduto produto[MAXP] = {
 		{"aaa", 80, 10, 6, fabricante[0]},
 		{"bbb", 80, 50, 45, fabricante[2]},
 		{"ccc", 80, 11, 10, fabricante[3]},
@@ -65,7 +62,7 @@ int main(void){
 		{"hhh", 80, 65, 50, fabricante[6]},
 		{"iii", 80, 33, 22, fabricante[7]},
 		{"jjj", 80, 27, 9, fabricante[0]}
-	};*/
+	};
 	
 
 // Principal
@@ -74,8 +71,7 @@ int main(void){
         opcao = menu();
         switch (opcao) {
                	case 1: 
-					printf("\nMINIMO %d - MAXIMO %d",MINF, MAXF);
-                    printf("\n*** Inclusao Fabricante ***\n");
+                    printf("\n*** Inclusao Fabricante (MINIMO %d - MAXIMO %d) ***\n",MINF, MAXF);
 					do{
 						if (qtdF < MAXF){
 							printf("\nFABRICANTE %d:\n", qtdF + 1);
@@ -83,10 +79,10 @@ int main(void){
 							setbuf(stdin, 0);
 							fflush(stdin);
 							gets(fabricante[qtdF].marca);
-							//printf("  Site: ");
-							//gets(fabricante[qtdF].site);
-							//printf("  Telefone: ");
-							//scanf("%d", &fabricante[qtdF].telefone);
+							printf("  Site: ");
+							gets(fabricante[qtdF].site);
+							printf("  Telefone: ");
+							scanf("%d", &fabricante[qtdF].telefone);
 							do{
 								printf("  UF: ");
 								fflush(stdin);
@@ -99,8 +95,7 @@ int main(void){
 					}while(qtdF < MINF);
 	                break;
 				case 2:
-					printf("\nMINIMO %d - MAXIMO %d",MINP, MAXP);
-                    printf("\n*** Inclusao Produto ***\n");
+                    printf("\n*** Inclusao Produto (MINIMO %d - MAXIMO %d) ***\n",MINP, MAXP);
 					if(qtdF > 0){
 						do{
 							if(qtdP < MAXP){
@@ -109,11 +104,11 @@ int main(void){
 								setbuf(stdin, 0);
 								fflush(stdin);
 								gets(produto[qtdP].descricao);
-								/*printf("  Peso: ");
+								printf("  Peso: ");
 								scanf("%f",&produto[qtdP].peso);
 								printf("  Valor Compra: ");
 								scanf("%f",&produto[qtdP].valorCompra);
-								printf("  Valor Venda: ");
+								/*printf("  Valor Venda: ");
 								scanf("%f",&produto[qtdP].valorVenda);
 								produto[qtdP].valorLucro = produto[qtdP].valorCompra - produto[qtdP].valorVenda;
 								produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;*/
@@ -133,7 +128,7 @@ int main(void){
 								}
 						}while(qtdP < MINP);
 					}else{
-						printf("Necessario inclusao de Fabricante!!!\n");
+						printf("\nERRO: Necessario inclusao de Fabricante!!!\n");
 					}
 	                break;
                	case 3: 
@@ -149,12 +144,22 @@ int main(void){
 					}
 					break;
 				case 5:
-					printf("\n*** Pesquisar Produtos de uma Marca ***\n\n"); //Ta perguntando qual a marca mais de uma vez!
+					printf("\n*** Pesquisar Produtos de uma Marca ***\n\n");
+					printf(" Digite a Marca: ");
+					setbuf(stdin, 0);
+					fflush(stdin);
+					gets(marcaPesquisa);
 					for(i=0; i<qtdP; i++){
-						validaMarca(produto[i]);
+						if(strcmp(marcaPesquisa,produto[i].fabricanteFK.marca)==0){
+							listarProduto(produto[i]);
+							flag=1;
+						}
+						if(flag==0){
+							printf("ERRO: digite uma MARCA existente!!!\n\n");
+						}
 					}
 					break;
-				/*case 6:
+				case 6:
 				printf("\n*** Estado dos produtos mais caros ***\n\n");
 				for(i=0;i<qtdP;i++){
 					if(i == 0){
@@ -201,7 +206,7 @@ int main(void){
 						//printf("\n|Produto   | Descricao: %s; Valor Lucro: %.2f\n",produto[i].descricao,produto[i].valorLucro);
 						listarProduto(produto[i]);
 					}
-				break;*/
+				break;
         }
     } while (opcao != 0);
 
@@ -219,10 +224,10 @@ int menu(void) {
 		printf("3. Listagem Produtos\n");
 		printf("4. Listagem Marcas\n");
 		printf("5. Listagem Produtos de uma Marca\n");
-		/*printf("6. Estados dos Produtos mais caro\n");
+		printf("6. Estados dos Produtos mais caro\n");
 		printf("7. Fabricantes com Produtos mais barato\n");
 		printf("8. Listar Produtos em Ordem crescente Valor Compra\n");
-		printf("9. Listar Produtos em Ordem crescente Valor Lucro\n");*/
+		printf("9. Listar Produtos em Ordem crescente Valor Lucro\n");
 		printf("0. Sair\n\n");
 		printf("Escolha sua opcao: ");
 		scanf("%d", &op);
@@ -244,41 +249,24 @@ int validaUF(tFabricante f){
 	}else
 		return 0;
 }
-//
-void validaMarca(struct tProduto p){
-	int flag=0;
-	char marcaPesquisa[50];
 
-	printf(" Digite a Marca: ");
-	setbuf(stdin, 0);
-	fflush(stdin);
-	gets(marcaPesquisa);
-	if(strcmp(marcaPesquisa,p.fabricanteFK.marca)==0){
-		listarProduto(p);
-		flag=1;
-	}
-	if(flag==0){
-		printf("ERRO: digite uma MARCA existente!!!\n\n");
-	}
-}
 // Listagem geral dos Produtos **************************************
 void listarProduto(struct tProduto p){
 	printf("\n*** PRODUTO ***\n");
 	printf(" Descricao: %s\n", p.descricao);
-	/*printf(" Peso: %.2f\n", p.peso);
+	printf(" Peso: %.2f\n", p.peso);
 	printf(" Valor Compra: %.2f\n", p.valorCompra);
 	//printf(" Valor Venda: %.2f\n", p.valorVenda);
 	printf(" Valor Lucro: %.2f\n", p.valorLucro);
-	//printf(" Porcento Lucro: %.2f%%\n", p.porcentoLucro);*/
+	//printf(" Porcento Lucro: %.2f%%\n", p.porcentoLucro);
 	printf("\n FABRICANTE\n");
 	printf(" Marca: %s\n", p.fabricanteFK.marca);
-	/*printf(" Site: %s\n", p.fabricanteFK.site);
-	printf(" Telefone: %d\n", p.fabricanteFK.telefone);*/
+	printf(" Site: %s\n", p.fabricanteFK.site);
+	printf(" Telefone: %d\n", p.fabricanteFK.telefone);
 	printf(" UF: %s\n", p.fabricanteFK.uf);
 }
 
 // Comparar Valor para Ordenação ************************************
-/*
 int compararValor(const void* a, const void* b){
 	const struct tProduto* produtoA = (const struct tProduto*)a;
     const struct tProduto* produtoB = (const struct tProduto*)b;
@@ -290,29 +278,4 @@ int compararValor2(const void* a, const void* b){
     const struct tProduto* produtoB = (const struct tProduto*)b;
     
     return produtoA->valorLucro - produtoB->valorLucro;
-}*/
-
-/*
-tFabricante fabricante[MAXF] = {
-		{"AAA", "Aemail", 123, "DF"},
-		{"BBB", "Bemail", 321, "GO"},
-		{"CCC", "Cemail", 456, "RJ"},
-		{"DDD", "Demail", 654, "SP"},
-		{"EEE", "Eemail", 789, "AM"},
-		{"FFF", "Femail", 987, "RS"},
-		{"GGG", "Gemail", 159, "ES"},
-		{"HHH", "Hemail", 951, "TO"}
-	};
-	struct tProduto produto[MAXP] = {
-		{"aaa", 80, 10, 6, fabricante[0]},
-		{"bbb", 80, 50, 45, fabricante[2]},
-		{"ccc", 80, 11, 10, fabricante[3]},
-		{"ddd", 80, 18, 9, fabricante[4]},
-		{"eee", 80, 48, 8, fabricante[5]},
-		{"fff", 80, 99, 80, fabricante[5]},
-		{"ggg", 80, 99, 8, fabricante[1]},
-		{"hhh", 80, 65, 50, fabricante[6]},
-		{"iii", 80, 33, 22, fabricante[7]},
-		{"jjj", 80, 27, 9, fabricante[0]}
-	};
-*/
+}
