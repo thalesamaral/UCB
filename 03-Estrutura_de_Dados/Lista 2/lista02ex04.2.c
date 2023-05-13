@@ -63,7 +63,6 @@ int main(void){
 		{"iii", 80, 33, 22, fabricante[7]},
 		{"jjj", 80, 27, 9, fabricante[0]}
 	};
-	
 
 // Principal
 
@@ -154,9 +153,9 @@ int main(void){
 							listarProduto(produto[i]);
 							flag=1;
 						}
-						if(flag==0){
-							printf("ERRO: digite uma MARCA existente!!!\n\n");
-						}
+					}
+					if(flag==0){
+						printf("\nERRO: digite uma MARCA existente!!!\n");
 					}
 					break;
 				case 6:
