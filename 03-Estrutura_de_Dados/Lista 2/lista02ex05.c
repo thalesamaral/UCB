@@ -9,21 +9,20 @@
 int main(void){
 //Declarações
 	int x;
-	int *y; //Arsterisco indica que é um ponteiro, pra int.
+	int *p; //Arsterisco indica que é um ponteiro, pra int.
 //Instruções
-	//printf("");	
 	
-	//#1: x recebe 5 em seu endereço de memória
-	x = 5;
-	printf("X = %d\n",x);
+	//#1: x recebe 0 em seu endereço de memória.
+	x = 0;
+	printf("antes do ponteiro. X = %d\n",x);
 	
-	//#2: y aponta para o endereço de memória de x
+	//#2: p aponta para o endereço de memória de x.
 	//E Comercial indica o endereço de memória.
-	y = &x;
+	p = &x;
 	
-	//#3: onde o y aponta, que é o endereço de x, recebe 3.
-	*y = 3;
-	printf("X = %d\n",x);
+	//#3: onde o p aponta, que é o endereço de x, recebe 1.
+	*p = 1;
+	printf("depois do ponteiro. X = %d\n",x);
 
 	return 0;
 }
