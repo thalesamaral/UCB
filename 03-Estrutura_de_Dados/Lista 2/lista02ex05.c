@@ -17,8 +17,7 @@ int main(void){
 	printf("antes do ponteiro. X = %d\n",x);
 	
 	//#2: p aponta para o endereço de memória de x.
-	//E Comercial indica o endereço de memória.
-	p = &x;
+	p = &x; //E Comercial indica o endereço de memória.
 	
 	//#3: onde o p aponta, que é o endereço de x, recebe 1.
 	*p = 1;

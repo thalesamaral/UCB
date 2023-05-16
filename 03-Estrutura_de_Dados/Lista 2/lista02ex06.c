@@ -30,12 +30,15 @@ int main(void){
 
 // Função
 void nomeFuncao(int tipoValor, int *tipoReferencia){ //Por REFERÊNCIA deve adicionar um asterisco para a variável
-	int coisa = 1; // coisa = variável; valor; expressão; Função.
+	int dado = 1; // dado = variável; valor; expressão; Função.
 
-	tipoValor = coisa; // exemplo de uso do parâmetro POR VALOR
-	*tipoReferencia = coisa; // exemplo de uso do parâmetro POR REFERÊNCIA
+	//exemplo de uso do parâmetro POR VALOR:
+	tipoValor = dado; //Altera a variável apenas dentro da função
+	
+	//exemplo de uso do parâmetro POR REFERÊNCIA:
+	*tipoReferencia = dado; //Altera a variável dentro da função e altera o dado no MAIN da variável referenciada
 
 	printf("\n*** Valores na Funcao ******************************\n");
 	printf("Tipo Valor.....: %d\n",tipoValor); //dentro da função o tipoValor apresenta o novo dado
-	printf("Tipo Referencia: %d\n",*tipoReferencia); //dentro da função o tipoReferencia apresenta o novo dado e altera o dado no MAIN da variável referenciada
+	printf("Tipo Referencia: %d\n",*tipoReferencia); //dentro da função o tipoReferencia apresenta o novo dado
 }
