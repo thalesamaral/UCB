@@ -22,9 +22,9 @@ struct tProduto{
 	char descricao[50];
 	float peso;
 	float valorCompra;
-	//float valorVenda;
+	float valorVenda;
 	float valorLucro;
-	//float porcentoLucro;
+	float porcentoLucro;
 	tFabricante fabricanteFK;
 };
 
@@ -32,16 +32,17 @@ struct tProduto{
 int menu(void);
 int validaUF(tFabricante);
 void listarProduto(struct tProduto);
-int compararValor(const void*, const void*);
+int compararValor1(const void*, const void*);
 int compararValor2(const void*, const void*);
 
 //=== BLOCO PRINCIPAL ===============================================
 int main(void){
 // Declarações
 	int i=0, j;
-	int opcao, qtdF=8, qtdP=10, maisCaro, maisBarato, flag=0;
+	int opcao, qtdF=0, qtdP=0, maisCaro, maisBarato, flag=0;
 	char marcaPesquisa[50];
-	tFabricante fabricante[MAXF] = {
+	tFabricante fabricante[MAXF];
+	/* = {
 		{"AAA", "Aemail", 123, "DF"},
 		{"BBB", "Bemail", 321, "GO"},
 		{"CCC", "Cemail", 456, "RJ"},
@@ -50,8 +51,9 @@ int main(void){
 		{"FFF", "Femail", 987, "RS"},
 		{"GGG", "Gemail", 159, "ES"},
 		{"HHH", "Hemail", 951, "TO"}
-	};
-	struct tProduto produto[MAXP] = {
+	};*/
+	struct tProduto produto[MAXP];
+	/* = {
 		{"aaa", 80, 10, 6, fabricante[0]},
 		{"bbb", 80, 50, 45, fabricante[2]},
 		{"ccc", 80, 11, 10, fabricante[3]},
@@ -62,9 +64,9 @@ int main(void){
 		{"hhh", 80, 65, 50, fabricante[6]},
 		{"iii", 80, 33, 22, fabricante[7]},
 		{"jjj", 80, 27, 9, fabricante[0]}
-	};
+	};*/
 
-// Principal
+// Instruções
 
 	do {
         opcao = menu();
@@ -107,10 +109,10 @@ int main(void){
 								scanf("%f",&produto[qtdP].peso);
 								printf("  Valor Compra: ");
 								scanf("%f",&produto[qtdP].valorCompra);
-								/*printf("  Valor Venda: ");
+								printf("  Valor Venda: ");
 								scanf("%f",&produto[qtdP].valorVenda);
-								produto[qtdP].valorLucro = produto[qtdP].valorCompra - produto[qtdP].valorVenda;
-								produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;*/
+								produto[qtdP].valorLucro = produto[qtdP].valorVenda - produto[qtdP].valorCompra;
+								produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;
 								// Seleção do fabricante
 								do{
 									printf("  FABRICANTE (1-%d): ",qtdF);
@@ -194,7 +196,7 @@ int main(void){
 				break;
 				case 8:
 				printf("\n*** Listar produtos em ordem crescente de Valor de Compra***\n\n");
-					qsort(produto, qtdP, sizeof(struct tProduto), compararValor);
+					qsort(produto, qtdP, sizeof(struct tProduto), compararValor1);
 					for (i=0; i<qtdP; i++) {
 						//printf("\n|Produto   | Descricao: %s; Valor Compra: %.2f\n",produto[i].descricao,produto[i].valorCompra);
 						listarProduto(produto[i]);
@@ -258,9 +260,9 @@ void listarProduto(struct tProduto p){
 	printf(" Descricao: %s\n", p.descricao);
 	printf(" Peso: %.2f\n", p.peso);
 	printf(" Valor Compra: %.2f\n", p.valorCompra);
-	//printf(" Valor Venda: %.2f\n", p.valorVenda);
+	printf(" Valor Venda: %.2f\n", p.valorVenda);
 	printf(" Valor Lucro: %.2f\n", p.valorLucro);
-	//printf(" Porcento Lucro: %.2f%%\n", p.porcentoLucro);
+	printf(" Porcento Lucro: %.2f%%\n", p.porcentoLucro);
 	printf("--------------------\n");
 	printf("--- FABRICANTE\n");
 	printf(" Marca: %s\n", p.fabricanteFK.marca);
@@ -270,7 +272,7 @@ void listarProduto(struct tProduto p){
 }
 
 // Comparar Valor para Ordenação ************************************
-int compararValor(const void* a, const void* b){
+int compararValor1(const void* a, const void* b){
 	const struct tProduto* produtoA = (const struct tProduto*)a;
     const struct tProduto* produtoB = (const struct tProduto*)b;
     
