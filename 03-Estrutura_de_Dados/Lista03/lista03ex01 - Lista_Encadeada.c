@@ -1,7 +1,7 @@
 //  Sintese
 //  Nome....: "Thales Amaral Lima"
-//  Data....: "00/00/2023"
-/*	Objetivo: */
+//  Data....: "08/06/2023"
+/*	Objetivo: Lista Encadeada*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,7 +12,7 @@ struct tLista{
 };
 
 struct tNo{
-    struct tLista dado;
+    struct tLista info;
     struct tNo *prox; //ponteiro que aponta para o mesma tipo de estrutura
 };
 
@@ -32,9 +32,9 @@ int main(void){
         switch (opcao) {
             case 1:
                 printf("\n*** Inclusao ***\n");
-                novo = malloc(sizeof(struct tNo)); //criar um no
+                novo = malloc(sizeof(struct tNo)); //area alocada para um no
                 printf("Digite um numero: ");
-                scanf("%d",&(novo->dado.numero));
+                scanf("%d",&(novo->info.numero));
                 novo->prox = lista;
                 lista = novo;
             break;
@@ -43,7 +43,7 @@ int main(void){
                 printf("\n*** Listagem ***\n");
                 p = lista;
                 while (p != NULL) {
-                    printf("numero: %d\n", p->dado.numero);
+                    printf("numero: %d\n", p->info.numero);
                     p = p->prox; // x = x + 1
                 }
             break;
