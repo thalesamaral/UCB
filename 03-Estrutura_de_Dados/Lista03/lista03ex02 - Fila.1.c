@@ -12,7 +12,7 @@ struct tLista{
 
 struct tNo{
     struct tLista info;
-    struct tNo *prox; //ponteiro que aponta para o mesma tipo de estrutura
+    struct tNo *prox;
 };
 
 struct tFila {
@@ -32,12 +32,13 @@ void destruir(struct tFila*);
 //=== BLOCO PRINCIPAL ===============================================
 int main(void){
 //Declarações
-	struct tFila *lista;
+	struct tFila *fila;
+	//struct tLista *fila;
 	struct tNo *p;
 	int opcao;
 //Instruções
 	
-	inicializar(&lista);
+	inicializar(&fila);
 	do{
         opcao = menu();
         switch (opcao) {
@@ -46,12 +47,12 @@ int main(void){
                 p = malloc(sizeof(struct tNo)); //area alocada para um no
                 printf("Digite um numero: ");
                 scanf("%d",&(p->info.numero));
-				enqueue(&lista, p);
+				enqueue(&fila, p);
             break;
 
             case 2:
                 printf("\n*** Desenfilerar ***\n");
-                p = dequeue(&lista);
+                p = dequeue(&fila);
 				if(p != NULL){
 					printf("Desenfilerou: %d\n", p->info.numero);
 					free(p);
@@ -66,7 +67,7 @@ int main(void){
         }
     }while (opcao != 0);
 	
-	destruir(&lista);
+	destruir(&fila);
 	return 0;
 }
 //=== FIM DO BLOCO ==================================================
@@ -115,7 +116,7 @@ struct tNo * dequeue(struct tFila *desc){
 
 //*** Listar ********************************************************
 void listar(struct tFila desc){
-	struct tNo *p = (desc).ini;
+	struct tNo *p = desc.ini;
 	while(p != NULL){
 		printf("numero: %d\n", p->info.numero);
         p = p->prox;
@@ -123,7 +124,7 @@ void listar(struct tFila desc){
 }
 
 //*** Destruir ******************************************************
-void destruir(struct tFila *desc) {
+void destruir(struct tFila *desc){
     struct tNo *p = (*desc).ini, *q;
     while (p != NULL) {
     	q = p;
