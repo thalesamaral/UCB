@@ -15,7 +15,7 @@ struct tNo{
     struct tNo *prox;
 };
 
-struct tFila {
+struct tFila{
 	struct tNo *ini;
 	struct tNo *fim;
 	int qtd;
@@ -23,7 +23,7 @@ struct tFila {
 
 //*** Prototipos de funcoes *****************************************
 //int menu(void);
-struct tFila * cria_fila();
+void cria_fila(struct tFila*);
 int tamanho_fila(struct tFila*);
 int fila_vazia(struct tFila*);
 int insere_elemento(struct tFila*, struct tLista);
@@ -32,74 +32,60 @@ int remove_elemento(struct tFila*);
 
 int main(void){
 //Declarações
-	struct tFila *fila;
-	int tamanhoLista, filaVazia, inserirElemento, removeElemento;
+	struct tFila *fila = malloc(sizeof(struct tFila));
 //Instruções
-
-	fila = cria_fila();
+	cria_fila(fila);
 	
-	tamanhoLista = tamanho_fila(fila);
-	printf("Tamanho da lista: %d\n", tamanhoLista);
+	printf("Tamanho da lista: %d\n", tamanho_fila(fila));
 	
-	filaVazia = fila_vazia(fila);
-	if(filaVazia == 1){
+	if(fila_vazia(fila)){
 		printf("Lista vazia!\n");
 	}else{
 		printf("Lista nao esta vazia!\n");
 	}
 	
-	struct tLista a;
+	struct tLista item1;
 	
 	printf("\nInsira o numero: ");
-	scanf("%d", &a.numero);
+	scanf("%d", &item1.numero);
 	
-	inserirElemento = insere_elemento(fila, a);
-	if(inserirElemento == 1){
+	if(insere_elemento(fila, item1)){
 		printf("Elemento inserido com sucesso!\n");
 	}
 	
-	tamanhoLista = tamanho_fila(fila);
-	printf("Tamanho a lista: %d\n", tamanhoLista);
+	printf("Tamanho da lista: %d\n", tamanho_fila(fila));
+
+	struct tLista item2;
 	
-	struct tLista b;
+	printf("\nInsira o numero: ");
+	scanf("%d", &item2.numero);
 	
-	printf("\nInsira a matricula do aluno: ");
-	scanf("%d", &b.numero);
-	
-	inserirElemento = insere_elemento(fila, b);
-	if(inserirElemento == 1){
+	if(insere_elemento(fila, item2)){
 		printf("Elemento inserido com sucesso!\n");
 	}
 	
-	tamanhoLista = tamanho_fila(fila);
-	printf("Tamanho a lista: %d\n", tamanhoLista);
+	printf("Tamanho da lista: %d\n", tamanho_fila(fila));
 	
 	printf("\n\n------------------\n");
 	printf("Removendo um elemento!!\n");
 	printf("------------------\n\n");
-	
-	
-	removeElemento = remove_elemento(fila);
-	if(removeElemento == 1){
+
+	if(remove_elemento(fila)){
 		printf("Elemento removido com sucesso!");
 	}
 	
-	tamanhoLista = tamanho_fila(fila);
-	printf("\nTamanho a lista: %d\n", tamanhoLista);
+	printf("Tamanho da lista: %d\n", tamanho_fila(fila));
 	
 	return 0;
 }
 
-struct tFila * cria_fila() {
-	struct tFila *fi = malloc(sizeof(struct tFila*));
+void cria_fila(struct tFila *fi){
 	
 	if(fi != NULL){
 		fi->ini = NULL;
 		fi->fim = NULL;
 		fi->qtd = 0;
 	}
-	
-	return fi;
 }
 
 int tamanho_fila(struct tFila *fi){
@@ -116,19 +102,20 @@ int fila_vazia(struct tFila *fi){
 	}
 	if(fi->ini == NULL){
 		return 1;
-	} else {
+	}else{
 		return 0;
 	}
 }
 
 int insere_elemento(struct tFila *fi, struct tLista aluno){
+	struct tNo* item;
 	if(fi == NULL){
 		return 0;
 	}
 	
 	if(fi->ini == NULL){
 		
-		struct tNo* item = (struct tNo*) malloc (sizeof(struct tNo));
+		item = malloc(sizeof(struct tNo));
 		
 		if(item == NULL){
 			return 0;
@@ -142,9 +129,9 @@ int insere_elemento(struct tFila *fi, struct tLista aluno){
 		fi->qtd++;
 		
 		return 1;
-	} else {
+	}else{
 		
-		struct tNo* item = (struct tNo*) malloc(sizeof(struct tNo));
+		item = malloc(sizeof(struct tNo));
 		
 		if(item == NULL){
 			return 0;
@@ -163,6 +150,8 @@ int insere_elemento(struct tFila *fi, struct tLista aluno){
 }
 
 int remove_elemento(struct tFila *fi) {
+	struct tNo* item;
+
 	if(fi == NULL){
 		return 0;
 	}
@@ -171,7 +160,7 @@ int remove_elemento(struct tFila *fi) {
 		return 0;
 	}
 	
-	struct tNo* item = fi->ini;
+	item = fi->ini;
 	
 	fi->ini = fi->ini->prox;
 	
