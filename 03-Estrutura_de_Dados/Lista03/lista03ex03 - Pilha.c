@@ -21,7 +21,7 @@ void inicializar(struct tNo**);
 void push(struct tNo**, struct tNo*);
 struct tNo * pop(struct tNo**);
 void listar(struct tNo*);
-//void destruir(struct tNo**);
+void destruir(struct tNo**);
 
 //=== BLOCO PRINCIPAL ===============================================
 int main(void){
@@ -59,7 +59,7 @@ int main(void){
         }
     }while (opcao != 0);
 	
-	//destruir(&pilha);
+	destruir(&pilha);
 	return 0;
 }
 //=== FIM DO BLOCO ==================================================
@@ -109,12 +109,12 @@ void listar(struct tNo *topo){
 }
 
 //*** Destruir ******************************************************
-/*void destruir(struct tNo *desc){
-    struct tNo *p = (*desc), *q;
+void destruir(struct tNo **topo){
+    struct tNo *p = (*topo), *q;
     while (p != NULL) {
     	q = p;
     	p = p->prox;
     	free(q);
 	}
-	inicializar(desc);
-}*/
+	inicializar(topo);
+}
