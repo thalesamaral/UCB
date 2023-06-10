@@ -22,19 +22,45 @@ struct tFila{
 };
 
 //*** Prototipos de funcoes *****************************************
-//int menu(void);
+int menu(void);
 void cria_fila(struct tFila*);
 int tamanho_fila(struct tFila*);
 void fila_vazia(struct tFila*);
 int insere_elemento(struct tFila*, struct tLista);
 int remove_elemento(struct tFila*);
-//void destruir(struct tFila*);
 
 int main(void){
 //Declarações
 	struct tFila *fila = malloc(sizeof(struct tFila));
+	struct tNo *lista=NULL, *novo, *p;
+	int opcao;
 //Instruções
 	cria_fila(fila);
+
+	do{
+        opcao = menu();
+        switch (opcao) {
+            case 1:
+                printf("\n*** Enfileirar ***\n");
+                novo = malloc(sizeof(struct tNo));
+                printf("Digite um numero: ");
+                scanf("%d",&(novo->info.numero));
+                novo->prox = lista;
+                lista = novo;
+            break;
+
+            case 2:
+                printf("\n*** Desenfilerar ***\n");
+                p = dequeue(&fila);
+				if(p != NULL){
+					printf("Desenfilerou: %d\n", p->info.numero);
+					free(p);
+				}else{
+					printf("Fila vazia!\n");
+				} 
+            break;
+        }
+    }while (opcao != 0);
 	
 	printf("Tamanho da lista: %d\n", tamanho_fila(fila));
 	
@@ -49,7 +75,7 @@ int main(void){
 		printf("Elemento inserido com sucesso!\n");
 	}
 	
-	printf("Tamanho da lista: %d\n", tamanho_fila(fila));
+	printf("\nTamanho da lista: %d\n", tamanho_fila(fila));
 	
 	fila_vazia(fila);
 	/*struct tLista item2;
@@ -62,12 +88,12 @@ int main(void){
 	}
 	printf("Tamanho da lista: %d\n", tamanho_fila(fila));*/
 	
-	printf("\n\n------------------\n");
+	printf("\n------------------\n");
 	printf("Removendo um elemento!!\n");
 	printf("------------------\n\n");
 
 	if(remove_elemento(fila)){
-		printf("Elemento removido com sucesso!");
+		printf("Elemento removido com sucesso!\n");
 	}
 	
 	printf("Tamanho da lista: %d\n", tamanho_fila(fila));
@@ -75,6 +101,19 @@ int main(void){
 	return 0;
 }
 //=== FIM DO BLOCO ==================================================
+
+//*** Menu **********************************************************
+int menu(void) {
+    int op;
+    printf("\n\n*** MENU ***\n\n");
+    printf("1. Enfileirar\n");
+	printf("2. Desenfilerar\n");
+    printf("3. Listagem\n");
+    printf("0. Sair\n\n");
+    printf("Escolha sua opcao: ");
+    scanf("%d", &op);
+    return op;
+}
 
 //*** Inicializar Fila **********************************************
 void cria_fila(struct tFila *fi){
