@@ -17,7 +17,7 @@ struct tNo{
 
 //*** Prototipos de funcoes *****************************************
 int menu(void);
-void inicializar(struct tNo**);
+void cria_pilha(struct tNo**);
 void push(struct tNo**, struct tNo*);
 struct tNo * pop(struct tNo**);
 void listar(struct tNo*);
@@ -30,7 +30,7 @@ int main(void){
 	int opcao;
 //Instruções
 	
-	inicializar(&pilha);
+	cria_pilha(&pilha);
 	do{
         opcao = menu();
         switch (opcao) {
@@ -78,18 +78,18 @@ int menu(void) {
 }
 
 //*** Inicializar ***************************************************
-void inicializar(struct tNo **topo){
+void cria_pilha(struct tNo **topo){
 	(*topo) = NULL;
 	(*topo) = NULL;
 }
 
-//*** Empilhar *******************************************************
+//*** Empilhar ******************************************************
 void push(struct tNo **topo, struct tNo *novo){
 
 	novo->prox = (*topo);
 	(*topo) = novo;
 }
-//*** Desempilhar *******************************************************
+//*** Desempilhar ***************************************************
 struct tNo * pop(struct tNo **topo){
 	struct tNo *p = (*topo);
 
