@@ -1,7 +1,7 @@
 //  Sintese
 //  Nome....: "Thales Amaral Lima"
-//  Data....: "00/00/2023"
-/*	Objetivo: */
+//  Data....: "10/06/2023"
+/*	Objetivo: Pilha com lista encadeada*/
 #include <stdio.h>
 #include <stdlib.h>
 

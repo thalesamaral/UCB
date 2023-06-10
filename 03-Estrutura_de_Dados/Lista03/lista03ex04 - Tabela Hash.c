@@ -1,9 +1,11 @@
 //  Sintese
 //  Nome....: "Thales Amaral Lima"
-//  Data....: "08/06/2023"
-/*	Objetivo: Lista Encadeada*/
+//  Data....: "10/06/2023"
+/*	Objetivo: Tabela Hash*/
 #include <stdio.h>
 #include <stdlib.h>
+
+//*** Declaracoes de constantes *************************************
 #define M 13
 #define VAZIA -1
 #define DELETADA 0

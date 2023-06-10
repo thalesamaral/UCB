@@ -1,22 +1,22 @@
-// Sintese
-//   objetivo "Pesquisa - sequencial e binaria"
-//   autor "Thales Amaral"
-//   data "10/06/2023"
+//  Sintese
+//  Nome....: "Thales Amaral Lima"
+//  Data....: "10/06/2023"
+/*	Objetivo: Tabela Hash*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//*** Declaracoes de constantes ************************************************
+//*** Declaracoes de constantes *************************************
 #define TAM 9
 
 int v1,v2;
 
-//*** Prototipos de funcoes ****************************************************
+//*** Prototipos de funcoes *****************************************
 void gerarVetor(int[], int);
 void imprimirVetor(int[], int);
 int pesquisaSequencial(int[], int, int);
 int pesquisaBinaria(int[], int, int);
 
-//*** Bloco Principal **********************************************************
+//*** Bloco Principal ===============================================
 int main(void) {
 	int vetor[TAM], valor;
 	
@@ -32,8 +32,9 @@ int main(void) {
 	printf("Acessos Binaria ==> %d\n\n",v2);
 	return 0;
 }
+//=== FIM DO BLOCO ==================================================
 
-//*** Gera valores do vetor em ordem cresente **********************************
+//*** Gera valores do vetor em ordem cresente ***********************
 void gerarVetor(int vet[], int n) {
 	int i, aux=0;
 	srand(time(NULL));
@@ -43,14 +44,14 @@ void gerarVetor(int vet[], int n) {
 	}
 }
 
-//*** Imprime os valores do vetor **********************************************
+//*** Imprime os valores do vetor ***********************************
 void imprimirVetor(int vet[], int n) {
 	int i;
 	for (i=0; i<n; i++)
 		printf("%d = %d\n", i+1, vet[i]);
 }
 
-//*** Pesquisa Sequencial ******************************************************
+//*** Pesquisa Sequencial *******************************************
 int pesquisaSequencial (int vet[], int n, int chave){
 	int i=0;
 	
@@ -64,7 +65,7 @@ int pesquisaSequencial (int vet[], int n, int chave){
 	return -1;
 }
 
-//*** Pesquisa Binaria *********************************************************
+//*** Pesquisa Binaria **********************************************
 int pesquisaBinaria (int vet[], int n, int chave){
 	int ini=0, meio, fim=n-1;
 		
@@ -80,5 +81,3 @@ int pesquisaBinaria (int vet[], int n, int chave){
 	}
 	return -1;
 }
-
-//*** FIM **********************************************************************

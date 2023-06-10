@@ -1,6 +1,6 @@
 //  Sintese
 //  Nome....: "Thales Amaral Lima"
-//  Data....: "08/06/2023"
+//  Data....: "10/06/2023"
 /*	Objetivo: Lista Encadeada*/
 #include <stdio.h>
 #include <stdlib.h>
