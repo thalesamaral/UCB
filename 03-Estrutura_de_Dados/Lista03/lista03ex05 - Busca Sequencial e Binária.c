@@ -1,7 +1,7 @@
 //  Sintese
 //  Nome....: "Thales Amaral Lima"
 //  Data....: "10/06/2023"
-/*	Objetivo: Tabela Hash*/
+/*	Objetivo: Busca Sequencial e Binária*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -13,23 +13,23 @@ int v1,v2;
 //*** Prototipos de funcoes *****************************************
 void gerarVetor(int[], int);
 void imprimirVetor(int[], int);
-int pesquisaSequencial(int[], int, int);
-int pesquisaBinaria(int[], int, int);
+int buscaSequencial(int[], int, int);
+int buscaBinaria(int[], int, int);
 
 //*** Bloco Principal ===============================================
-int main(void) {
+int main(void){
 	int vetor[TAM], valor;
 	
 	gerarVetor(vetor, TAM);
 	imprimirVetor(vetor, TAM);
 	
-	printf("Digite o valor procurado: \n");
+	printf("Digite um valor para busca: ");
 	scanf("%d", &valor);
 		
-	printf("\nPesquisa Sequencial ==> vetor[%d]\n",pesquisaSequencial(vetor,TAM,valor));
-	printf("Acessos Sequencial ==> %d\n\n",v1);
-	printf("Pesquisa Binaria ==> vetor[%d]\n",pesquisaBinaria(vetor,TAM,valor));
-	printf("Acessos Binaria ==> %d\n\n",v2);
+	printf("\nBusca Sequencial: vetor[%d]\n",buscaSequencial(vetor,TAM,valor));
+	printf("Acessos Sequencial: %d\n\n",v1);
+	printf("Busca Binaria: vetor[%d]\n",buscaBinaria(vetor,TAM,valor));
+	printf("Acessos Binaria: %d\n\n",v2);
 	return 0;
 }
 //=== FIM DO BLOCO ==================================================
@@ -51,8 +51,8 @@ void imprimirVetor(int vet[], int n) {
 		printf("%d = %d\n", i+1, vet[i]);
 }
 
-//*** Pesquisa Sequencial *******************************************
-int pesquisaSequencial (int vet[], int n, int chave){
+//*** Busca Sequencial **********************************************
+int buscaSequencial (int vet[], int n, int chave){
 	int i=0;
 	
 	v1++;
@@ -65,8 +65,8 @@ int pesquisaSequencial (int vet[], int n, int chave){
 	return -1;
 }
 
-//*** Pesquisa Binaria **********************************************
-int pesquisaBinaria (int vet[], int n, int chave){
+//*** Busca Binaria *************************************************
+int buscaBinaria (int vet[], int n, int chave){
 	int ini=0, meio, fim=n-1;
 		
 	while(ini<=fim){
