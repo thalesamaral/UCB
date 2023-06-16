@@ -50,8 +50,8 @@ void ordenarProdutos(struct tProduto*, int);
 //=== BLOCO PRINCIPAL ===============================================
 int main(void){
 // Declarações
-	int i=0, j;
-	int opcao, qtdF=0, qtdP=0, qtdC=0, flag=0, codigoF;
+	int i=0, j, k=0;
+	int opcao, qtdF=0, qtdP=0, qtdC=0, qtdC60=0, flag=0, codigoF;
 	//int maisCaro, maisBarato;
 	//char marcaPesquisa[50];//RETIRAR
 	tFabricante fabricante[MAXF];
@@ -65,7 +65,7 @@ int main(void){
 		{"GGG", "Gemail", 159, "ES"},
 		{"HHH", "Hemail", 951, "TO"}
 	};*/
-	struct tProduto produto[MAXP];//, *listaP = NULL;
+	struct tProduto produto[MAXP];
 	/* = {
 		{"aaa", 80, 10, 6, fabricante[0]},
 		{"bbb", 80, 50, 45, fabricante[2]},
@@ -78,7 +78,7 @@ int main(void){
 		{"iii", 80, 33, 22, fabricante[7]},
 		{"jjj", 80, 27, 9, fabricante[0]}
 	};*/
-    struct tCliente cliente[MAXC];
+    struct tCliente cliente[MAXC], lista_60[MAXP];
 // Instruções
 
 	do {
@@ -152,10 +152,10 @@ int main(void){
 					do{
 						if (qtdC < MAXC){
 							printf("\nCLIENTE %d:\n", qtdC + 1);
-							printf("  Nome: ");
+							/*printf("  Nome: ");
 							setbuf(stdin, 0);
 							fflush(stdin);
-							gets(cliente[qtdC].nome);
+							gets(cliente[qtdC].nome);*/
 							printf("  Idade: ");
 							scanf("%d", &cliente[qtdC].idade);
 							qtdC++;
@@ -241,12 +241,51 @@ int main(void){
 						//printf("\n|Produto   | Descricao: %s; Valor Lucro: %.2f\n",produto[i].descricao,produto[i].valorLucro);
 						listarProduto(produto[i]);
 					}
-				break;
+				break;*/
                 case 10:
 				printf("\n*** Cliente com mais de 60 anos - Busca Sequencial ***\n\n");
 
+				for(i=0; i<qtdC; i++){
+					if(cliente[i].idade >= 60){
+						k++;
+					}
+				}
+
+				for(i=0; i<qtdC; i++){
+					if(k==0){
+						printf("Nao existem clientes com idade +60 anos\n");
+					}else if(k < 3){
+						printf("Existem clientes com idade +60 anos. Quantidade: %d\n",k);
+					}else if(k >= 3){
+						// Adicionar o cliente ao vetor de clientes para atendimento
+						lista_60[qtdC60] = cliente[i];
+						qtdC60++;
+
+						// Remover o cliente da lista original
+						for (j=i; j<qtdC-1; j++) {
+							cliente[j] = cliente[j+1];
+						}
+
+						// Atualizar o número total de clientes
+						qtdC--;
+						i--; // Ajustar o índice após a remoção
+					}
+				}
+				// Imprimir os clientes para atendimento
+				printf("Clientes para atendimento com idade >= 60:\n");
+				for (int i = 0; i < qtdC60; i++) {
+					//printf("Nome: %s\n", lista_60[i].nome);
+					printf("Idade: %d\n", lista_60[i].idade);
+				}
+
+				// Imprimir a lista de clientes atualizada
+				printf("Lista de clientes atualizada:\n");
+				for (int i = 0; i < qtdC; i++) {
+					//printf("Nome: %s\n", cliente[i].nome);
+					printf("Idade: %d\n", cliente[i].idade);
+				}
 				break;
-                case 11:
+                /*case 11:
 				printf("\n*** Valor de Produto - Busca Binaria ***\n\n");
                 
 				break;
@@ -276,11 +315,11 @@ int menu(void) {
 		printf("4. Listagem Produtos\n");//retirar
 		///printf("4. Listagem Marcas\n");//retirar
 		printf("5. Listagem Produtos de um Fabricante. Ordem alfabetica\n");//a Listagem Produtos de um Fabricante
+        printf("10. Cliente com mais de 60 anos - Busca Sequencial\n");//g
 		/*printf("6. Estados dos Produtos mais caro\n");//b
 		printf("7. Fabricantes com Produtos mais barato\n");//c
 		printf("8. Listar Produtos em Ordem crescente Valor Compra\n");//d
 		printf("9. Listar Produtos em Ordem crescente Valor Lucro\n");//e
-        printf("10. Cliente com mais de 60 anos - Busca Sequencial\n");//g
         printf("11. Valor de Produto - Busca Binaria\n");//h
         printf("12. Atendimento dos clientes que estão na lista original - Acesso em Fila\n");//i
         printf("13. Atendimento dos clientes que estão na lista +60 - Acesso em Pilha\n");//j*/
@@ -325,30 +364,15 @@ void listarProduto(struct tProduto p){
 	printf(" UF: %s\n", p.fabricanteFK.uf);*/
 }
 
-//*** Bubble Sort ***************************************************
-/*/void bubbleSort(int vet[], int tam){
-	int bolha, borda, aux;
-	
-	for(borda=tam-1; borda>0; borda--){
-		for(bolha=0; bolha<borda; bolha++){
-			if(vet[bolha] > vet[bolha+1]){ 
-				aux = vet[bolha];
-				vet[bolha] = vet[bolha+1];
-				vet[bolha+1] = aux;
-			}
-		}
-	}
-}*/
-
 // Função para ordenar um array de produtos em ordem alfabética pelo nome usando Bubble Sort
-void ordenarProdutos(struct tProduto* produtos, int tam) {
+void ordenarProdutos(struct tProduto* produtos, int tam){
     int trocado;
     struct tProduto aux;
 
-    for (int i=0; i<tam-1; i++) {
+    for(int i=0; i<tam-1; i++){
         trocado = 0;
-        for (int j=0; j<tam-i-1; j++) {
-            if (strcmp(produtos[j].descricao, produtos[j+1].descricao) > 0) {
+        for(int j=0; j<tam-i-1; j++){
+            if(strcmp(produtos[j].descricao, produtos[j+1].descricao) > 0){
                 // Trocar os produtos
                 aux = produtos[j];
                 produtos[j] = produtos[j+1];
@@ -356,10 +380,11 @@ void ordenarProdutos(struct tProduto* produtos, int tam) {
                 trocado = 1;
             }
         }
-        if (trocado == 0)
+        if(trocado == 0)
             break;
     }
 }
+
 // Comparar Valor para Ordenação ************************************
 /*int compararValor1(const void* a, const void* b){
 	const struct tProduto* produtoA = (const struct tProduto*)a;
