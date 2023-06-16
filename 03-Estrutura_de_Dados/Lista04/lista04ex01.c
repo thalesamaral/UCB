@@ -271,32 +271,31 @@ int main(void){
 						i--; // Ajustar o índice após a remoção
 					}
 				}
-				// Imprimir os clientes para atendimento
-				printf("Clientes para atendimento com idade >= 60:\n");
-				for (int i = 0; i < qtdC60; i++) {
-					//printf("Nome: %s\n", lista_60[i].nome);
-					printf("Idade: %d\n", lista_60[i].idade);
-				}
-
-				// Imprimir a lista de clientes atualizada
+				break;
+                case 11:
+				printf("\n*** Valor de Produto - Busca Binaria ***\n\n");
+                
+				break;
+                case 12:
+				printf("\n*** Atendimento dos clientes que estão na lista original - Acesso em Fila ***\n\n");
+                // Lista de clientes para atendimento FILA
 				printf("Lista de clientes atualizada:\n");
 				for (int i = 0; i < qtdC; i++) {
 					//printf("Nome: %s\n", cliente[i].nome);
 					printf("Idade: %d\n", cliente[i].idade);
 				}
 				break;
-                /*case 11:
-				printf("\n*** Valor de Produto - Busca Binaria ***\n\n");
-                
-				break;
-                case 12:
-				printf("\n*** Atendimento dos clientes que estão na lista original - Acesso em Fila ***\n\n");
-                
-				break;
                 case 13:
 				printf("\n*** Atendimento dos clientes que estão na lista +60 - Acesso em Pilha ***\n\n");
-                
-				break;*/
+                //Clientes para atendimento PILHA
+				printf("Clientes para atendimento com idade >= 60:\n");
+				if(k>=3){
+					for(int i = qtdC60; i > 0; i--){
+						//printf("Nome: %s\n", lista_60[i].nome);
+						printf("Idade: %d\n", lista_60[i].idade);
+					}
+				}
+				break;
         }
     } while (opcao != 0);
 
