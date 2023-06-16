@@ -32,6 +32,7 @@ struct tProduto{
 	float valorLucro;
 	float porcentoLucro;*/
 	tFabricante fabricanteFK;
+	struct tProduto *prox;
 };
 
 struct tCliente{
@@ -43,6 +44,9 @@ struct tCliente{
 int menu(void);
 //int validaUF(tFabricante);
 void listarProduto(struct tProduto);
+//void bubbleSort(int [], int);
+int compararStrings(const char*, const char*);
+void ordenarProdutos(struct tProduto**);
 //int compararValor1(const void*, const void*);
 //int compararValor2(const void*, const void*);
 
@@ -50,8 +54,9 @@ void listarProduto(struct tProduto);
 int main(void){
 // Declarações
 	int i=0, j;
-	int opcao, qtdF=0, qtdP=0, qtdC=0, maisCaro, maisBarato, flag=0, codigoF;
-	char marcaPesquisa[50];
+	int opcao, qtdF=0, qtdP=0, qtdC=0, flag=0, codigoF;
+	//int maisCaro, maisBarato;
+	//char marcaPesquisa[50];//RETIRAR
 	tFabricante fabricante[MAXF];
 	/* = {
 		{"AAA", "Aemail", 123, "DF"},
@@ -63,7 +68,7 @@ int main(void){
 		{"GGG", "Gemail", 159, "ES"},
 		{"HHH", "Hemail", 951, "TO"}
 	};*/
-	struct tProduto produto[MAXP];
+	struct tProduto produto[MAXP], *listaP = NULL;
 	/* = {
 		{"aaa", 80, 10, 6, fabricante[0]},
 		{"bbb", 80, 50, 45, fabricante[2]},
@@ -176,12 +181,14 @@ int main(void){
 					break;*/
 				case 5:
 					printf("\n*** Listagem Produtos de um Fabricante. Ordem alfabetica ***\n\n");
+    						ordenarProdutos(&listaP);
 					printf(" Digite o codigo do Fabricante: ");
 					scanf("%d",&codigoF);
 					for(i=0; i<qtdP; i++){
 						if(codigoF == produto[i].fabricanteFK.codigo){
 							listarProduto(produto[i]);
 							flag=1;
+							// Ordenando a lista em ordem alfabética
 						}
 					}
 					if(flag==0){
@@ -321,6 +328,59 @@ void listarProduto(struct tProduto p){
 	printf(" UF: %s\n", p.fabricanteFK.uf);*/
 }
 
+//*** Bubble Sort ***************************************************
+/*/void bubbleSort(int vet[], int tam){
+	int bolha, borda, aux;
+	
+	for(borda=tam-1; borda>0; borda--){
+		for(bolha=0; bolha<borda; bolha++){
+			if(vet[bolha] > vet[bolha+1]){ 
+				aux = vet[bolha];
+				vet[bolha] = vet[bolha+1];
+				vet[bolha+1] = aux;
+			}
+		}
+	}
+}*/
+
+// Função para comparar duas strings e retornar -1, 0 ou 1 usando strcmp
+int compararStrings(const char* str1, const char* str2) {
+    return strcmp(str1, str2);
+}
+
+void ordenarProdutos(struct tProduto **lista){
+    int trocado;
+    struct tProduto* atual;
+    struct tProduto* anterior = NULL;
+
+    if (*lista == NULL)
+        return;
+
+    do {
+        trocado = 0;
+        atual = *lista;
+
+        while (atual->prox != anterior) {
+            if (compararStrings(atual->descricao, atual->prox->descricao) > 0) {
+                // Trocar os nós
+                struct tProduto* temp = atual->prox;
+                atual->prox = temp->prox;
+                temp->prox = atual;
+
+                if (anterior != NULL)
+                    anterior->prox = temp;
+                else
+                    *lista = temp;
+
+                atual = temp;
+                trocado = 1;
+            }
+
+            anterior = atual;
+            atual = atual->prox;
+        }
+    } while (trocado);
+}
 // Comparar Valor para Ordenação ************************************
 /*int compararValor1(const void* a, const void* b){
 	const struct tProduto* produtoA = (const struct tProduto*)a;
