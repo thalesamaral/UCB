@@ -26,8 +26,8 @@ typedef struct {
 
 struct tProduto{
 	char descricao[50];
-	/*float peso;
 	float valorCompra;
+	/*float peso;
 	float valorVenda;
 	float valorLucro;
 	float porcentoLucro;*/
@@ -44,6 +44,7 @@ int menu(void);
 //int validaUF(tFabricante);
 void listarProduto(struct tProduto);
 void ordenarProdutos(struct tProduto*, int);
+void buscaBinaria(struct tProduto*, int, float);
 //int compararValor1(const void*, const void*);
 //int compararValor2(const void*, const void*);
 
@@ -52,8 +53,8 @@ int main(void){
 // Declarações
 	int i=0, j, k=0;
 	int opcao, qtdF=0, qtdP=0, qtdC=0, qtdC60=0, flag=0, codigoF;
+	float valor;
 	//int maisCaro, maisBarato;
-	//char marcaPesquisa[50];//RETIRAR
 	tFabricante fabricante[MAXF];
 	/* = {
 		{"AAA", "Aemail", 123, "DF"},
@@ -120,10 +121,10 @@ int main(void){
 								setbuf(stdin, 0);
 								fflush(stdin);
 								gets(produto[qtdP].descricao);
-								/*printf("  Peso: ");
-								scanf("%f",&produto[qtdP].peso);
 								printf("  Valor Compra: ");
 								scanf("%f",&produto[qtdP].valorCompra);
+								/*printf("  Peso: ");
+								scanf("%f",&produto[qtdP].peso);
 								printf("  Valor Venda: ");
 								scanf("%f",&produto[qtdP].valorVenda);
 								produto[qtdP].valorLucro = produto[qtdP].valorVenda - produto[qtdP].valorCompra;
@@ -272,10 +273,14 @@ int main(void){
 					}
 				}
 				break;
+
                 case 11:
 				printf("\n*** Valor de Produto - Busca Binaria ***\n\n");
-                
+				printf("Digite um valor de compra para busca: ");
+				scanf("%f", &valor);
+				buscaBinaria(produto,qtdP,valor);
 				break;
+
                 case 12:
 				printf("\n*** Atendimento dos clientes que estão na lista original - Acesso em Fila ***\n\n");
                 // Lista de clientes para atendimento FILA
@@ -285,6 +290,7 @@ int main(void){
 					printf("Idade: %d\n", cliente[i].idade);
 				}
 				break;
+
                 case 13:
 				printf("\n*** Atendimento dos clientes que estão na lista +60 - Acesso em Pilha ***\n\n");
                 //Clientes para atendimento PILHA
@@ -311,14 +317,13 @@ int menu(void) {
 		printf("1. Inclusao Fabricante\n");
 		printf("2. Inclusao Produto\n");
         printf("3. Inclusao Cliente\n");
-		printf("4. Listagem Produtos\n");//retirar
-		///printf("4. Listagem Marcas\n");//retirar
-		printf("5. Listagem Produtos de um Fabricante. Ordem alfabetica\n");//a Listagem Produtos de um Fabricante
-        printf("10. Cliente com mais de 60 anos - Busca Sequencial\n");//g
-		/*printf("6. Estados dos Produtos mais caro\n");//b
+		printf("4. Listagem Produtos\n");
+		printf("5. Listagem Produtos de um Fabricante. Ordem alfabetica\n");
+		printf("6. Estados dos Produtos mais caro\n");//b
 		printf("7. Fabricantes com Produtos mais barato\n");//c
 		printf("8. Listar Produtos em Ordem crescente Valor Compra\n");//d
 		printf("9. Listar Produtos em Ordem crescente Valor Lucro\n");//e
+        printf("10. Cliente com mais de 60 anos - Busca Sequencial\n");//g
         printf("11. Valor de Produto - Busca Binaria\n");//h
         printf("12. Atendimento dos clientes que estão na lista original - Acesso em Fila\n");//i
         printf("13. Atendimento dos clientes que estão na lista +60 - Acesso em Pilha\n");//j*/
@@ -349,8 +354,8 @@ void listarProduto(struct tProduto p){
 	printf("\n****************************************\n");
 	printf("*** PRODUTO\n");
 	printf(" Descricao: %s\n", p.descricao);
-	/*printf(" Peso: %.2f\n", p.peso);
 	printf(" Valor Compra: %.2f\n", p.valorCompra);
+	/*printf(" Peso: %.2f\n", p.peso);
 	printf(" Valor Venda: %.2f\n", p.valorVenda);
 	printf(" Valor Lucro: %.2f\n", p.valorLucro);
 	printf(" Porcento Lucro: %.2f%%\n", p.porcentoLucro);*/
@@ -382,6 +387,26 @@ void ordenarProdutos(struct tProduto* produtos, int tam){
         if(trocado == 0)
             break;
     }
+}
+
+//*** Busca Binaria *************************************************
+void buscaBinaria (struct tProduto* vet, int n, float chave){
+	int ini=0, meio, fim=n-1, flag=0;
+		
+	while(ini<=fim){
+		meio = (ini + fim)/2;
+		if(vet[meio].valorCompra==chave){
+			flag=1;
+			listarProduto(vet[meio]);
+		}
+		if (chave > vet[meio].valorCompra)
+			ini = meio + 1;
+		else
+			fim = meio - 1;
+	}
+	if(flag==0){
+		printf("Valor nao encontrado!!!\n");
+	}
 }
 
 // Comparar Valor para Ordenação ************************************
