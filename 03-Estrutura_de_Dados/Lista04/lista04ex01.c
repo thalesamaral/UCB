@@ -21,7 +21,7 @@ typedef struct {
 	//char marca[50];
 	//char site[50];
 	//int telefone;
-	char uf[25];
+	char uf[33];
 }tFabricante;
 
 struct tProduto{
@@ -39,9 +39,14 @@ struct tCliente{
 	int idade;
 };
 
+struct tEstadoUF{
+	char sigla[3];
+	char nome[30];
+};
+
 //*** Prototipos de funcoes *****************************************
 int menu(void);
-int validaUF(tFabricante*,int);
+int validaUF(tFabricante*, int, struct tEstadoUF*);
 void listarProduto(struct tProduto);
 void ordenarProdutos(struct tProduto*, int);
 void buscaBinaria(struct tProduto*, int, float);
@@ -80,6 +85,13 @@ int main(void){
 		{"jjj", 80, 27, 9, fabricante[0]}
 	};*/
     struct tCliente cliente[MAXC], lista_60[MAXP];
+	struct tEstadoUF estadoUF[] = {{"AC", "Acre"},{"AL", "Alagoas"},{"AP", "Amapá"},{"AM", "Amazonas"},
+        {"BA", "Bahia"},{"CE", "Ceará"},{"DF", "Distrito Federal"},{"ES", "Espírito Santo"},
+		{"GO", "Goiás"},{"MA", "Maranhão"},{"MT", "Mato Grosso"},{"MS", "Mato Grosso do Sul"},
+		{"MG", "Minas Gerais"},{"PA", "Pará"},{"PB", "Paraíba"},{"PR", "Paraná"},
+		{"PE", "Pernambuco"},{"PI", "Piauí"},{"RJ", "Rio de Janeiro"},{"RN", "Rio Grande do Norte"},
+		{"RS", "Rio Grande do Sul"},{"RO", "Rondônia"},{"RR", "Roraima"},{"SC", "Santa Catarina"},
+        {"SP", "São Paulo"},{"SE", "Sergipe"},{"TO", "Tocantins"}};
 // Instruções
 
 	do {
@@ -100,7 +112,13 @@ int main(void){
 							gets(fabricante[qtdF].site);
 							printf("  Telefone: ");
 							scanf("%d", &fabricante[qtdF].telefone);*/
-							validaUF(fabricante,qtdF);
+							do{
+								printf("  UF: ");
+								setbuf(stdin, 0);
+								fflush(stdin);
+								gets(fabricante[qtdF].uf);
+							}while(validaUF(fabricante, qtdF, estadoUF));
+							printf("%s\n",fabricante[qtdF].uf);
 							qtdF++;
 						}else{
 								printf("Vetor cheio!\n");
@@ -334,7 +352,7 @@ void listarProduto(struct tProduto p){
 	printf("\n****************************************\n");
 	printf("*** PRODUTO\n");
 	printf(" Descricao: %s\n", p.descricao);
-	//printf(" Peso: %.2f\n", p.peso);
+	//printf(" Peso: %.2f kg\n", p.peso);
 	printf(" Valor Compra: %.2f\n", p.valorCompra);
 	//printf(" Valor Venda: %.2f\n", p.valorVenda);
 	//printf(" Valor Lucro: %.2f\n", p.valorLucro);
@@ -349,105 +367,20 @@ void listarProduto(struct tProduto p){
 }
 
 // Validar Estado (UF) **********************************************
-int validaUF(tFabricante *f, int i){
-	int codigoUF, flag=0;
-	
-	do{
-		printf("\n11[RO]; 12[AC]; 12[AM]; 14[RR]; 15[PA]; 16[AP]; 17[TO]; 21[MA]; 22[PI]\n");
-		printf("23[CE]; 24[RN]; 25[PB]; 26[PE]; 27[AL]; 28[SE]; 29[BA]; 31[MG]; 32[ES]\n");
-		printf("33[RJ]; 35[SP]; 41[PR]; 42[SC]; 43[RS]; 50[MS]; 51[MT]; 52[GO]; 53[DF]\n");
-		printf(" Codigo  UF: ");
-		scanf("%d",&codigoUF);
+int validaUF(tFabricante *f, int j, struct tEstadoUF *estado){
+	int i;
 
-		switch (codigoUF){
-		case 11:
-			strcpy(f[i].uf,"RO, Rondonia");flag=0;
-		break;
-		case 12:
-			strcpy(f[i].uf,"AC, Acre");flag=0;
-		break;
-		case 13:
-			strcpy(f[i].uf,"AM, Amazonas");flag=0;
-		break;
-		case 14:
-			strcpy(f[i].uf,"RR, Roraima");flag=0;
-		break;
-		case 15:
-			strcpy(f[i].uf,"PA, Para");flag=0;
-		break;
-		case 16:
-			strcpy(f[i].uf,"AP, Amapa");flag=0;
-		break;
-		case 17:
-			strcpy(f[i].uf,"TO, Tocantins");flag=0;
-		break;
-		case 21:
-			strcpy(f[i].uf,"MA, Maranhao");flag=0;
-		break;
-		case 22:
-			strcpy(f[i].uf,"PI, Piaui");flag=0;
-		break;
-		case 23:
-			strcpy(f[i].uf,"CE, Ceara");flag=0;
-		break;
-		case 24:
-			strcpy(f[i].uf,"RN, Rio Grande do Norte");flag=0;
-		break;
-		case 25:
-			strcpy(f[i].uf,"PB, Paraiba");flag=0;
-		break;
-		case 26:
-			strcpy(f[i].uf,"PE, Pernambuco");flag=0;
-		break;
-		case 27:
-			strcpy(f[i].uf,"AL, Alagoas");flag=0;
-		break;
-		case 28:
-			strcpy(f[i].uf,"SE, Sergipe");flag=0;
-		break;
-		case 29:
-			strcpy(f[i].uf,"BA, Bahia");flag=0;
-		break;
-		case 31:
-			strcpy(f[i].uf,"MG, Minas Gerais");flag=0;
-		break;
-		case 32:
-			strcpy(f[i].uf,"ES, Espirito Santo");flag=0;
-		break;
-		case 33:
-			strcpy(f[i].uf,"RJ, Rio de Janeiro");flag=0;
-		break;
-		case 35:
-			strcpy(f[i].uf,"SP, Sao Paulo");flag=0;
-		break;
-		case 41:
-			strcpy(f[i].uf,"PR, Parana");flag=0;
-		break;
-		case 42:
-			strcpy(f[i].uf,"SC, Santa Catarina");flag=0;
-		break;
-		case 43:
-			strcpy(f[i].uf,"RS, Rio Grande do Sul");flag=0;
-		break;
-		case 50:
-			strcpy(f[i].uf,"MS, Mato Grosso do Sul");flag=0;
-		break;
-		case 51:
-			strcpy(f[i].uf,"MT, Mato Grosso");flag=0;
-		break;
-		case 52:
-			strcpy(f[i].uf,"GO, Goias");flag=0;
-		break;
-		case 53:
-			strcpy(f[i].uf,"DF, Distrito Federal");flag=0;
-		break;
-		default:
-			printf("\nERRO: digite um UF existente!!!\n\n");
-			flag=1;
-			break;
+	for(i=0; i<27; i++){
+		if(strcmp(f[j].uf,estado[i].sigla)==0){
+			strcat(f[j].uf,", ");
+			strcat(f[j].uf,estado[i].nome);
+			printf("%s\n",f[j].uf);
+			return 0;
 		}
-	}while(flag==1);
-	return flag;
+	}
+
+	printf("\nERRO! digite uma UF valida ou maiusculo\n");
+	return 1;
 }
 
 // Ordenar produtos em ordem alfabética - Bubble Sort ***************
