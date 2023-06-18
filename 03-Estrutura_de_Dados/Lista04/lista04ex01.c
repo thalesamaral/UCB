@@ -18,7 +18,7 @@
 //*** Declaracoes de tipos ******************************************
 typedef struct {
     int codigo;
-	//char marca[50];
+	char marca[50];
 	//char site[50];
 	//int telefone;
 	char uf[33];
@@ -26,11 +26,11 @@ typedef struct {
 
 struct tProduto{
 	char descricao[50];
-	/*float peso;
+	//float peso;
 	float valorCompra;
 	float valorVenda;
 	float valorLucro;
-	float porcentoLucro;*/
+	float porcentoLucro;
 	tFabricante fabricanteFK;
 };
 
@@ -50,41 +50,19 @@ int validaUF(tFabricante*, int, struct tEstadoUF*);
 void listarProduto(struct tProduto);
 void ordenarProdutos(struct tProduto*, int);
 void buscaBinaria(struct tProduto*, int, float);
-//int compararValor1(const void*, const void*);
-//int compararValor2(const void*, const void*);
+int compararValor1(const void*, const void*);
+int compararValor2(const void*, const void*);
 
 //=== BLOCO PRINCIPAL ===============================================
 int main(void){
 // Declarações
 	int i=0, j, k=0;
 	int opcao, qtdF=0, qtdP=0, qtdC=0, qtdC60=0, flag=0, flag1=0, codigoFab;
-	//int maisCaro, maisBarato;
-	//float valor;
+	int maisCaro, maisBarato;
+	float valor;
 	tFabricante fabricante[MAXF];
-	/* = {
-		{"AAA", "Aemail", 123, "DF"},
-		{"BBB", "Bemail", 321, "GO"},
-		{"CCC", "Cemail", 456, "RJ"},
-		{"DDD", "Demail", 654, "SP"},
-		{"EEE", "Eemail", 789, "AM"},
-		{"FFF", "Femail", 987, "RS"},
-		{"GGG", "Gemail", 159, "ES"},
-		{"HHH", "Hemail", 951, "TO"}
-	};*/
 	struct tProduto produto[MAXP];
-	/* = {
-		{"aaa", 80, 10, 6, fabricante[0]},
-		{"bbb", 80, 50, 45, fabricante[2]},
-		{"ccc", 80, 11, 10, fabricante[3]},
-		{"ddd", 80, 18, 9, fabricante[4]},
-		{"eee", 80, 48, 8, fabricante[5]},
-		{"fff", 80, 99, 80, fabricante[5]},
-		{"ggg", 80, 99, 8, fabricante[1]},
-		{"hhh", 80, 65, 50, fabricante[6]},
-		{"iii", 80, 33, 22, fabricante[7]},
-		{"jjj", 80, 27, 9, fabricante[0]}
-	};*/
-    struct tCliente cliente[MAXC], lista_60[MAXP];
+    struct tCliente cliente[MAXC], lista_60[MAXC];
 	struct tEstadoUF estadoUF[] = {{"AC", "Acre"},{"AL", "Alagoas"},{"AP", "Amapa"},{"AM", "Amazonas"},
         {"BA", "Bahia"},{"CE", "Ceara"},{"DF", "Distrito Federal"},{"ES", "Espirito Santo"},
 		{"GO", "Goias"},{"MA", "Maranhao"},{"MT", "Mato Grosso"},{"MS", "Mato Grosso do Sul"},
@@ -104,11 +82,11 @@ int main(void){
 							printf("\nFABRICANTE %d:\n", qtdF + 1);
                             printf("  Codigo: ");
 							scanf("%d", &fabricante[qtdF].codigo);
-							/*printf("  Marca: ");
+							printf("  Marca: ");
 							setbuf(stdin, 0);
 							fflush(stdin);
 							gets(fabricante[qtdF].marca);
-							printf("  Site: ");
+							/*printf("  Site: ");
 							gets(fabricante[qtdF].site);
 							printf("  Telefone: ");
 							scanf("%d", &fabricante[qtdF].telefone);*/
@@ -118,10 +96,10 @@ int main(void){
 								fflush(stdin);
 								gets(fabricante[qtdF].uf);
 							}while(validaUF(fabricante, qtdF, estadoUF));
-							printf("%s\n",fabricante[qtdF].uf);
+							//printf("%s\n",fabricante[qtdF].uf);
 							qtdF++;
 						}else{
-								printf("Vetor cheio!\n");
+								printf("VETOR CHEIO!!!\n");
 							}
 					}while(qtdF < MINF);
 	            break;
@@ -136,27 +114,31 @@ int main(void){
 								setbuf(stdin, 0);
 								fflush(stdin);
 								gets(produto[qtdP].descricao);
-								/*printf("  Peso: ");
-								scanf("%f",&produto[qtdP].peso);
+								//printf("  Peso: ");
+								//scanf("%f",&produto[qtdP].peso);
 								printf("  Valor Compra: ");
 								scanf("%f",&produto[qtdP].valorCompra);
 								printf("  Valor Venda: ");
 								scanf("%f",&produto[qtdP].valorVenda);
 								produto[qtdP].valorLucro = produto[qtdP].valorVenda - produto[qtdP].valorCompra;
-								produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;*/
+								produto[qtdP].porcentoLucro = (produto[qtdP].valorLucro*100)/produto[qtdP].valorCompra;
 								// Seleção do fabricante
 								do{
-									printf("  FABRICANTE (1-%d): ",qtdF);
+									printf("\nSelecionar fabricante da lista:\n");
+									for(i=0; i<qtdF; i++){
+										printf("FABRICANTE(%d): %s\n",i+1,fabricante[i].marca);
+									}
+									printf("\n  FABRICANTE (1-%d): ",qtdF);
 									scanf("%d", &j);
 									if (j < 1 || j > qtdF) {
-										printf("FABRICANTE inválido!\n");
+										printf("ERRO: FABRICANTE invalido!\n");
 									}else{
 										produto[qtdP].fabricanteFK = fabricante[j-1];
 										qtdP++;
 									}
 								}while(j < 1 || j > qtdF);
 							}else{
-									printf("Vetor cheio!\n");
+									printf("VETOR CHEIO!!!\n");
 								}
 						}while(qtdP < MINP);
 					}else{
@@ -177,11 +159,11 @@ int main(void){
 							scanf("%d", &cliente[qtdC].idade);
 							qtdC++;
 						}else{
-								printf("Vetor cheio!\n");
+								printf("VETOR CHEIO!!!\n");
 							}
 					}while(qtdC < MINC);
 	            break;
-
+				//LISTAGEM DE PRODUTOS ------------------------------------------------------------
                	case 4:
                     printf("\n*** Listagem Produtos ***\n\n");
                     for (i=0; i<qtdP; i++){
@@ -203,10 +185,11 @@ int main(void){
 					}
 					if(flag==0){
 						printf("\nERRO: codigo ou produto inexistente!!!\n");
+						flag=0;
 					}
 				break;
-
-				/*case 6:
+				//LISTAGEM DE VALORES -------------------------------------------------------------
+				case 6:
 				printf("\n*** Estado dos produtos mais caros ***\n\n");
 				for(i=0;i<qtdP;i++){
 					if(i == 0){
@@ -225,7 +208,7 @@ int main(void){
 				break;
 
 				case 7:
-				printf("\n*** Fabricante dos produtos mais baratos ***\n\n");
+				printf("\n*** Fabricante do produto mais barato ***\n\n");
 				for(i=0;i<qtdP;i++){
 					if(i == 0){
 						maisBarato = produto[i].valorCompra;
@@ -265,8 +248,8 @@ int main(void){
 					printf("Digite um valor de compra para busca: ");
 					scanf("%f", &valor);
 					buscaBinaria(produto,qtdP,valor);
-				break;*/
-
+				break;
+				//LISTAGEM DE CLIENTES ------------------------------------------------------------
                 case 11:
 					printf("\n*** Cliente com mais de 60 anos na lista original - Busca Sequencial ***\n\n");
 					for(i=0; i<qtdC; i++){
@@ -280,16 +263,16 @@ int main(void){
 					for(i=0; i<qtdC; i++){
 						if(k >= 3){
 							if(cliente[i].idade >= 60){
-								// Adicionar o cliente ao vetor de clientes para atendimento
+								// Adiciona o cliente ao vetor de clientes +60
 								lista_60[qtdC60] = cliente[i];
 								qtdC60++;
 
-								// Remover o cliente da lista original
+								// Remove o cliente da lista original
 								for (j=i; j<qtdC-1; j++) {
 									cliente[j] = cliente[j+1];
 								}
 
-								// Atualizar o número total de clientes
+								// Atualiza o número total de clientes
 								qtdC--;
 								i--; // Ajustar o índice após a remoção
 								flag1=1;
@@ -302,7 +285,6 @@ int main(void){
 					if(flag1 == 0){
 						k = 0; // Zera quantidade até encontrar os 3 primeiros +60
 					}
-					printf("%d - %d\n",qtdC60,k);
 				break;
 
 
@@ -348,11 +330,11 @@ int menu(void) {
 		printf("============================================================\n");
 		printf(" 4. Listagem Produtos\n");
 		printf(" 5. Listagem Produtos de um Fabricante. Ordem alfabetica\n");
-		/*printf(" 6. Estados dos Produtos mais caro\n");//b
+		printf(" 6. Estados dos Produtos mais caro\n");//b
 		printf(" 7. Fabricantes com Produtos mais barato\n");//c
 		printf(" 8. Listar Produtos em Ordem crescente Valor Compra\n");//d
 		printf(" 9. Listar Produtos em Ordem crescente Valor Lucro\n");//e
-        printf(" 10. Valor de Produto - Busca Binaria\n");//h*/
+        printf(" 10. Valor de Produto - Busca Binaria\n");//h
         printf(" 11. Cliente com mais de 60 anos - Busca Sequencial\n");//g
         printf(" 12. Atendimento clientes da lista original - Acesso em Fila\n");//i
         printf(" 13. Atendimento clientes da lista +60 - Acesso em Pilha\n");//j
@@ -369,17 +351,17 @@ void listarProduto(struct tProduto p){
 	printf("\n****************************************\n");
 	printf("*** PRODUTO\n");
 	printf(" Descricao: %s\n", p.descricao);
-	/*printf(" Peso: %.2f kg\n", p.peso);
+	//printf(" Peso: %.2f kg\n", p.peso);
 	printf(" Valor Compra: %.2f\n", p.valorCompra);
 	printf(" Valor Venda: %.2f\n", p.valorVenda);
 	printf(" Valor Lucro: %.2f\n", p.valorLucro);
-	printf(" Porcento Lucro: %.2f%%\n", p.porcentoLucro);*/
+	printf(" Porcento Lucro: %.2f%%\n", p.porcentoLucro);
 	printf("--------------------\n");
 	printf("--- FABRICANTE\n");
     printf(" Codigo: %d\n", p.fabricanteFK.codigo);
-	/*printf(" Marca: %s\n", p.fabricanteFK.marca);
-	printf(" Site: %s\n", p.fabricanteFK.site);
-	printf(" Telefone: %d\n", p.fabricanteFK.telefone);*/
+	printf(" Marca: %s\n", p.fabricanteFK.marca);
+	//printf(" Site: %s\n", p.fabricanteFK.site);
+	//printf(" Telefone: %d\n", p.fabricanteFK.telefone);
 	printf(" UF: %s\n", p.fabricanteFK.uf);
 }
 
@@ -395,7 +377,7 @@ int validaUF(tFabricante *f, int j, struct tEstadoUF *estado){
 		}
 	}
 
-	printf("\nERRO! digite uma UF valida ou maiusculo\n");
+	printf("\nERRO! digite uma UF valida ou em maiusculo\n");
 	return 1;
 }
 
@@ -421,7 +403,7 @@ void ordenarProdutos(struct tProduto* produtos, int tam){
 }
 
 //*** Busca Binaria *************************************************
-/*void buscaBinaria (struct tProduto* vet, int n, float chave){
+void buscaBinaria (struct tProduto* vet, int n, float chave){
 	int ini=0, meio, fim=n-1, flag=0;
 		
 	while(ini<=fim){
@@ -436,12 +418,12 @@ void ordenarProdutos(struct tProduto* produtos, int tam){
 			fim = meio - 1;
 	}
 	if(flag==0){
-		printf("Valor nao encontrado!!!\n");
+		printf("ERRO: Valor nao encontrado!!!\n");
 	}
-}*/
+}
 
 // Comparar Valor para Ordenação ************************************
-/*int compararValor1(const void* a, const void* b){
+int compararValor1(const void* a, const void* b){
 	const struct tProduto* produtoA = (const struct tProduto*)a;
     const struct tProduto* produtoB = (const struct tProduto*)b;
     
@@ -452,4 +434,4 @@ int compararValor2(const void* a, const void* b){
     const struct tProduto* produtoB = (const struct tProduto*)b;
     
     return produtoA->valorLucro - produtoB->valorLucro;
-}*/
+}
