@@ -9,11 +9,11 @@
 #define MINF 2
 #define MAXF 5
 //MIN e MAX: Produtos
-#define MINP 2
-#define MAXP 5
+#define MINP 2//5
+#define MAXP 5//50
 //MIN e MAX: Cliente
-#define MINC 2
-#define MAXC 5
+#define MINC 3
+#define MAXC 30
 
 //*** Declaracoes de tipos ******************************************
 typedef struct {
@@ -26,16 +26,16 @@ typedef struct {
 
 struct tProduto{
 	char descricao[50];
-	//float peso;
+	/*float peso;
 	float valorCompra;
-	//float valorVenda;
-	//float valorLucro;
-	//float porcentoLucro;
+	float valorVenda;
+	float valorLucro;
+	float porcentoLucro;*/
 	tFabricante fabricanteFK;
 };
 
 struct tCliente{
-	char nome[50];
+	//char nome[50];
 	int idade;
 };
 
@@ -57,9 +57,9 @@ void buscaBinaria(struct tProduto*, int, float);
 int main(void){
 // Declarações
 	int i=0, j, k=0;
-	int opcao, qtdF=0, qtdP=0, qtdC=0, qtdC60=0, flag=0, codigoFab;
-	float valor;
+	int opcao, qtdF=0, qtdP=0, qtdC=0, qtdC60=0, flag=0, flag1=0, codigoFab;
 	//int maisCaro, maisBarato;
+	//float valor;
 	tFabricante fabricante[MAXF];
 	/* = {
 		{"AAA", "Aemail", 123, "DF"},
@@ -85,13 +85,13 @@ int main(void){
 		{"jjj", 80, 27, 9, fabricante[0]}
 	};*/
     struct tCliente cliente[MAXC], lista_60[MAXP];
-	struct tEstadoUF estadoUF[] = {{"AC", "Acre"},{"AL", "Alagoas"},{"AP", "Amapá"},{"AM", "Amazonas"},
-        {"BA", "Bahia"},{"CE", "Ceará"},{"DF", "Distrito Federal"},{"ES", "Espírito Santo"},
-		{"GO", "Goiás"},{"MA", "Maranhão"},{"MT", "Mato Grosso"},{"MS", "Mato Grosso do Sul"},
-		{"MG", "Minas Gerais"},{"PA", "Pará"},{"PB", "Paraíba"},{"PR", "Paraná"},
-		{"PE", "Pernambuco"},{"PI", "Piauí"},{"RJ", "Rio de Janeiro"},{"RN", "Rio Grande do Norte"},
-		{"RS", "Rio Grande do Sul"},{"RO", "Rondônia"},{"RR", "Roraima"},{"SC", "Santa Catarina"},
-        {"SP", "São Paulo"},{"SE", "Sergipe"},{"TO", "Tocantins"}};
+	struct tEstadoUF estadoUF[] = {{"AC", "Acre"},{"AL", "Alagoas"},{"AP", "Amapa"},{"AM", "Amazonas"},
+        {"BA", "Bahia"},{"CE", "Ceara"},{"DF", "Distrito Federal"},{"ES", "Espirito Santo"},
+		{"GO", "Goias"},{"MA", "Maranhao"},{"MT", "Mato Grosso"},{"MS", "Mato Grosso do Sul"},
+		{"MG", "Minas Gerais"},{"PA", "Para"},{"PB", "Paraiba"},{"PR", "Parana"},
+		{"PE", "Pernambuco"},{"PI", "Piaui"},{"RJ", "Rio de Janeiro"},{"RN", "Rio Grande do Norte"},
+		{"RS", "Rio Grande do Sul"},{"RO", "Rondonia"},{"RR", "Roraima"},{"SC", "Santa Catarina"},
+        {"SP", "Sao Paulo"},{"SE", "Sergipe"},{"TO", "Tocantins"}};
 // Instruções
 
 	do {
@@ -124,7 +124,8 @@ int main(void){
 								printf("Vetor cheio!\n");
 							}
 					}while(qtdF < MINF);
-	                break;
+	            break;
+				
 				case 2:
                     printf("\n*** Inclusao Produto (MINIMO %d - MAXIMO %d) ***\n",MINP, MAXP);
 					if(qtdF > 0){
@@ -135,10 +136,10 @@ int main(void){
 								setbuf(stdin, 0);
 								fflush(stdin);
 								gets(produto[qtdP].descricao);
-								printf("  Valor Compra: ");
-								scanf("%f",&produto[qtdP].valorCompra);
 								/*printf("  Peso: ");
 								scanf("%f",&produto[qtdP].peso);
+								printf("  Valor Compra: ");
+								scanf("%f",&produto[qtdP].valorCompra);
 								printf("  Valor Venda: ");
 								scanf("%f",&produto[qtdP].valorVenda);
 								produto[qtdP].valorLucro = produto[qtdP].valorVenda - produto[qtdP].valorCompra;
@@ -161,7 +162,8 @@ int main(void){
 					}else{
 						printf("\nERRO: Necessario inclusao de Fabricante!!!\n");
 					}
-	                break;
+	            break;
+
                 case 3:
                     printf("\n*** Inclusao Cliente (MINIMO %d - MAXIMO %d) ***\n",MINC, MAXC);
 					do{
@@ -178,19 +180,15 @@ int main(void){
 								printf("Vetor cheio!\n");
 							}
 					}while(qtdC < MINC);
-	                break;
+	            break;
+
                	case 4:
                     printf("\n*** Listagem Produtos ***\n\n");
                     for (i=0; i<qtdP; i++){
 						listarProduto(produto[i]);
 					}
-	                break;
-				/*case 4:
-					printf("\n*** Listagem Marcas ***\n\n");
-					for (i=0; i<qtdF; i++){
-						printf("FABRICANTE - Marca: %s\n", fabricante[i].marca);
-					}
-					break;*/
+	            break;
+
 				case 5:
 					printf("\n*** Listagem Produtos de um Fabricante. Ordem alfabetica ***\n\n");
 					printf(" Digite o codigo do Fabricante: ");
@@ -204,9 +202,10 @@ int main(void){
 						}
 					}
 					if(flag==0){
-						printf("\nERRO: digite uma MARCA existente!!!\n");
+						printf("\nERRO: codigo ou produto inexistente!!!\n");
 					}
-					break;
+				break;
+
 				/*case 6:
 				printf("\n*** Estado dos produtos mais caros ***\n\n");
 				for(i=0;i<qtdP;i++){
@@ -224,6 +223,7 @@ int main(void){
 					}
 				}
 				break;
+
 				case 7:
 				printf("\n*** Fabricante dos produtos mais baratos ***\n\n");
 				for(i=0;i<qtdP;i++){
@@ -241,6 +241,7 @@ int main(void){
 					}
 				}
 				break;
+
 				case 8:
 				printf("\n*** Listar produtos em ordem crescente de Valor de Compra***\n\n");
 					qsort(produto, qtdP, sizeof(struct tProduto), compararValor1);
@@ -249,6 +250,7 @@ int main(void){
 						listarProduto(produto[i]);
 					}
 				break;
+
 				case 9:
 				printf("\n*** Listar produtos em ordem crescente de Valor de Lucro ***\n\n");
 					qsort(produto, qtdP, sizeof(struct tProduto), compararValor2);
@@ -256,65 +258,76 @@ int main(void){
 						//printf("\n|Produto   | Descricao: %s; Valor Lucro: %.2f\n",produto[i].descricao,produto[i].valorLucro);
 						listarProduto(produto[i]);
 					}
-				break;*/
-                case 10:
-				printf("\n*** Cliente com mais de 60 anos - Busca Sequencial ***\n\n");
-
-				for(i=0; i<qtdC; i++){
-					if(cliente[i].idade >= 60){
-						k++;
-					}
-				}
-
-				for(i=0; i<qtdC; i++){
-					if(k==0){
-						printf("Nao existem clientes com idade +60 anos\n");
-					}else if(k < 3){
-						printf("Existem clientes com idade +60 anos. Quantidade: %d\n",k);
-					}else if(k >= 3){
-						// Adicionar o cliente ao vetor de clientes para atendimento
-						lista_60[qtdC60] = cliente[i];
-						qtdC60++;
-
-						// Remover o cliente da lista original
-						for (j=i; j<qtdC-1; j++) {
-							cliente[j] = cliente[j+1];
-						}
-
-						// Atualizar o número total de clientes
-						qtdC--;
-						i--; // Ajustar o índice após a remoção
-					}
-				}
 				break;
+
+                case 10:
+					printf("\n*** Valor de Produto - Busca Binaria ***\n\n");
+					printf("Digite um valor de compra para busca: ");
+					scanf("%f", &valor);
+					buscaBinaria(produto,qtdP,valor);
+				break;*/
 
                 case 11:
-				printf("\n*** Valor de Produto - Busca Binaria ***\n\n");
-				printf("Digite um valor de compra para busca: ");
-				scanf("%f", &valor);
-				buscaBinaria(produto,qtdP,valor);
+					printf("\n*** Cliente com mais de 60 anos na lista original - Busca Sequencial ***\n\n");
+					for(i=0; i<qtdC; i++){
+						if(cliente[i].idade >= 60){
+							//printf("Nome: %s\n", cliente[i].nome);
+							printf("Idade: %d\n", cliente[i].idade);
+							k++;
+						}
+					}
+
+					for(i=0; i<qtdC; i++){
+						if(k >= 3){
+							if(cliente[i].idade >= 60){
+								// Adicionar o cliente ao vetor de clientes para atendimento
+								lista_60[qtdC60] = cliente[i];
+								qtdC60++;
+
+								// Remover o cliente da lista original
+								for (j=i; j<qtdC-1; j++) {
+									cliente[j] = cliente[j+1];
+								}
+
+								// Atualizar o número total de clientes
+								qtdC--;
+								i--; // Ajustar o índice após a remoção
+								flag1=1;
+							}
+						}else if(k==0){
+								printf("Nao existem clientes com idade +60\n");
+								break;
+						}
+					}
+					if(flag1 == 0){
+						k = 0; // Zera quantidade até encontrar os 3 primeiros +60
+					}
+					printf("%d - %d\n",qtdC60,k);
 				break;
 
+
                 case 12:
-				printf("\n*** Atendimento dos clientes que estão na lista original - Acesso em Fila ***\n\n");
-                // Lista de clientes para atendimento FILA
-				printf("Lista de clientes atualizada:\n");
-				for (int i = 0; i < qtdC; i++) {
-					//printf("Nome: %s\n", cliente[i].nome);
-					printf("Idade: %d\n", cliente[i].idade);
-				}
+					printf("\n*** Clientes que estao na lista original - Acesso em Fila ***\n\n");
+					// Lista de clientes para atendimento FILA
+					if(qtdC60 >= 3){
+						printf("Lista original atualizada\n");
+					}
+					for (i = 0; i < qtdC; i++){
+						//printf("Nome: %s\n", cliente[i].nome);
+						printf("Idade: %d\n", cliente[i].idade);
+					}
 				break;
 
                 case 13:
-				printf("\n*** Atendimento dos clientes que estão na lista +60 - Acesso em Pilha ***\n\n");
-                //Clientes para atendimento PILHA
-				printf("Clientes para atendimento com idade >= 60:\n");
-				if(k>=3){
-					for(int i = qtdC60; i > 0; i--){
-						//printf("Nome: %s\n", lista_60[i].nome);
-						printf("Idade: %d\n", lista_60[i].idade);
+					printf("\n*** Clientes que estao na lista +60 - Acesso em Pilha ***\n\n");
+					//Clientes para atendimento PILHA
+					printf("Lista criada quando 3 clientes possuem idade +60\n");
+					if(qtdC60 >= 3){
+						for(i = qtdC60-1; i >= 0; i--){
+							//printf("Nome: %s\n", lista_60[i].nome);
+							printf("Idade: %d\n", lista_60[i].idade);
+						}
 					}
-				}
 				break;
         }
     } while (opcao != 0);
@@ -327,22 +340,26 @@ int main(void){
 int menu(void) {
     int op;
 
-		printf("\n\n*** MENU ***\n\n");
-		printf("1. INCLUSAO FABRICANTE\n");
-		printf("2. INCLUSAO PRODUTO\n");
-        printf("3. INCLUSAO CLIENTE\n");
-		printf("4. Listagem Produtos\n");
-		printf("5. Listagem Produtos de um Fabricante. Ordem alfabetica\n");
-		printf("6. Estados dos Produtos mais caro\n");//b
-		printf("7. Fabricantes com Produtos mais barato\n");//c
-		printf("8. Listar Produtos em Ordem crescente Valor Compra\n");//d
-		printf("9. Listar Produtos em Ordem crescente Valor Lucro\n");//e
-        printf("10. Cliente com mais de 60 anos - Busca Sequencial\n");//g
-        printf("11. Valor de Produto - Busca Binaria\n");//h
-        printf("12. Atendimento dos clientes que estão na lista original - Acesso em Fila\n");//i
-        printf("13. Atendimento dos clientes que estão na lista +60 - Acesso em Pilha\n");//j*/
-		printf("0. Sair\n\n");
-		printf("Escolha sua opcao: ");
+		printf("\n\n *** MENU ***\n");
+		printf("============================================================\n");
+		printf(" 1. INCLUSAO FABRICANTE\n");
+		printf(" 2. INCLUSAO PRODUTO\n");
+        printf(" 3. INCLUSAO CLIENTE\n");
+		printf("============================================================\n");
+		printf(" 4. Listagem Produtos\n");
+		printf(" 5. Listagem Produtos de um Fabricante. Ordem alfabetica\n");
+		/*printf(" 6. Estados dos Produtos mais caro\n");//b
+		printf(" 7. Fabricantes com Produtos mais barato\n");//c
+		printf(" 8. Listar Produtos em Ordem crescente Valor Compra\n");//d
+		printf(" 9. Listar Produtos em Ordem crescente Valor Lucro\n");//e
+        printf(" 10. Valor de Produto - Busca Binaria\n");//h*/
+        printf(" 11. Cliente com mais de 60 anos - Busca Sequencial\n");//g
+        printf(" 12. Atendimento clientes da lista original - Acesso em Fila\n");//i
+        printf(" 13. Atendimento clientes da lista +60 - Acesso em Pilha\n");//j
+		printf("============================================================\n");
+		printf(" 0. Sair\n");
+		printf("============================================================\n\n");
+		printf(" Escolha sua opcao: ");
 		scanf("%d", &op);
 		return op;
 }
@@ -352,17 +369,17 @@ void listarProduto(struct tProduto p){
 	printf("\n****************************************\n");
 	printf("*** PRODUTO\n");
 	printf(" Descricao: %s\n", p.descricao);
-	//printf(" Peso: %.2f kg\n", p.peso);
+	/*printf(" Peso: %.2f kg\n", p.peso);
 	printf(" Valor Compra: %.2f\n", p.valorCompra);
-	//printf(" Valor Venda: %.2f\n", p.valorVenda);
-	//printf(" Valor Lucro: %.2f\n", p.valorLucro);
-	//printf(" Porcento Lucro: %.2f%%\n", p.porcentoLucro);
+	printf(" Valor Venda: %.2f\n", p.valorVenda);
+	printf(" Valor Lucro: %.2f\n", p.valorLucro);
+	printf(" Porcento Lucro: %.2f%%\n", p.porcentoLucro);*/
 	printf("--------------------\n");
 	printf("--- FABRICANTE\n");
     printf(" Codigo: %d\n", p.fabricanteFK.codigo);
-	//printf(" Marca: %s\n", p.fabricanteFK.marca);
-	//printf(" Site: %s\n", p.fabricanteFK.site);
-	//printf(" Telefone: %d\n", p.fabricanteFK.telefone);
+	/*printf(" Marca: %s\n", p.fabricanteFK.marca);
+	printf(" Site: %s\n", p.fabricanteFK.site);
+	printf(" Telefone: %d\n", p.fabricanteFK.telefone);*/
 	printf(" UF: %s\n", p.fabricanteFK.uf);
 }
 
@@ -374,7 +391,6 @@ int validaUF(tFabricante *f, int j, struct tEstadoUF *estado){
 		if(strcmp(f[j].uf,estado[i].sigla)==0){
 			strcat(f[j].uf,", ");
 			strcat(f[j].uf,estado[i].nome);
-			printf("%s\n",f[j].uf);
 			return 0;
 		}
 	}
@@ -405,7 +421,7 @@ void ordenarProdutos(struct tProduto* produtos, int tam){
 }
 
 //*** Busca Binaria *************************************************
-void buscaBinaria (struct tProduto* vet, int n, float chave){
+/*void buscaBinaria (struct tProduto* vet, int n, float chave){
 	int ini=0, meio, fim=n-1, flag=0;
 		
 	while(ini<=fim){
@@ -422,7 +438,7 @@ void buscaBinaria (struct tProduto* vet, int n, float chave){
 	if(flag==0){
 		printf("Valor nao encontrado!!!\n");
 	}
-}
+}*/
 
 // Comparar Valor para Ordenação ************************************
 /*int compararValor1(const void* a, const void* b){
@@ -436,5 +452,4 @@ int compararValor2(const void* a, const void* b){
     const struct tProduto* produtoB = (const struct tProduto*)b;
     
     return produtoA->valorLucro - produtoB->valorLucro;
-}
-*/
+}*/
