@@ -9,8 +9,8 @@
 #define MINF 2
 #define MAXF 5
 //MIN e MAX: Produtos
-#define MINP 2//5
-#define MAXP 5//50
+#define MINP 3
+#define MAXP 50
 //MIN e MAX: Cliente
 #define MINC 3
 #define MAXC 30
@@ -19,14 +19,14 @@
 typedef struct {
     int codigo;
 	char marca[50];
-	//char site[50];
-	//int telefone;
+	char site[50];
+	int telefone;
 	char uf[33];
 }tFabricante;
 
 struct tProduto{
 	char descricao[50];
-	//float peso;
+	float peso;
 	float valorCompra;
 	float valorVenda;
 	float valorLucro;
@@ -35,7 +35,7 @@ struct tProduto{
 };
 
 struct tCliente{
-	//char nome[50];
+	char nome[50];
 	int idade;
 };
 
@@ -86,10 +86,10 @@ int main(void){
 							setbuf(stdin, 0);
 							fflush(stdin);
 							gets(fabricante[qtdF].marca);
-							/*printf("  Site: ");
+							printf("  Site: ");
 							gets(fabricante[qtdF].site);
 							printf("  Telefone: ");
-							scanf("%d", &fabricante[qtdF].telefone);*/
+							scanf("%d", &fabricante[qtdF].telefone);
 							do{
 								printf("  UF: ");
 								setbuf(stdin, 0);
@@ -99,7 +99,7 @@ int main(void){
 							//printf("%s\n",fabricante[qtdF].uf);
 							qtdF++;
 						}else{
-								printf("VETOR CHEIO!!!\n");
+								printf("LISTA CHEIA!!!\n");
 							}
 					}while(qtdF < MINF);
 	            break;
@@ -114,8 +114,8 @@ int main(void){
 								setbuf(stdin, 0);
 								fflush(stdin);
 								gets(produto[qtdP].descricao);
-								//printf("  Peso: ");
-								//scanf("%f",&produto[qtdP].peso);
+								printf("  Peso: ");
+								scanf("%f",&produto[qtdP].peso);
 								printf("  Valor Compra: ");
 								scanf("%f",&produto[qtdP].valorCompra);
 								printf("  Valor Venda: ");
@@ -138,7 +138,7 @@ int main(void){
 									}
 								}while(j < 1 || j > qtdF);
 							}else{
-									printf("VETOR CHEIO!!!\n");
+									printf("LISTA CHEIA!!!\n");
 								}
 						}while(qtdP < MINP);
 					}else{
@@ -151,15 +151,15 @@ int main(void){
 					do{
 						if (qtdC < MAXC){
 							printf("\nCLIENTE %d:\n", qtdC + 1);
-							/*printf("  Nome: ");
+							printf("  Nome: ");
 							setbuf(stdin, 0);
 							fflush(stdin);
-							gets(cliente[qtdC].nome);*/
+							gets(cliente[qtdC].nome);
 							printf("  Idade: ");
 							scanf("%d", &cliente[qtdC].idade);
 							qtdC++;
 						}else{
-								printf("VETOR CHEIO!!!\n");
+								printf("LISTA CHEIA!!!\n");
 							}
 					}while(qtdC < MINC);
 	            break;
@@ -249,13 +249,14 @@ int main(void){
 					scanf("%f", &valor);
 					buscaBinaria(produto,qtdP,valor);
 				break;
+
 				//LISTAGEM DE CLIENTES ------------------------------------------------------------
                 case 11:
-					printf("\n*** Cliente com mais de 60 anos na lista original - Busca Sequencial ***\n\n");
+					printf("\n*** Cliente 60+ anos na lista original - Busca Sequencial ***\n\n");
 					for(i=0; i<qtdC; i++){
 						if(cliente[i].idade >= 60){
-							//printf("Nome: %s\n", cliente[i].nome);
-							printf("Idade: %d\n", cliente[i].idade);
+							printf("Nome: %s\n", cliente[i].nome);
+							printf("Idade: %d\n\n", cliente[i].idade);
 							k++;
 						}
 					}
@@ -263,7 +264,7 @@ int main(void){
 					for(i=0; i<qtdC; i++){
 						if(k >= 3){
 							if(cliente[i].idade >= 60){
-								// Adiciona o cliente ao vetor de clientes +60
+								// Adiciona o cliente ao vetor de clientes 60+
 								lista_60[qtdC60] = cliente[i];
 								qtdC60++;
 
@@ -278,15 +279,14 @@ int main(void){
 								flag1=1;
 							}
 						}else if(k==0){
-								printf("Nao existem clientes com idade +60\n");
+								printf("Nao existem clientes com idade 60+\n");
 								break;
 						}
 					}
 					if(flag1 == 0){
-						k = 0; // Zera quantidade até encontrar os 3 primeiros +60
+						k = 0; // Zera quantidade até encontrar os 3 primeiros 60+
 					}
 				break;
-
 
                 case 12:
 					printf("\n*** Clientes que estao na lista original - Acesso em Fila ***\n\n");
@@ -295,19 +295,19 @@ int main(void){
 						printf("Lista original atualizada\n");
 					}
 					for (i = 0; i < qtdC; i++){
-						//printf("Nome: %s\n", cliente[i].nome);
-						printf("Idade: %d\n", cliente[i].idade);
+						printf("Nome: %s\n", cliente[i].nome);
+						printf("Idade: %d\n\n", cliente[i].idade);
 					}
 				break;
 
                 case 13:
-					printf("\n*** Clientes que estao na lista +60 - Acesso em Pilha ***\n\n");
+					printf("\n*** Clientes que estao na lista 60+ - Acesso em Pilha ***\n\n");
 					//Clientes para atendimento PILHA
-					printf("Lista criada quando 3 clientes possuem idade +60\n");
+					printf("Lista criada quando 3 clientes possuem idade 60+\n");
 					if(qtdC60 >= 3){
 						for(i = qtdC60-1; i >= 0; i--){
-							//printf("Nome: %s\n", lista_60[i].nome);
-							printf("Idade: %d\n", lista_60[i].idade);
+							printf("Nome: %s\n", lista_60[i].nome);
+							printf("Idade: %d\n\n", lista_60[i].idade);
 						}
 					}
 				break;
@@ -330,14 +330,14 @@ int menu(void) {
 		printf("============================================================\n");
 		printf(" 4. Listagem Produtos\n");
 		printf(" 5. Listagem Produtos de um Fabricante. Ordem alfabetica\n");
-		printf(" 6. Estados dos Produtos mais caro\n");//b
-		printf(" 7. Fabricantes com Produtos mais barato\n");//c
-		printf(" 8. Listar Produtos em Ordem crescente Valor Compra\n");//d
-		printf(" 9. Listar Produtos em Ordem crescente Valor Lucro\n");//e
-        printf(" 10. Valor de Produto - Busca Binaria\n");//h
-        printf(" 11. Cliente com mais de 60 anos - Busca Sequencial\n");//g
-        printf(" 12. Atendimento clientes da lista original - Acesso em Fila\n");//i
-        printf(" 13. Atendimento clientes da lista +60 - Acesso em Pilha\n");//j
+		printf(" 6. Estados dos Produtos mais caro\n");
+		printf(" 7. Fabricantes com Produtos mais barato\n");
+		printf(" 8. Listar Produtos em Ordem crescente Valor Compra\n");
+		printf(" 9. Listar Produtos em Ordem crescente Valor Lucro\n");
+        printf(" 10. Valor de Produto - Busca Binaria\n");
+        printf(" 11. Cliente com mais de 60 anos - Busca Sequencial\n");
+        printf(" 12. Atendimento clientes da lista original - Acesso em Fila\n");
+        printf(" 13. Atendimento clientes da lista +60 - Acesso em Pilha\n");
 		printf("============================================================\n");
 		printf(" 0. Sair\n");
 		printf("============================================================\n\n");
@@ -351,7 +351,7 @@ void listarProduto(struct tProduto p){
 	printf("\n****************************************\n");
 	printf("*** PRODUTO\n");
 	printf(" Descricao: %s\n", p.descricao);
-	//printf(" Peso: %.2f kg\n", p.peso);
+	printf(" Peso: %.2f kg\n", p.peso);
 	printf(" Valor Compra: %.2f\n", p.valorCompra);
 	printf(" Valor Venda: %.2f\n", p.valorVenda);
 	printf(" Valor Lucro: %.2f\n", p.valorLucro);
@@ -360,8 +360,8 @@ void listarProduto(struct tProduto p){
 	printf("--- FABRICANTE\n");
     printf(" Codigo: %d\n", p.fabricanteFK.codigo);
 	printf(" Marca: %s\n", p.fabricanteFK.marca);
-	//printf(" Site: %s\n", p.fabricanteFK.site);
-	//printf(" Telefone: %d\n", p.fabricanteFK.telefone);
+	printf(" Site: %s\n", p.fabricanteFK.site);
+	printf(" Telefone: %d\n", p.fabricanteFK.telefone);
 	printf(" UF: %s\n", p.fabricanteFK.uf);
 }
 
@@ -383,12 +383,12 @@ int validaUF(tFabricante *f, int j, struct tEstadoUF *estado){
 
 // Ordenar produtos em ordem alfabética - Bubble Sort ***************
 void ordenarProdutos(struct tProduto* produtos, int tam){
-    int trocado;
+    int trocado, i=0, j=0;
     struct tProduto aux;
 
-    for(int i=0; i<tam-1; i++){
+    for(i=0; i<tam-1; i++){
         trocado = 0;
-        for(int j=0; j<tam-i-1; j++){
+        for(j=0; j<tam-i-1; j++){
             if(strcmp(produtos[j].descricao, produtos[j+1].descricao) > 0){
                 // Trocar os produtos
                 aux = produtos[j];
@@ -405,7 +405,7 @@ void ordenarProdutos(struct tProduto* produtos, int tam){
 //*** Busca Binaria *************************************************
 void buscaBinaria (struct tProduto* vet, int n, float chave){
 	int ini=0, meio, fim=n-1, flag=0;
-		
+	
 	while(ini<=fim){
 		meio = (ini + fim)/2;
 		if(vet[meio].valorCompra==chave){
@@ -418,7 +418,8 @@ void buscaBinaria (struct tProduto* vet, int n, float chave){
 			fim = meio - 1;
 	}
 	if(flag==0){
-		printf("ERRO: Valor nao encontrado!!!\n");
+		printf("\nERRO: Valor nao encontrado!!!\n");
+		printf("\nOBS... Primeiro ORDENE por VALOR DE COMPRA!!!\n");
 	}
 }
 
