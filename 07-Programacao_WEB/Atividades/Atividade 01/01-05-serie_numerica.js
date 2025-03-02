@@ -19,5 +19,4 @@ for (let i = 0; i < myInput; i++) {
 }
 
 console.log(serie.join(" + "));
-console.log("A soma é:", soma);
-
+console.log("Soma:", soma);

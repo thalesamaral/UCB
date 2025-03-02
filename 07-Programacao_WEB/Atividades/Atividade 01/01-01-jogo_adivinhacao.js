@@ -7,8 +7,6 @@ que o número secreto. O jogo só termina quando o usuário acertar.
 const random = Math.floor(Math.random() * 20) + 1;
 let found = false;
 
-console.log(typeof random);
-
 while (!found) {
   let myInput = parseInt(prompt("Advinhe entre 1 a 20! Digite um número: "));
   if (myInput === random) {

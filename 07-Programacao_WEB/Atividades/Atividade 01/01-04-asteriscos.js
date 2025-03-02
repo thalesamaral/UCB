@@ -10,7 +10,7 @@ Se o usuário digitar 5 para o número de linhas, o resultado será:
 *****
 */
 
-const myInput = parseInt(prompt("Digite o número de linha: "));
+const myInput = parseInt(prompt("Digite o número de linhas: "));
 let txt = "*";
 
 for (let i = 0; i < myInput; i++) {

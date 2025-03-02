@@ -10,7 +10,7 @@ const papel = 2;
 const tesoura = 3;
 let jokenpo = ["Pedra", "Papel", "Tesoura"];
 let flag = false;
-let myInput = 0;
+let myInput;
 
 do {
   flag = false;
@@ -25,13 +25,13 @@ do {
   );
 
   if (myInput !== pedra && myInput !== papel && myInput !== tesoura) {
-    console.log("Opção inválida.");
+    alert("Opção inválida.");
     flag = true;
   }
 } while (flag);
 
 const random = Math.floor(Math.random() * 3) + 1;
-console.log(`Eu: ${jokenpo[myInput - 1]} - PC: ${jokenpo[random - 1]}`);
+console.log(`Eu: ${jokenpo[myInput - 1]} | PC: ${jokenpo[random - 1]}`);
 
 if (myInput === random) {
   console.log("Empate!");
