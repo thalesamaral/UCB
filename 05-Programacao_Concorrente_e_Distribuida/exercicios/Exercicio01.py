@@ -1,4 +1,5 @@
 import random
+import time
 
 # Função principal do QuickSort
 
@@ -12,7 +13,7 @@ def quicksort(arr):
 
 # Função para gerar números aleatórios
 
-def gerar_numeros_aleatorios(n=10000, min_val=1, max_val=200):
+def gerar_numeros_aleatorios(n=100000, min_val=1, max_val=200000):
     return [random.randint(min_val, max_val) for _ in range(n)]
 
 # Função principal para testar o QuickSort
@@ -20,6 +21,9 @@ def gerar_numeros_aleatorios(n=10000, min_val=1, max_val=200):
 if __name__ == "__main__":
     numeros = gerar_numeros_aleatorios()
     
-    print("Primeiros 10 números antes da ordenação:", numeros)
-    numeros_ordenados = quicksort(numeros)    
-    print("\nPrimeiros 10 números após a ordenação:", numeros_ordenados)
+    print("Primeiros 10 números antes da ordenação:", numeros[:10])
+    start = time.time()
+    numeros_ordenados = quicksort(numeros)
+    end = time.time()
+    print("\nPrimeiros 10 números após a ordenação:", numeros_ordenados[:10])
+    print(f"\nTempo sequencial: {end - start:.4f} segundos\n")
