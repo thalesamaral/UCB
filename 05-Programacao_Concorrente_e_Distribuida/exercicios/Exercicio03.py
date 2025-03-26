@@ -1,16 +1,17 @@
 from PIL import Image
-from tkinter import Tk, filedialog
+# from tkinter import Tk, filedialog
+import time
 
 def converter_para_preto_e_branco_manual():
 
     try:
-        root = Tk()
-        root.withdraw()
+        # root = Tk()
+        # root.withdraw()
 
-        caminho_imagem = filedialog.askopenfilename(
-            title="Selecione uma imagem",
-            filetypes=[("Imagens", "*.jpg *.jpeg *.png *.bmp *.gif"), ("Todos os arquivos", "*.*")]
-        )
+        # caminho_imagem = filedialog.askopenfilename(
+        #     title="Selecione uma imagem",
+        #     filetypes=[("Imagens", "*.jpg *.jpeg *.png *.bmp *.gif"), ("Todos os arquivos", "*.*")]
+        # )
 
         if not caminho_imagem:
             print("Nenhuma imagem foi selecionada.")
@@ -29,11 +30,11 @@ def converter_para_preto_e_branco_manual():
                 luminancia = int(0.299 * r + 0.587 * g + 0.114 * b)
                 imagem_preto_branco.putpixel((x, y), luminancia)
 
-        caminho_saida = filedialog.asksaveasfilename(
-            title="Salvar imagem em preto e branco",
-            defaultextension=".jpg",
-            filetypes=[("JPEG", "*.jpg"), ("PNG", "*.png"), ("Todos os arquivos", "*.*")]
-        )
+        # caminho_saida = filedialog.asksaveasfilename(
+        #     title="Salvar imagem em preto e branco",
+        #     defaultextension=".jpg",
+        #     filetypes=[("JPEG", "*.jpg"), ("PNG", "*.png"), ("Todos os arquivos", "*.*")]
+        # )
 
         if not caminho_saida:
             print("Operação de salvamento cancelada.")
@@ -50,4 +51,11 @@ def converter_para_preto_e_branco_manual():
 # Exemplo de uso
 
 if __name__ == "__main__":
+    # adicionar caminho se não for utilizar tkinter
+    caminho_imagem = "/workspaces/UCB-PCeD/exercicios/img.png"
+    caminho_saida = "/workspaces/UCB-PCeD/exercicios/img2.png"
+    
+    start = time.time()
     converter_para_preto_e_branco_manual()
+    end = time.time()
+    print(f"\nTempo com threads: {end - start:.4f} segundos")
