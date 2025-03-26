@@ -51,10 +51,10 @@ if __name__ == "__main__":
     print(f"\nTempo sequencial: {end - start:.4f} segundos\n")
 
     # Com threads (versão paralela)
-    start = time.time()
     result_holder = {}
+    start = time.time()
     quicksort_thread(numeros.copy(), result_holder, 'final')
-    numeros_ordenados_paralelo = result_holder['final']
     end = time.time()
+    numeros_ordenados_paralelo = result_holder['final']
     print("\nPrimeiros 10 números após a ordenação (paralelo):", numeros_ordenados_paralelo[:10])
     print(f"\nTempo com threads: {end - start:.4f} segundos")

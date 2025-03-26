@@ -58,4 +58,4 @@ if __name__ == "__main__":
     start = time.time()
     converter_para_preto_e_branco_manual()
     end = time.time()
-    print(f"\nTempo com threads: {end - start:.4f} segundos")
+    print(f"\nTempo: {end - start:.4f} segundos")
