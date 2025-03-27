@@ -53,8 +53,8 @@ def converter_para_preto_e_branco_thread(caminho_imagem, caminho_saida):
 
 if __name__ == "__main__":
     # adicionar caminho se não for utilizar tkinter
-    caminho_imagem = "/workspaces/UCB-PCeD/exercicios/img.png"
-    caminho_saida = "/workspaces/UCB-PCeD/exercicios/img2.png"
+    caminho_imagem = "/workspaces/UCB-PCeD/exercicios/img03/img.png"
+    caminho_saida = "/workspaces/UCB-PCeD/exercicios/img03/img2.png"
     
     start = time.time()
     converter_para_preto_e_branco_thread(caminho_imagem, caminho_saida)

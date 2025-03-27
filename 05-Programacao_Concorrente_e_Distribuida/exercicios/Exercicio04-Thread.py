@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 import os
+import threading
+import time
 
 # Diretório de salvamento
 save_path = "/workspaces/UCB-PCeD/exercicios/fractal"
@@ -208,30 +210,30 @@ def menger_sponge(iterations=2):
 
 # Função para gerar todos os fractais
 def gerar_todos_fractais():
-    print("Gerando Triângulo de Sierpinski...")
-    sierpinski()
+    fractais = [
+        sierpinski,
+        samambaia_barnsley,
+        mandelbrot,
+        julia,
+        koch_curve,
+        fractal_tree,
+        sierpinski_carpet,
+        menger_sponge
+    ]
 
-    print("Gerando Samambaia de Barnsley...")
-    samambaia_barnsley()
+    threads = []
+    start_time = time.time()  # Início da medição de tempo
 
-    print("Gerando Conjunto de Mandelbrot...")
-    mandelbrot()
+    for fractal in fractais:
+        thread = threading.Thread(target=fractal)
+        threads.append(thread)
+        thread.start()
 
-    print("Gerando Conjunto de Julia...")
-    julia()
+    for thread in threads:
+        thread.join()
 
-    print("Gerando Curva de Koch...")
-    koch_curve()
+    end_time = time.time()  # Fim da medição de tempo
+    print(f"Tempo total com threads: {end_time - start_time:.2f} segundos")
 
-    print("Gerando Árvore Fractal...")
-    fractal_tree()
-
-    print("Gerando Tapete de Sierpinski...")
-    sierpinski_carpet()
-
-    print("Gerando Esponja de Menger...")
-    menger_sponge()
-
-# Executa a geração de todos os fractais
 if __name__ == "__main__":
     gerar_todos_fractais()
