@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+import time
 
 def buscar_palavra_no_site(url_inicial, palavra, profundidade_maxima=3):
     """
@@ -59,9 +60,13 @@ if __name__ == "__main__":
     url_inicial = input("Digite a URL inicial do site (ex.: https://www.exemplo.com): ")
     palavra = input("Digite a palavra a ser buscada: ")
 
+    start = time.time()
     resultados = buscar_palavra_no_site(url_inicial, palavra)
+    end = time.time()
 
     print("\nResultados da busca:")
     for url, encontrada in resultados.items():
         status = "Encontrada" if encontrada else "Não encontrada"
         print(f"{url}: Palavra '{palavra}' {status}")
+    
+    print(f"\nTempo: {end - start:.4f} segundos")
