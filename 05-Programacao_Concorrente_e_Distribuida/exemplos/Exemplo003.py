@@ -5,9 +5,8 @@ def tarefa():
     print("Início...")
     time.sleep(5)
     print("Fim...")
-    
-# Bloco princila (main)
 
+# Bloco (main)
 tA = threading.Thread(target=tarefa)
 tB = threading.Thread(target=tarefa)
 
@@ -17,3 +16,11 @@ tB.start()
 tB.join()
 
 print("Thread principal finalizada!")
+
+"""
+RESULTADO
+= Início...
+= Fim...
+= Início...
+= Fim...
+"""
