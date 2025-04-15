@@ -1,0 +1,22 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  padding: 20px;
+  background-color: #f5f5dc;
+}
+
+.escondido {
+  display: none;
+}
+
+.tela {
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 15px;
+  font-size: 1em;
+  cursor: pointer;
+}
