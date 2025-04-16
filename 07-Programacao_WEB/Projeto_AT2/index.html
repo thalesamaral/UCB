@@ -8,15 +8,19 @@
 </head>
 
 <body>
-  <div id="inicio" class="tela">
-    <h1>🏰 Bem-vindo a Hogwarts!</h1>
-    <p>Descubra a qual casa de Hogwarts você pertence! Responda a 10 perguntas e descubra se você é da Grifinória, Sonserina, Corvinal ou Lufa-Lufa.</p>
-    <button id="comecarBtn">Começar Questionário</button>
+  <div id="page">
+    <div id="inicio" class="tela">
+      <img src="assets/brasao.png" alt="brasao" class="brasao">
+      <h1>🧙🏻 Bem-vindo a Hogwarts!</h1>
+      <p>Descubra a qual casa de Hogwarts você pertence! Responda a 10 perguntas e descubra se você é da Grifinória, Sonserina, Corvinal ou Lufa-Lufa.</p>
+      <button id="comecarBtn">Começar Questionário</button>
+    </div>
+    
+    <div id="questionario" class="tela escondido"></div>
+    
+    <div id="resultado" class="tela escondido"></div>
+    <img src="assets/castle.png" alt="castle" id="castle">
   </div>
-
-  <div id="questionario" class="tela escondido"></div>
-
-  <div id="resultado" class="tela escondido"></div>
 
   <script src="script.js"></script>
 </body>
