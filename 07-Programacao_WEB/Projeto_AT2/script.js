@@ -115,7 +115,7 @@ function mostrarPergunta() {
   divQuestionario.classList.remove("escondido");
   const pergunta = perguntas[perguntaAtual];
   divQuestionario.innerHTML = `
-    <img src="assets/hat.png" alt="Chapéu Seletor" class="hat">
+    <img src="assets/hat.png" alt="Chapéu Seletor">
     <h2>${pergunta.texto}</h2>
   `;
   

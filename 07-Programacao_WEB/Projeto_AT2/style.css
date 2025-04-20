@@ -8,20 +8,9 @@ body {
   font-family: 'Segoe UI', sans-serif;
   text-align: center;
   color: goldenrod;
-  /* color: #f5f5dc; */
-  /* background-color: #f5f5dc; */
-  /* background-image: url(assets/bg.png); */
   background-image: url(assets/sky.jpg);
-  background-color: black;
-  /* background-position: center; */
-  background-repeat: no-repeat;
   background-size: cover;
-  /* background-size: contain; */
-  /* background-size: 100%; */
-  /* border: solid red; */
-  /* width: 100%; */
-  /* height: auto; */
-  /* position: relative; */
+  /* border: solid blue; */
 }
 
 #page {
@@ -30,20 +19,15 @@ body {
   flex-direction: column;
   padding-top: 20px;
 
-  border: solid red;
-  /* width: 80rem; */
+  /* border: solid red; */
   height: 100vh;
-  margin: auto;
 }
 
 #castle {
   position: fixed;
   bottom: 0;
   z-index: -1;
-  /* max-width: 40rem; */
   height: 50%;
-  /* width: auto; */
-  /* opacity: 0.75; */
 }
 
 p {
