@@ -5,7 +5,6 @@ Sistema de Reserva de Assentos (Concorrência)
 Arquivos:
 - servidor.py: Inicia o servidor de reserva de assentos.
 - cliente.py: Interface interativa para o usuário com menu.
-- simulador_clientes.py: Simula vários clientes reservando ao mesmo tempo.
 - README.txt: Arquivo de instruções.
 
 Como executar:
