@@ -1,28 +1,39 @@
 
 import socket
 
+def menu():
+    print("\n--- Menu de Reservas ---")
+    print("1. Visualizar assentos")
+    print("2. Reservar assentos")
+    print("3. Sair")
+    return input("Escolha uma opção: ")
+
 def cliente():
-    host = 'localhost'
+    host = "localhost"
     porta = 12345
 
     cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     cliente.connect((host, porta))
 
-    print("Conectado ao servidor de reservas.")
-    print("Digite os assentos desejados separados por vírgula (ex: 1,5,20), 'mostrar' para exibir a matriz ou 'sair' para encerrar.")
-
     while True:
-        entrada = input("Comando: ")
-        if entrada.lower() in ['sair', 'mostrar']:
-            cliente.send(entrada.lower().encode())
-        else:
-            cliente.send(entrada.encode())
+        opcao = menu()
 
-        resposta = cliente.recv(4096).decode()
-        print(f"[RESPOSTA]\n{resposta}")
-
-        if entrada.lower() == 'sair':
+        if opcao == "1":
+            cliente.send("ver".encode())
+            resposta = cliente.recv(4096).decode()
+            print(f"\n{resposta}")
+        elif opcao == "2":
+            entrada = input("Digite os números dos assentos (ex: 5,12,99): ")
+            pedido = "reservar," + entrada
+            cliente.send(pedido.encode())
+            resposta = cliente.recv(4096).decode()
+            print(f"\n{resposta}")
+        elif opcao == "3":
+            cliente.send("sair".encode())
+            print("Encerrando conexão.")
             break
+        else:
+            print("Opção inválida.")
 
     cliente.close()
 

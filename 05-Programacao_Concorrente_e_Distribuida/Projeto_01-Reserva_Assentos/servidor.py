@@ -1,76 +1,75 @@
-
 import socket
 import threading
 
+# Estado dos assentos: False = livre, True = reservado
 assentos = [False] * 100
 lock = threading.Lock()
 
-def formatar_assentos():
-    matriz = ""
-    for i in range(10):
-        linha = ""
-        for j in range(10):
-            idx = i * 10 + j
-            simbolo = "X" if assentos[idx] else str(idx + 1).zfill(2)
-            linha += simbolo + " "
-        matriz += linha.strip() + "\n"
-    return matriz.strip()
+def tratar_cliente(conn, addr):
+    print(f"[+] Conexão estabelecida com {addr}")
 
-def processar_cliente(conn, addr):
-    print(f"[NOVO CLIENTE] Conectado: {addr}")
     while True:
         try:
             dados = conn.recv(1024).decode()
             if not dados:
                 break
 
-            if dados.lower() == 'mostrar':
+            pedido = dados.split(",")
+            if pedido[0] == "reservar":
+                indices = list(map(int, pedido[1:]))
+                sucesso = []
+                falha = []
+
                 with lock:
-                    matriz = formatar_assentos()
-                conn.send(matriz.encode())
-                continue
-            elif dados.lower() == 'sair':
-                conn.send("Encerrando conexão.".encode())
-                break
-
-            indices = list(map(int, dados.strip().split(',')))
-            sucesso = True
-            mensagem = ""
-
-            with lock:
-                for i in indices:
-                    if assentos[i - 1]:
-                        sucesso = False
-                        mensagem = f"Assento {i} já reservado. Reserva falhou."
-                        break
-
-                if sucesso:
                     for i in indices:
-                        assentos[i - 1] = True
-                    mensagem = f"Reserva realizada com sucesso: {indices}"
+                        idx = i - 1
+                        if 0 <= idx < 100:
+                            if not assentos[idx]:
+                                assentos[idx] = True
+                                sucesso.append(i)
+                            else:
+                                falha.append(i)
+                        else:
+                            falha.append(i)
 
-            print(f"[{addr}] {mensagem}")
-            conn.send(mensagem.encode())
+                if falha:
+                    resposta = f"Falha na reserva dos assentos: {falha}"
+                else:
+                    resposta = f"Assentos reservados com sucesso: {sucesso}"
 
-        except Exception as e:
-            print(f"[ERRO] Cliente {addr}: {e}")
+                print(f"[{addr}] {resposta}")
+                conn.send(resposta.encode())
+            elif pedido[0] == "ver":
+                with lock:
+                    matriz = ""
+                    for i in range(10):
+                        linha = ""
+                        for j in range(10):
+                            idx = i * 10 + j
+                            simbolo = "X " if assentos[idx] else str(idx + 1).zfill(2)
+                            linha += simbolo + " "
+                        matriz += linha.strip() + "\n"
+                conn.send(matriz.strip().encode())
+        except:
             break
 
     conn.close()
-    print(f"[DESCONECTADO] Cliente {addr}")
+    print(f"[-] Conexão encerrada com {addr}")
 
 def iniciar_servidor():
-    host = 'localhost'
+    host = "localhost"
     porta = 12345
+
     servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     servidor.bind((host, porta))
     servidor.listen()
 
-    print(f"[SERVIDOR] Rodando em {host}:{porta}")
+    print(f"[SERVIDOR] Servidor iniciado em {host}:{porta}")
+    print("[SERVIDOR] Aguardando conexões...")
 
     while True:
         conn, addr = servidor.accept()
-        thread = threading.Thread(target=processar_cliente, args=(conn, addr))
+        thread = threading.Thread(target=tratar_cliente, args=(conn, addr))
         thread.start()
 
 if __name__ == "__main__":
