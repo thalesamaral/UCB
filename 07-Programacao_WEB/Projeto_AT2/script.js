@@ -108,18 +108,19 @@ const divResultado = document.getElementById("resultado");
 
 document.getElementById("comecarBtn").addEventListener("click", () => {
   divInicio.classList.add("escondido");
+  divQuestionario.classList.remove("escondido");
   mostrarPergunta();
 });
 
 function mostrarPergunta() {
-  divQuestionario.classList.remove("escondido");
   const pergunta = perguntas[perguntaAtual];
+
   divQuestionario.innerHTML = `
     <img src="assets/hat.png" alt="Chapéu Seletor">
     <h2>${pergunta.texto}</h2>
   `;
   
-  pergunta.opcoes.forEach((opcao, i) => {
+  pergunta.opcoes.forEach((opcao) => {
     const btn = document.createElement("button");
     btn.textContent = opcao.texto;
     btn.onclick = () => {
