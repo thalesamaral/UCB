@@ -1,0 +1,2 @@
+-   Crie o package.json: `npm init -y`
+-   Instale o framework e o banco de dados: `npm install express mysql2 cors`
