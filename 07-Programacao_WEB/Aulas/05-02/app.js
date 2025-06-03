@@ -1,11 +1,20 @@
+// Importa o módulo 'http' do Node.js para criar o servidor
 const http = require("http");
 
+// Cria o servidor
 const server = http.createServer((req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
+    // Define o cabeçalho da resposta como 'text/plain'
+    res.writeHead(200, "Content-Type", "text/plain");
 
-    res.end("Hello, World - Ranyelson!");
+    /*  
+        Envia a resposta "Hello, World" para o cliente
+        Quando o servidor recebe uma requisição,
+        responde com texto puro: "Hello, World".
+    */
+    res.end("Hello World\n");
 });
 
+// O servidor é iniciado na porta 3000
 const port = 3000;
 
 server.listen(port, () => {
