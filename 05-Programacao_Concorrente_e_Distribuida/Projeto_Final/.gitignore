@@ -1,0 +1,12 @@
+# Ignorar todos os arquivos .csv gerados na pasta raiz
+*.csv
+
+# Ignorar a pasta com os dados CSV originais
+PASTA_DADOS_CSV/
+
+# Ignorar a pasta de gráficos gerados
+GRAFICOS/
+
+# Ignorar pastas do Python
+__pycache__/
+*.pyc
