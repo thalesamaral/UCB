@@ -6,8 +6,12 @@ import os
 # -----------------------------------------------------------------------------
 # CONFIGURAÇÕES GLOBAIS
 # -----------------------------------------------------------------------------
-ARQUIVO_RESUMO_METAS = 'ResumoMetas_NP.CSV' # Ou ResumoMetas_P.CSV
 PASTA_GRAFICOS = 'GRAFICOS'
+RESUMO_METAS_OPCOES = [
+    'ResumoMetas_P.csv',      # Resultado da versão paralela
+    'ResumoMetas_NP.csv',      # Resultado da versão sequencial padrão
+    'ResumoMetas_Otimizada.csv' # Resultado da versão otimizada para memória
+]
 SEPARADOR_CSV = ';'
 CODIFICACAO_CSV = 'utf-8'
 VALOR_NA_STR = "NA"
@@ -171,14 +175,29 @@ def gerar_grafico_desempenho_detalhado(df_resumo, selecao, tipo_selecao='ramo'):
 # -----------------------------------------------------------------------------
 def menu_principal():
     """
-    Carrega os dados e exibe o menu interativo para geração de gráficos.
+    Verifica a existência de um arquivo de resumo, carrega os dados e 
+    exibe o menu interativo para geração de gráficos.
     """
+    # --- DETECÇÃO DE ARQUIVO ---
+    resumo_metas_escolhido = None
+    for arquivo in RESUMO_METAS_OPCOES:
+        if os.path.exists(arquivo):
+            resumo_metas_escolhido = arquivo
+            print(f"Arquivo de resumo de metas encontrado: '{resumo_metas_escolhido}'")
+            break # Para de procurar assim que encontra o primeiro da lista de preferência
+
+    if resumo_metas_escolhido is None:
+        print("ERRO: Nenhum arquivo de resumo de metas (ResumoMetas_P.CSV, _NP.csv, etc.) foi encontrado.")
+        print("Por favor, execute um dos scripts de processamento (Versao_NP.py, Versao_P.py, etc.) primeiro.")
+        return # Sai da função menu_principal
+
     try:
         os.makedirs(PASTA_GRAFICOS, exist_ok=True)
-        df_resumo = pd.read_csv(ARQUIVO_RESUMO_METAS, sep=SEPARADOR_CSV, encoding=CODIFICACAO_CSV)
-        print(f"Arquivo '{ARQUIVO_RESUMO_METAS}' carregado com sucesso.")
+        # Carrega o arquivo que foi encontrado
+        df_resumo = pd.read_csv(resumo_metas_escolhido, sep=SEPARADOR_CSV, encoding=CODIFICACAO_CSV)
+        print(f"Arquivo '{resumo_metas_escolhido}' carregado com sucesso para análise.")
     except Exception as e:
-        print(f"Erro ao preparar o ambiente ou carregar o arquivo de resumo: {e}")
+        print(f"Erro ao preparar o ambiente ou carregar o arquivo '{resumo_metas_escolhido}': {e}")
         return
 
     while True:
