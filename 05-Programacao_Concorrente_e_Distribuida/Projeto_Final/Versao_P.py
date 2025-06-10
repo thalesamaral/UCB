@@ -6,9 +6,10 @@ import time # Para medir o tempo de execução
 # -----------------------------------------------------------------------------
 # CONFIGURAÇÕES GLOBAIS
 # -----------------------------------------------------------------------------
-PASTA_DADOS_CSV = r'E:\GIT_TH\UCB\UCB-PCeD-Projeto_Final\PASTA_DADOS_CSV'
+diretorio_do_script = os.path.dirname(os.path.abspath(__file__))
+PASTA_DADOS_CSV = os.path.join(diretorio_do_script, 'PASTA_DADOS_CSV')
 CODIFICACAO_CSV = 'utf-8'
-VALOR_NA = "NA" # String para valores não aplicáveis
+VALOR_NA = "NA"
 
 # Nomes dos arquivos de saída para esta versão (Paralela)
 ARQUIVO_CONSOLIDADO_SAIDA = 'Consolidado_P.csv'
