@@ -3,7 +3,6 @@ const app = express();
 const port = 3000;
 const path = require('path'); //trabalhar com diretorios
 
-
 const db = require('./db');
 
 app.use(express.static(path.join(__dirname, 'public'))); //acessar a pasta public
