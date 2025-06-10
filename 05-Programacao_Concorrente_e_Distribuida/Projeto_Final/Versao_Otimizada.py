@@ -438,9 +438,6 @@ def calcular_metas_tribunal(row_tribunal):
 # BLOCO PRINCIPAL DE EXECUÇÃO - VERSÃO EFICIENTE EM MEMÓRIA
 # -----------------------------------------------------------------------------
 if __name__ == "__main__":
-    print("### INICIANDO Versao_NP.py (Modo Eficiente em Memória) ###")
-    tempo_inicio_total = time.time()
-
     # --- ETAPA 1 e 2 COMBINADAS E OTIMIZADAS ---
     print(f"\n--- INICIANDO PROCESSAMENTO OTIMIZADO ---")
     tempo_inicio_processamento = time.time()
@@ -524,6 +521,3 @@ if __name__ == "__main__":
     
     tempo_fim_processamento = time.time()
     print(f"--- FIM DO PROCESSAMENTO OTIMIZADO --- Tempo: {tempo_fim_processamento - tempo_inicio_processamento:.2f}s ---")
-    
-    tempo_fim_total = time.time()
-    print(f"\n### Versao_NP.py - Execução Finalizada ### Tempo total: {tempo_fim_total - tempo_inicio_total:.2f}s ###")
