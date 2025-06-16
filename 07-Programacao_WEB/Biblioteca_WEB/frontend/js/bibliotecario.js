@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. VERIFICAÇÃO DE LOGIN E PERFIL
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario || usuario.perfil !== "bibliotecario") {
         window.location.href = "index.html";
-        return; // Impede a execução do resto do script
+        return;
     }
 
+    // Seletores dos elementos da página
     const tabelaLivros = document
         .getElementById("tabela-livros")
         .querySelector("tbody");
@@ -14,7 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
         .querySelector("tbody");
     const formAdicionarLivro = document.getElementById("form-adicionar-livro");
 
-    // --- FUNÇÕES PARA CARREGAR DADOS ---
+    // Seletores do Modal
+    const modalEditar = document.getElementById("modal-editar");
+    const closeButton = document.querySelector(".close-button");
+    const formEditarLivro = document.getElementById("form-editar-livro");
 
     async function carregarLivros() {
         const response = await fetch("http://localhost:3000/livros");
@@ -29,6 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${livro.ano_publicacao || "N/A"}</td>
                 <td>${livro.quantidade_disponivel}</td>
                 <td>
+                    <button class="btn-editar" data-id="${
+                        livro.id
+                    }">Editar</button>
                     <button class="btn-excluir" data-id="${
                         livro.id
                     }">Excluir</button>
@@ -95,8 +101,61 @@ document.addEventListener("DOMContentLoaded", () => {
         carregarLivros(); // Recarrega a lista de livros
     });
 
-    // --- LÓGICA PARA EXCLUIR LIVRO (usando delegação de eventos) ---
+    // --- NOVA LÓGICA PARA ABRIR E PREENCHER O MODAL DE EDIÇÃO ---
+    async function abrirModalEditar(id) {
+        // Busca os dados atuais do livro na API
+        const response = await fetch(`http://localhost:3000/livros/${id}`);
+        const livro = await response.json();
+
+        // Preenche o formulário do modal com os dados do livro
+        document.getElementById("edit-livro-id").value = livro.id;
+        document.getElementById("edit-livro-titulo").value = livro.titulo;
+        document.getElementById("edit-livro-autor").value = livro.autor;
+        document.getElementById("edit-livro-ano").value = livro.ano_publicacao;
+        document.getElementById("edit-livro-qtd").value =
+            livro.quantidade_disponivel;
+
+        // Exibe o modal
+        modalEditar.style.display = "block";
+    }
+
+    // --- NOVA LÓGICA PARA FECHAR O MODAL ---
+    function fecharModal() {
+        modalEditar.style.display = "none";
+    }
+    closeButton.addEventListener("click", fecharModal);
+    window.addEventListener("click", (event) => {
+        if (event.target == modalEditar) {
+            fecharModal();
+        }
+    });
+
+    // --- NOVA LÓGICA PARA ENVIAR O FORMULÁRIO DE EDIÇÃO ---
+    formEditarLivro.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const id = document.getElementById("edit-livro-id").value;
+        const dadosAtualizados = {
+            titulo: document.getElementById("edit-livro-titulo").value,
+            autor: document.getElementById("edit-livro-autor").value,
+            ano_publicacao: document.getElementById("edit-livro-ano").value,
+            quantidade_disponivel:
+                document.getElementById("edit-livro-qtd").value,
+        };
+
+        await fetch(`http://localhost:3000/livros/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dadosAtualizados),
+        });
+
+        alert("Livro atualizado com sucesso!");
+        fecharModal();
+        carregarLivros(); // Recarrega a lista para mostrar os dados atualizados
+    });
+
+    // --- ATUALIZAÇÃO NO EVENT LISTENER DA TABELA ---
     tabelaLivros.addEventListener("click", async (event) => {
+        // Lógica para Excluir (já existente)
         if (event.target.classList.contains("btn-excluir")) {
             const id = event.target.dataset.id;
             if (
@@ -106,8 +165,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     method: "DELETE",
                 });
                 alert("Livro excluído com sucesso!");
-                carregarLivros(); // Recarrega a lista
+                carregarLivros();
             }
+        }
+        // NOVA Lógica para Editar
+        if (event.target.classList.contains("btn-editar")) {
+            const id = event.target.dataset.id;
+            abrirModalEditar(id);
         }
     });
 
