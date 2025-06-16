@@ -20,4 +20,7 @@ router.put('/:id', usuarioController.update);
 // Rota DELETE /usuarios/:id -> Chama a função delete
 router.delete('/:id', usuarioController.delete);
 
+// --- NOVA ROTA DE LOGIN ---
+router.post('/login', usuarioController.login);
+
 module.exports = router;

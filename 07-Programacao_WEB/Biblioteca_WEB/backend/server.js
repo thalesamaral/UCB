@@ -1,6 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
+const cors = require("cors");
 const { syncDatabase } = require("./src/models");
 
 const app = express();
@@ -10,7 +11,7 @@ const usuariosRouter = require("./src/routes/usuarios");
 const livrosRouter = require("./src/routes/livrosRoutes");
 const emprestimosRouter = require("./src/routes/emprestimosRoutes");
 
-// Middleware para interpretar JSON
+app.use(cors());
 app.use(express.json());
 
 // Registra as rotas

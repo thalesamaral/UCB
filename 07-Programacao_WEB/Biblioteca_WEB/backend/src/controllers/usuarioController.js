@@ -1,22 +1,62 @@
 const { Usuario } = require("../models");
+const bcrypt = require("bcrypt");
 
 const usuarioController = {
     async create(req, res) {
-        // ... (função create que já fizemos, sem alterações)
         try {
             const { nome, email, senha, perfil } = req.body;
+
+            // Gera o hash da senha antes de salvar
+            const senhaHash = await bcrypt.hash(senha, 10); // O "10" é o custo do hash
+
             const novoUsuario = await Usuario.create({
                 nome,
                 email,
-                senha,
+                senha: senhaHash,
                 perfil,
             });
+
+            // Remove a senha da resposta para segurança
+            novoUsuario.senha = undefined;
+
             res.status(201).json(novoUsuario);
         } catch (error) {
             console.error(error);
             res.status(400).json({
                 error: "Erro ao criar usuário: " + error.message,
             });
+        }
+    },
+
+    // --- NOVA FUNÇÃO DE LOGIN ---
+    async login(req, res) {
+        try {
+            const { email, senha } = req.body;
+
+            // 1. Procura o usuário pelo email
+            const usuario = await Usuario.findOne({ where: { email } });
+            if (!usuario) {
+                // Se não encontrar o email, retorna erro 401 (Não Autorizado)
+                return res
+                    .status(401)
+                    .json({ error: "Email ou senha inválidos" });
+            }
+
+            // 2. Compara a senha enviada com o hash salvo no banco
+            const senhaValida = await bcrypt.compare(senha, usuario.senha);
+            if (!senhaValida) {
+                // Se a senha não bater, retorna o mesmo erro para não dar dicas a atacantes
+                return res
+                    .status(401)
+                    .json({ error: "Email ou senha inválidos" });
+            }
+
+            // 3. Se tudo estiver correto, envia os dados do usuário (sem a senha)
+            usuario.senha = undefined;
+            res.status(200).json(usuario);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Erro no servidor" });
         }
     },
 

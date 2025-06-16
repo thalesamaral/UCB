@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Biblioteca - Login</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="form-container">
+                <h2>Registrar Novo Usuário</h2>
+                <form id="form-registro">
+                    <input
+                        type="text"
+                        id="registro-nome"
+                        placeholder="Nome Completo"
+                        required
+                    />
+                    <input
+                        type="email"
+                        id="registro-email"
+                        placeholder="E-mail"
+                        required
+                    />
+                    <input
+                        type="password"
+                        id="registro-senha"
+                        placeholder="Senha"
+                        required
+                    />
+                    <select id="registro-perfil" required>
+                        <option value="" disabled selected>
+                            Selecione o perfil...
+                        </option>
+                        <option value="leitor">Leitor</option>
+                        <option value="bibliotecario">Bibliotecário</option>
+                    </select>
+                    <button type="submit">Registrar</button>
+                </form>
+            </div>
+
+            <div class="form-container">
+                <h2>Login</h2>
+                <form id="form-login">
+                    <input
+                        type="email"
+                        id="login-email"
+                        placeholder="E-mail"
+                        required
+                    />
+                    <input
+                        type="password"
+                        id="login-senha"
+                        placeholder="Senha"
+                        required
+                    />
+                    <button type="submit">Entrar</button>
+                </form>
+                <p id="mensagem-login"></p>
+            </div>
+        </div>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>
