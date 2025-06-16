@@ -2,17 +2,16 @@ const express = require("express");
 const router = express.Router();
 
 // Futuramente, aqui virá o controller
-// const usuarioController = require('../controllers/usuarioController');
+const usuarioController = require("../controllers/usuarioController");
 
-// GET /usuarios - Listar todos os usuários
+// Rota POST /usuarios
+// Quando uma requisição POST chegar para '/usuarios', ela vai acionar a função 'create' do nosso controller.
+router.post("/", usuarioController.create);
+
+// Rota GET /usuarios - Deixamos como exemplo por enquanto
 router.get("/", (req, res) => {
-    res.send("Listando todos os usuários");
+    res.send("Futuramente, aqui serão listados todos os usuários");
 });
 
-// POST /usuarios - Criar um novo usuário
-router.post("/", (req, res) => {
-    res.send("Criando um novo usuário");
-});
-
-// Exporta o router para ser usado no arquivo principal
+// Exporta o router com a nova configuração
 module.exports = router;
