@@ -1,28 +1,18 @@
-// Importa o model de Usuário para interagir com o banco de dados
 const { Usuario } = require("../models");
 
-// Define um objeto que conterá todas as funções do controller
 const usuarioController = {
-    // Função para criar um novo usuário (assíncrona pois interage com o BD)
     async create(req, res) {
+        // ... (função create que já fizemos, sem alterações)
         try {
-            // Pega os dados enviados no corpo da requisição (JSON)
-            // O middleware express.json() no server.js permite isso
             const { nome, email, senha, perfil } = req.body;
-
-            // Usa o model do Sequelize para criar um novo registro no banco
             const novoUsuario = await Usuario.create({
                 nome,
                 email,
                 senha,
                 perfil,
             });
-
-            // Retorna uma resposta de sucesso (Status 201 - Created) com o usuário criado
             res.status(201).json(novoUsuario);
         } catch (error) {
-            // Em caso de erro (ex: email já existe), retorna um erro
-            // O ideal é tratar os tipos de erro, mas por enquanto uma resposta genérica serve
             console.error(error);
             res.status(400).json({
                 error: "Erro ao criar usuário: " + error.message,
@@ -30,8 +20,43 @@ const usuarioController = {
         }
     },
 
-    // ... futuramente, aqui entrarão outras funções (listar, atualizar, deletar)
+    // --- NOVA FUNÇÃO: Listar todos os usuários ---
+    async getAll(req, res) {
+        try {
+            // Usa o método findAll do Sequelize para buscar todos os registros
+            const usuarios = await Usuario.findAll();
+            // Retorna a lista de usuários com status 200 (OK)
+            res.status(200).json(usuarios);
+        } catch (error) {
+            console.error(error);
+            // Em caso de erro no servidor, retorna 500
+            res.status(500).json({ error: "Erro no servidor" });
+        }
+    },
+
+    // --- NOVA FUNÇÃO: Buscar usuário por ID ---
+    async getById(req, res) {
+        try {
+            // Pega o ID que vem como parâmetro na URL (ex: /usuarios/1)
+            const { id } = req.params;
+
+            // Usa o método findByPk (Find by Primary Key) para buscar o usuário
+            const usuario = await Usuario.findByPk(id);
+
+            // Se o usuário não for encontrado, retorna erro 404 (Not Found)
+            if (!usuario) {
+                return res
+                    .status(404)
+                    .json({ error: "Usuário não encontrado" });
+            }
+
+            // Se encontrou, retorna o usuário com status 200 (OK)
+            res.status(200).json(usuario);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Erro no servidor" });
+        }
+    },
 };
 
-// Exporta o controller para ser usado nas rotas
 module.exports = usuarioController;

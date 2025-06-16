@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
-
-// Futuramente, aqui virá o controller
 const usuarioController = require("../controllers/usuarioController");
 
-// Rota POST /usuarios
-// Quando uma requisição POST chegar para '/usuarios', ela vai acionar a função 'create' do nosso controller.
+// Rota POST /usuarios -> Chama a função create do controller
 router.post("/", usuarioController.create);
 
-// Rota GET /usuarios - Deixamos como exemplo por enquanto
-router.get("/", (req, res) => {
-    res.send("Futuramente, aqui serão listados todos os usuários");
-});
+// --- NOVA ROTA ---
+// Rota GET /usuarios -> Chama a função getAll do controller
+router.get("/", usuarioController.getAll);
 
-// Exporta o router com a nova configuração
+// --- NOVA ROTA ---
+// Rota GET /usuarios/:id -> Chama a função getById do controller
+// O ':id' indica que é um parâmetro que será recebido na URL
+router.get("/:id", usuarioController.getById);
+
 module.exports = router;
