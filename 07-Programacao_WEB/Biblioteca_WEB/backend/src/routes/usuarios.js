@@ -1,26 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const usuarioController = require("../controllers/usuarioController");
+const emprestimoController = require("../controllers/emprestimoController"); // <<< IMPORTE O CONTROLLER DE EMPRÉSTIMO
 
-// Rota POST /usuarios -> Chama a função create do controller
+// ... rotas existentes de login, create, getAll, etc. ...
+router.post("/login", usuarioController.login);
 router.post("/", usuarioController.create);
-
-// Rota GET /usuarios -> Chama a função getAll do controller
 router.get("/", usuarioController.getAll);
-
-// Rota GET /usuarios/:id -> Chama a função getById do controller
-// O ':id' indica que é um parâmetro que será recebido na URL
 router.get("/:id", usuarioController.getById);
+router.put("/:id", usuarioController.update);
+router.delete("/:id", usuarioController.delete);
 
-// --- NOVA ROTA ---
-// Rota PUT /usuarios/:id -> Chama a função update
-router.put('/:id', usuarioController.update);
-
-// --- NOVA ROTA ---
-// Rota DELETE /usuarios/:id -> Chama a função delete
-router.delete('/:id', usuarioController.delete);
-
-// --- NOVA ROTA DE LOGIN ---
-router.post('/login', usuarioController.login);
+// --- NOVA ROTA PARA BUSCAR EMPRÉSTIMOS DE UM USUÁRIO ---
+router.get("/:leitor_id/emprestimos", emprestimoController.getByUsuario);
 
 module.exports = router;
