@@ -10,6 +10,21 @@ const emprestimoController = {
         try {
             const { livro_id, leitor_id, data_devolucao_prevista } = req.body;
 
+            // Apenas Leitor Consegue Pegar Livros Emprestados
+            const leitor = await Usuario.findByPk(leitor_id, {
+                transaction: t,
+            });
+            if (!leitor) {
+                await t.rollback();
+                return res.status(404).json({ error: "Leitor não encontrado" });
+            }
+            if (leitor.perfil !== "leitor") {
+                await t.rollback();
+                return res.status(403).json({
+                    error: "Apenas usuários com perfil de leitor podem pegar livros emprestados.",
+                });
+            }
+
             // 1. Encontrar o livro DENTRO da transação
             const livro = await Livro.findByPk(livro_id, { transaction: t });
 

@@ -1,4 +1,4 @@
-const { Usuario } = require("../models");
+const { Usuario, Emprestimo } = require("../models");
 const bcrypt = require("bcrypt");
 
 const usuarioController = {
@@ -122,11 +122,12 @@ const usuarioController = {
         }
     },
 
-    // --- NOVA FUNÇÃO: Deletar um usuário ---
+    // --- VERSÃO ATUALIZADA DA FUNÇÃO DELETE ---
     async delete(req, res) {
         try {
             const { id } = req.params;
 
+            // 1. Verificar se o usuário existe
             const usuario = await Usuario.findByPk(id);
             if (!usuario) {
                 return res
@@ -134,11 +135,25 @@ const usuarioController = {
                     .json({ error: "Usuário não encontrado" });
             }
 
-            // Deleta o registro do banco de dados
+            // 2. VERIFICAR SE EXISTEM EMPRÉSTIMOS ATIVOS PARA ESTE USUÁRIO
+            const emprestimosAtivos = await Emprestimo.findOne({
+                where: {
+                    leitor_id: id,
+                    status: "ativo",
+                },
+            });
+
+            if (emprestimosAtivos) {
+                // Se encontrou algum empréstimo ativo, bloqueia a exclusão
+                return res.status(400).json({
+                    error: "Não é possível excluir o usuário pois ele possui empréstimos ativos.",
+                });
+            }
+
+            // 3. Se não houver empréstimos ativos, deleta o usuário
             await usuario.destroy();
 
-            // Retorna uma resposta de sucesso sem conteúdo
-            res.status(204).send(); // 204 No Content
+            res.status(204).send(); // Sucesso, sem conteúdo
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: "Erro ao deletar usuário" });
