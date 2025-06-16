@@ -14,11 +14,9 @@ const emprestimoController = {
             }
             if (leitor.perfil !== "leitor") {
                 await t.rollback();
-                return res
-                    .status(403)
-                    .json({
-                        error: "Apenas usuários com perfil de leitor podem pegar livros emprestados.",
-                    });
+                return res.status(403).json({
+                    error: "Apenas usuários com perfil de leitor podem pegar livros emprestados.",
+                });
             }
             const livro = await Livro.findByPk(livro_id, { transaction: t });
             if (!livro) {
@@ -31,6 +29,28 @@ const emprestimoController = {
                     .status(400)
                     .json({ error: "Livro sem estoque disponível" });
             }
+
+            // --- ADICIONE A NOVA VERIFICAÇÃO AQUI ---
+            const emprestimoExistente = await Emprestimo.findOne({
+                where: {
+                    livro_id: livro_id,
+                    leitor_id: leitor_id,
+                    status: "ativo",
+                },
+                transaction: t,
+            });
+
+            if (emprestimoExistente) {
+                await t.rollback();
+                // 409 Conflict é um bom status para este caso
+                return res
+                    .status(409)
+                    .json({
+                        error: "Você já possui um empréstimo ativo para este livro.",
+                    });
+            }
+            // --- FIM DA NOVA VERIFICAÇÃO ---
+
             livro.quantidade_disponivel -= 1;
             await livro.save({ transaction: t });
             const novoEmprestimo = await Emprestimo.create(

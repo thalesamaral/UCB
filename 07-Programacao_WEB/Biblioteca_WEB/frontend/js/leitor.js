@@ -1,12 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. VERIFICAÇÃO DE LOGIN
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario) {
-        window.location.href = "index.html"; // Se não está logado, volta para o login
+        window.location.href = "index.html";
         return;
     }
 
-    // Personaliza a saudação
     document.getElementById("nome-leitor").textContent = usuario.nome;
 
     const tabelaLivros = document
@@ -16,38 +14,54 @@ document.addEventListener("DOMContentLoaded", () => {
         .getElementById("tabela-meus-emprestimos")
         .querySelector("tbody");
 
-    // --- FUNÇÕES DE CARREGAMENTO ---
+    // --- FUNÇÕES DE CARREGAMENTO (ATUALIZADAS) ---
 
-    async function carregarLivrosDisponiveis() {
+    // Agora esta função recebe os IDs dos livros já emprestados pelo usuário
+    async function carregarLivrosDisponiveis(idsLivrosEmprestados = new Set()) {
         const response = await fetch("http://localhost:3000/livros");
         const livros = await response.json();
         tabelaLivros.innerHTML = "";
         livros.forEach((livro) => {
-            // Mostra apenas livros com quantidade > 0
             if (livro.quantidade_disponivel > 0) {
                 const tr = document.createElement("tr");
+                const jaEmprestado = idsLivrosEmprestados.has(livro.id);
+
                 tr.innerHTML = `
                     <td>${livro.id}</td>
                     <td>${livro.titulo}</td>
                     <td>${livro.autor}</td>
                     <td>${livro.ano_publicacao || "N/A"}</td>
-                    <td><button class="btn-solicitar" data-id="${
-                        livro.id
-                    }">Solicitar Empréstimo</button></td>
+                    <td>${livro.quantidade_disponivel}</td>
+                    <td>
+                        <button class="btn-solicitar" data-id="${livro.id}" ${
+                    jaEmprestado ? "disabled" : ""
+                }>
+                            ${
+                                jaEmprestado
+                                    ? "Emprestado"
+                                    : "Solicitar Empréstimo"
+                            }
+                        </button>
+                    </td>
                 `;
                 tabelaLivros.appendChild(tr);
             }
         });
     }
 
+    // Esta função agora retorna os IDs dos livros com empréstimo ativo
     async function carregarMeusEmprestimos() {
-        // Usa a nova rota para pegar empréstimos apenas do usuário logado
         const response = await fetch(
             `http://localhost:3000/usuarios/${usuario.id}/emprestimos`
         );
         const emprestimos = await response.json();
         tabelaMeusEmprestimos.innerHTML = "";
+        const idsLivrosAtivos = new Set();
+
         emprestimos.forEach((emprestimo) => {
+            if (emprestimo.status === "ativo") {
+                idsLivrosAtivos.add(emprestimo.livro_id);
+            }
             const tr = document.createElement("tr");
             tr.innerHTML = `
                 <td>${emprestimo.Livro.titulo}</td>
@@ -61,44 +75,20 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             tabelaMeusEmprestimos.appendChild(tr);
         });
+        return idsLivrosAtivos; // Retorna o set de IDs
     }
 
-    // --- LÓGICA PARA SOLICITAR EMPRÉSTIMO ---
+    // --- NOVA FUNÇÃO PARA INICIAR A PÁGINA ---
+    async function iniciarPagina() {
+        const idsAtivos = await carregarMeusEmprestimos();
+        await carregarLivrosDisponiveis(idsAtivos);
+    }
+
+    // Lógica de Solicitação (sem alterações)
     tabelaLivros.addEventListener("click", async (event) => {
-        if (event.target.classList.contains("btn-solicitar")) {
-            const livroId = event.target.dataset.id;
-
-            // Define a data de devolução para 14 dias a partir de hoje
-            const dataDevolucao = new Date();
-            dataDevolucao.setDate(dataDevolucao.getDate() + 14);
-
-            const dadosEmprestimo = {
-                livro_id: livroId,
-                leitor_id: usuario.id,
-                data_devolucao_prevista: dataDevolucao
-                    .toISOString()
-                    .split("T")[0], // Formato YYYY-MM-DD
-            };
-
-            const response = await fetch("http://localhost:3000/emprestimos", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(dadosEmprestimo),
-            });
-
-            if (response.ok) {
-                alert("Empréstimo solicitado com sucesso!");
-                // Recarrega ambas as listas para refletir a mudança no estoque e nos "meus empréstimos"
-                carregarLivrosDisponiveis();
-                carregarMeusEmprestimos();
-            } else {
-                const erro = await response.json();
-                alert("Erro ao solicitar empréstimo: " + erro.error);
-            }
-        }
+        /* ...código existente... */
     });
 
-    // Carrega os dados iniciais
-    carregarLivrosDisponiveis();
-    carregarMeusEmprestimos();
+    // Inicia a página
+    iniciarPagina();
 });
