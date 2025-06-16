@@ -57,6 +57,53 @@ const usuarioController = {
             res.status(500).json({ error: "Erro no servidor" });
         }
     },
+    // --- NOVA FUNÇÃO: Atualizar um usuário ---
+    async update(req, res) {
+        try {
+            const { id } = req.params; // Pega o ID da URL
+            const { nome, email, senha, perfil } = req.body; // Pega os dados para atualizar
+
+            // Primeiro, verifica se o usuário existe
+            const usuario = await Usuario.findByPk(id);
+            if (!usuario) {
+                return res
+                    .status(404)
+                    .json({ error: "Usuário não encontrado" });
+            }
+
+            // Atualiza o usuário com os novos dados
+            await usuario.update({ nome, email, senha, perfil });
+
+            // Retorna o usuário atualizado
+            res.status(200).json(usuario);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Erro ao atualizar usuário" });
+        }
+    },
+
+    // --- NOVA FUNÇÃO: Deletar um usuário ---
+    async delete(req, res) {
+        try {
+            const { id } = req.params;
+
+            const usuario = await Usuario.findByPk(id);
+            if (!usuario) {
+                return res
+                    .status(404)
+                    .json({ error: "Usuário não encontrado" });
+            }
+
+            // Deleta o registro do banco de dados
+            await usuario.destroy();
+
+            // Retorna uma resposta de sucesso sem conteúdo
+            res.status(204).send(); // 204 No Content
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Erro ao deletar usuário" });
+        }
+    },
 };
 
 module.exports = usuarioController;

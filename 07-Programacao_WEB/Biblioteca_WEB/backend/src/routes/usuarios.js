@@ -5,13 +5,19 @@ const usuarioController = require("../controllers/usuarioController");
 // Rota POST /usuarios -> Chama a função create do controller
 router.post("/", usuarioController.create);
 
-// --- NOVA ROTA ---
 // Rota GET /usuarios -> Chama a função getAll do controller
 router.get("/", usuarioController.getAll);
 
-// --- NOVA ROTA ---
 // Rota GET /usuarios/:id -> Chama a função getById do controller
 // O ':id' indica que é um parâmetro que será recebido na URL
 router.get("/:id", usuarioController.getById);
+
+// --- NOVA ROTA ---
+// Rota PUT /usuarios/:id -> Chama a função update
+router.put('/:id', usuarioController.update);
+
+// --- NOVA ROTA ---
+// Rota DELETE /usuarios/:id -> Chama a função delete
+router.delete('/:id', usuarioController.delete);
 
 module.exports = router;
