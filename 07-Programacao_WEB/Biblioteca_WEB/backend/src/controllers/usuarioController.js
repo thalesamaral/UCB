@@ -5,20 +5,14 @@ const usuarioController = {
     async create(req, res) {
         try {
             const { nome, email, senha, perfil } = req.body;
-
-            // Gera o hash da senha antes de salvar
-            const senhaHash = await bcrypt.hash(senha, 10); // O "10" é o custo do hash
-
+            const senhaHash = await bcrypt.hash(senha, 10);
             const novoUsuario = await Usuario.create({
                 nome,
                 email,
                 senha: senhaHash,
                 perfil,
             });
-
-            // Remove a senha da resposta para segurança
             novoUsuario.senha = undefined;
-
             res.status(201).json(novoUsuario);
         } catch (error) {
             console.error(error);
@@ -28,30 +22,21 @@ const usuarioController = {
         }
     },
 
-    // --- NOVA FUNÇÃO DE LOGIN ---
     async login(req, res) {
         try {
             const { email, senha } = req.body;
-
-            // 1. Procura o usuário pelo email
             const usuario = await Usuario.findOne({ where: { email } });
             if (!usuario) {
-                // Se não encontrar o email, retorna erro 401 (Não Autorizado)
                 return res
                     .status(401)
                     .json({ error: "Email ou senha inválidos" });
             }
-
-            // 2. Compara a senha enviada com o hash salvo no banco
             const senhaValida = await bcrypt.compare(senha, usuario.senha);
             if (!senhaValida) {
-                // Se a senha não bater, retorna o mesmo erro para não dar dicas a atacantes
                 return res
                     .status(401)
                     .json({ error: "Email ou senha inválidos" });
             }
-
-            // 3. Se tudo estiver correto, envia os dados do usuário (sem a senha)
             usuario.senha = undefined;
             res.status(200).json(usuario);
         } catch (error) {
@@ -60,7 +45,37 @@ const usuarioController = {
         }
     },
 
-    // --- NOVA FUNÇÃO: Listar todos os usuários ---
+    async update(req, res) {
+        try {
+            const { id } = req.params;
+            const { nome, email, senha, perfil } = req.body;
+
+            const usuario = await Usuario.findByPk(id);
+            if (!usuario) {
+                return res
+                    .status(404)
+                    .json({ error: "Usuário não encontrado" });
+            }
+
+            const dadosAtualizados = { nome, email, perfil };
+
+            if (senha && senha.trim() !== "") {
+                dadosAtualizados.senha = await bcrypt.hash(senha, 10);
+            }
+
+            await usuario.update(dadosAtualizados);
+
+            // Busca o usuário atualizado para retornar sem a senha
+            const usuarioAtualizado = await Usuario.findByPk(id);
+            usuarioAtualizado.senha = undefined;
+
+            res.status(200).json(usuarioAtualizado);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Erro ao atualizar usuário" });
+        }
+    },
+
     async getAll(req, res) {
         try {
             // Usa o método findAll do Sequelize para buscar todos os registros
@@ -74,7 +89,6 @@ const usuarioController = {
         }
     },
 
-    // --- NOVA FUNÇÃO: Buscar usuário por ID ---
     async getById(req, res) {
         try {
             // Pega o ID que vem como parâmetro na URL (ex: /usuarios/1)
@@ -97,32 +111,7 @@ const usuarioController = {
             res.status(500).json({ error: "Erro no servidor" });
         }
     },
-    // --- NOVA FUNÇÃO: Atualizar um usuário ---
-    async update(req, res) {
-        try {
-            const { id } = req.params; // Pega o ID da URL
-            const { nome, email, senha, perfil } = req.body; // Pega os dados para atualizar
 
-            // Primeiro, verifica se o usuário existe
-            const usuario = await Usuario.findByPk(id);
-            if (!usuario) {
-                return res
-                    .status(404)
-                    .json({ error: "Usuário não encontrado" });
-            }
-
-            // Atualiza o usuário com os novos dados
-            await usuario.update({ nome, email, senha, perfil });
-
-            // Retorna o usuário atualizado
-            res.status(200).json(usuario);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: "Erro ao atualizar usuário" });
-        }
-    },
-
-    // --- VERSÃO ATUALIZADA DA FUNÇÃO DELETE ---
     async delete(req, res) {
         try {
             const { id } = req.params;

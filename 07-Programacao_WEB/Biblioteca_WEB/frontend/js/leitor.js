@@ -27,23 +27,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 const jaEmprestado = idsLivrosEmprestados.has(livro.id);
 
                 tr.innerHTML = `
-                    <td>${livro.id}</td>
-                    <td>${livro.titulo}</td>
-                    <td>${livro.autor}</td>
-                    <td>${livro.ano_publicacao || "N/A"}</td>
-                    <td>${livro.quantidade_disponivel}</td>
-                    <td>
-                        <button class="btn-solicitar" data-id="${livro.id}" ${
-                    jaEmprestado ? "disabled" : ""
-                }>
-                            ${
-                                jaEmprestado
-                                    ? "Emprestado"
-                                    : "Solicitar Empréstimo"
-                            }
-                        </button>
-                    </td>
-                `;
+                        <td>${livro.id}</td>
+                        <td>${livro.titulo}</td>
+                        <td>${livro.autor}</td>
+                        <td>${livro.ano_publicacao || "N/A"}</td>
+                        <td>${livro.quantidade_disponivel}</td>
+                        <td>
+                            <button class="btn-solicitar" data-id="${
+                                livro.id
+                            }" ${jaEmprestado ? "disabled" : ""}>
+                                ${
+                                    jaEmprestado
+                                        ? "Emprestado"
+                                        : "Solicitar Empréstimo"
+                                }
+                            </button>
+                        </td>
+                    `;
                 tabelaLivros.appendChild(tr);
             }
         });
@@ -84,9 +84,45 @@ document.addEventListener("DOMContentLoaded", () => {
         await carregarLivrosDisponiveis(idsAtivos);
     }
 
-    // Lógica de Solicitação (sem alterações)
+    // --- LÓGICA DE SOLICITAÇÃO (AGORA PREENCHIDA) ---
     tabelaLivros.addEventListener("click", async (event) => {
-        /* ...código existente... */
+        // Verifica se o elemento clicado é um botão de solicitar
+        if (event.target.classList.contains("btn-solicitar")) {
+            const livroId = event.target.dataset.id;
+
+            const dataInput = prompt(
+                "Por favor, digite a data prevista de devolução (formato: AAAA-MM-DD):"
+            );
+
+            if (!dataInput) {
+                alert("Operação cancelada.");
+                return;
+            }
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(dataInput)) {
+                alert("Formato de data inválido. Use AAAA-MM-DD.");
+                return;
+            }
+
+            const dadosEmprestimo = {
+                livro_id: livroId,
+                leitor_id: usuario.id,
+                data_devolucao_prevista: dataInput,
+            };
+
+            const response = await fetch("http://localhost:3000/emprestimos", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dadosEmprestimo),
+            });
+
+            if (response.ok) {
+                alert("Empréstimo solicitado com sucesso!");
+                iniciarPagina(); // Recarrega todos os dados da página
+            } else {
+                const erro = await response.json();
+                alert("Erro ao solicitar empréstimo: " + erro.error);
+            }
+        }
     });
 
     // Inicia a página
