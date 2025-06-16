@@ -8,6 +8,7 @@ const port = 3000;
 
 const usuariosRouter = require("./src/routes/usuarios");
 const livrosRouter = require("./src/routes/livrosRoutes");
+const emprestimosRouter = require("./src/routes/emprestimosRoutes");
 
 // Middleware para interpretar JSON
 app.use(express.json());
@@ -15,7 +16,7 @@ app.use(express.json());
 // Registra as rotas
 app.use("/usuarios", usuariosRouter);
 app.use("/livros", livrosRouter);
-// app.use('/emprestimos', emprestimosRouter); // E para empréstimos
+app.use("/emprestimos", emprestimosRouter);
 
 // Sincroniza o banco de dados ao iniciar o servidor
 syncDatabase();
