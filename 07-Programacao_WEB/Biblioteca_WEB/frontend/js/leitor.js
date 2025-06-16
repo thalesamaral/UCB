@@ -36,11 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <button class="btn-solicitar" data-id="${
                                 livro.id
                             }" ${jaEmprestado ? "disabled" : ""}>
-                                ${
-                                    jaEmprestado
-                                        ? "Emprestado"
-                                        : "Solicitar Empréstimo"
-                                }
+                                Solicitar Empréstimo
                             </button>
                         </td>
                     `;
@@ -59,7 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const idsLivrosAtivos = new Set();
 
         emprestimos.forEach((emprestimo) => {
-            if (emprestimo.status === "ativo") {
+            if (
+                emprestimo.status === "ativo" ||
+                emprestimo.status === "pendente"
+            ) {
                 idsLivrosAtivos.add(emprestimo.livro_id);
             }
             const tr = document.createElement("tr");
@@ -103,10 +102,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            // --- CORREÇÃO PARA O PROBLEMA DE FUSO HORÁRIO ---
+            // Constrói a data no fuso horário local do navegador para evitar a conversão indesejada para UTC.
+            // Adicionamos 'T12:00:00' para que a data seja interpretada como meio-dia,
+            // o que garante que ela permaneça no dia correto mesmo após conversões de fuso.
+            const dataCorrigida = new Date(dataInput + "T12:00:00");
+
             const dadosEmprestimo = {
                 livro_id: livroId,
                 leitor_id: usuario.id,
-                data_devolucao_prevista: dataInput,
+                data_devolucao_prevista: dataCorrigida, // Envia o objeto Date corrigido
             };
 
             const response = await fetch("http://localhost:3000/emprestimos", {

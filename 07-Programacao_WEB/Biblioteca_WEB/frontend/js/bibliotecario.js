@@ -48,34 +48,43 @@ document.addEventListener("DOMContentLoaded", () => {
         const response = await fetch("http://localhost:3000/emprestimos");
         const emprestimos = await response.json();
         tabelaEmprestimos.innerHTML = "";
-        // Filtra para mostrar apenas empréstimos com status 'ativo'
-        const emprestimosAtivos = emprestimos.filter(
-            (e) => e.status === "ativo"
-        );
 
         emprestimos.forEach((emprestimo) => {
             const tr = document.createElement("tr");
-            const nomeLeitor = emprestimo.Usuario?.nome || "Usuário Deletado";
-            const tituloLivro = emprestimo.Livro?.titulo || "Livro Deletado";
+
+            let acaoHtml = "";
+            // Se o status for pendente, mostra os botões de Aprovar/Reprovar
+            if (emprestimo.status === "pendente") {
+                acaoHtml = `
+                <button class="btn-aprovar" data-id="${emprestimo.id}">Aprovar</button>
+                <button class="btn-reprovar" data-id="${emprestimo.id}">Reprovar</button>
+            `;
+            }
+            // Se for ativo, mostra o botão de Devolver
+            else if (
+                emprestimo.status === "ativo" ||
+                emprestimo.status === "atrasado"
+            ) {
+                acaoHtml = `<button class="btn-devolver" data-id="${emprestimo.id}">Registrar Devolução</button>`;
+            }
+            // Se for devolvido ou reprovado, não mostra ação
+            else {
+                acaoHtml = "Finalizado";
+            }
 
             tr.innerHTML = `
-                <td>${emprestimo.id}</td>
-                <td>${nomeLeitor}</td>
-                <td>${tituloLivro}</td>
-                <td>${new Date(
-                    emprestimo.data_emprestimo
-                ).toLocaleDateString()}</td>
-                <td>${new Date(
-                    emprestimo.data_devolucao_prevista
-                ).toLocaleDateString()}</td>
-                <td>
-                ${
-                    emprestimo.status === "ativo"
-                        ? `<button class="btn-devolver" data-id="${emprestimo.id}">Aprovar Devolução</button>`
-                        : "Devolvido"
-                }
-                </td>
-            `;
+            <td>${emprestimo.id}</td>
+            <td>${emprestimo.Usuario?.nome || "N/A"}</td>
+            <td>${emprestimo.Livro?.titulo || "N/A"}</td>
+            <td>${new Date(emprestimo.data_emprestimo).toLocaleDateString()}
+            </td>
+            <td>${new Date(
+                emprestimo.data_devolucao_prevista
+            ).toLocaleDateString()}
+            </td>
+            <td>${emprestimo.status}</td>
+            <td>${acaoHtml}</td>
+        `;
             tabelaEmprestimos.appendChild(tr);
         });
     }
@@ -177,16 +186,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- LÓGICA PARA DEVOLVER LIVRO ---
     tabelaEmprestimos.addEventListener("click", async (event) => {
+        const id = event.target.dataset.id;
+        let url = "";
+        let method = "PUT";
+
         if (event.target.classList.contains("btn-devolver")) {
-            const id = event.target.dataset.id;
-            await fetch(`http://localhost:3000/emprestimos/${id}/devolver`, {
-                method: "PUT",
-            });
-            alert("Devolução registrada com sucesso!");
-            // Recarrega ambas as listas, pois o estoque do livro mudou
-            carregarLivros();
-            carregarEmprestimos();
+            url = `http://localhost:3000/emprestimos/${id}/devolver`;
+        } else if (event.target.classList.contains("btn-aprovar")) {
+            url = `http://localhost:3000/emprestimos/${id}/aprovar`;
+        } else if (event.target.classList.contains("btn-reprovar")) {
+            url = `http://localhost:3000/emprestimos/${id}/reprovar`;
+        } else {
+            return; // Sai se não for um botão de ação
         }
+
+        await fetch(url, { method: method });
+        alert("Operação realizada com sucesso!");
+        carregarLivros();
+        carregarEmprestimos();
     });
 
     // Carrega os dados iniciais ao abrir a página

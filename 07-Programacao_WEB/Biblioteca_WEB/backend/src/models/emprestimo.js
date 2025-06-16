@@ -15,9 +15,15 @@ const Emprestimo = sequelize.define("Emprestimo", {
         allowNull: true, // Corresponde à restrição "Opcional"
     },
     status: {
-        type: DataTypes.ENUM("ativo", "devolvido", "atrasado"),
+        type: DataTypes.ENUM(
+            "ativo",
+            "devolvido",
+            "atrasado",
+            "pendente",
+            "reprovado"
+        ),
         allowNull: false, // Corresponde à restrição "Obrigatório"
-        defaultValue: "ativo",
+        defaultValue: "pendente",
     },
 });
 
