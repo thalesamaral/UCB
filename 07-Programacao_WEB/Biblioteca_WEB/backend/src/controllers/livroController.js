@@ -5,8 +5,8 @@ const livroController = {
     async create(req, res) {
         try {
             // Os campos vêm do documento de descrição do projeto
-            const { titulo, autor, ano_publicacao, quantidade_disponivel } =
-                req.body;
+            const { titulo, autor, quantidade_disponivel } = req.body;
+            const ano_publicacao = req.body.ano_publicacao || null;
             const novoLivro = await Livro.create({
                 titulo,
                 autor,
@@ -53,9 +53,8 @@ const livroController = {
     async update(req, res) {
         try {
             const { id } = req.params;
-            const { titulo, autor, ano_publicacao, quantidade_disponivel } =
-                req.body;
-
+            const { titulo, autor, quantidade_disponivel } = req.body;
+            const ano_publicacao = req.body.ano_publicacao || null;
             const livro = await Livro.findByPk(id);
             if (!livro) {
                 return res.status(404).json({ error: "Livro não encontrado" });

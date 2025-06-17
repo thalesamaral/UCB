@@ -16,11 +16,9 @@ const emprestimoController = {
 
             if (dataDevolucao <= hoje) {
                 await t.rollback();
-                return res
-                    .status(400)
-                    .json({
-                        error: "A data de devolução prevista deve ser uma data futura.",
-                    });
+                return res.status(400).json({
+                    error: "A data de devolução prevista deve ser uma data futura.",
+                });
             }
 
             const leitor = await Usuario.findByPk(leitor_id, {
@@ -32,11 +30,9 @@ const emprestimoController = {
             }
             if (leitor.perfil !== "leitor") {
                 await t.rollback();
-                return res
-                    .status(403)
-                    .json({
-                        error: "Apenas usuários com perfil de leitor podem pegar livros emprestados.",
-                    });
+                return res.status(403).json({
+                    error: "Apenas usuários com perfil de leitor podem pegar livros emprestados.",
+                });
             }
 
             const livro = await Livro.findByPk(livro_id, { transaction: t });
@@ -63,11 +59,9 @@ const emprestimoController = {
 
             if (emprestimoExistente) {
                 await t.rollback();
-                return res
-                    .status(409)
-                    .json({
-                        error: "Você já possui um empréstimo ativo ou pendente para este livro.",
-                    });
+                return res.status(409).json({
+                    error: "Você já possui um empréstimo ativo ou pendente para este livro.",
+                });
             }
 
             livro.quantidade_disponivel -= 1;
@@ -114,11 +108,9 @@ const emprestimoController = {
                 emprestimo.status !== "atrasado"
             ) {
                 await t.rollback();
-                return res
-                    .status(400)
-                    .json({
-                        error: "Apenas empréstimos ativos ou atrasados podem ser devolvidos.",
-                    });
+                return res.status(400).json({
+                    error: "Apenas empréstimos ativos ou atrasados podem ser devolvidos.",
+                });
             }
 
             emprestimo.status = "devolvido";
@@ -201,11 +193,9 @@ const emprestimoController = {
                     .json({ error: "Empréstimo não encontrado." });
             }
             if (emprestimo.status !== "pendente") {
-                return res
-                    .status(400)
-                    .json({
-                        error: "Apenas empréstimos pendentes podem ser aprovados.",
-                    });
+                return res.status(400).json({
+                    error: "Apenas empréstimos pendentes podem ser aprovados.",
+                });
             }
             emprestimo.status = "ativo";
             await emprestimo.save();
@@ -231,11 +221,9 @@ const emprestimoController = {
             }
             if (emprestimo.status !== "pendente") {
                 await t.rollback();
-                return res
-                    .status(400)
-                    .json({
-                        error: "Apenas empréstimos pendentes podem ser reprovados.",
-                    });
+                return res.status(400).json({
+                    error: "Apenas empréstimos pendentes podem ser reprovados.",
+                });
             }
             const livro = emprestimo.Livro;
             livro.quantidade_disponivel += 1;
