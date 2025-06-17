@@ -25,7 +25,7 @@ const livroController = {
     // --- Listar todos os livros ---
     async getAll(req, res) {
         try {
-            const livros = await Livro.findAll();
+            const livros = await Livro.findAll({ order: [["id", "ASC"]] });
             res.status(200).json(livros);
         } catch (error) {
             console.error(error);

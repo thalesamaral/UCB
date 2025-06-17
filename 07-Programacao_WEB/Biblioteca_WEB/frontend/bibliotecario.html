@@ -50,7 +50,7 @@
                             <th>Autor</th>
                             <th>Ano</th>
                             <th>Qtd. Disponível</th>
-                            <th>Ações</th>
+                            <th>Ação</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -58,7 +58,22 @@
             </div>
 
             <div class="table-container">
-                <h2>Solicitações e Histórico de Empréstimos</h2>
+                <h2>Solicitações de Empréstimos</h2>
+                <div class="filtro-container">
+                    <label class="switch">
+                        <input
+                            type="checkbox"
+                            id="toggle-filtro-emprestimos"
+                            checked
+                        />
+                        <span class="slider"></span>
+                    </label>
+                    <label
+                        for="toggle-filtro-emprestimos"
+                        style="margin-left: 4px"
+                        >Em andamento</label
+                    >
+                </div>
                 <table id="tabela-emprestimos">
                     <thead>
                         <tr>

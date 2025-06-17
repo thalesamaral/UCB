@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             const tr = document.createElement("tr");
             tr.innerHTML = `
+                <td>${emprestimo.id}</td>
                 <td>${emprestimo.Livro.titulo}</td>
                 <td>${new Date(
                     emprestimo.data_emprestimo

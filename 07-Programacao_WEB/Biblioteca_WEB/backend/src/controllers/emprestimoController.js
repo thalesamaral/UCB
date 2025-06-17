@@ -139,6 +139,7 @@ const emprestimoController = {
                     { model: Usuario, attributes: ["nome", "email"] },
                     { model: Livro, attributes: ["titulo"] },
                 ],
+                order: [["id", "ASC"]],
             });
             const hoje = new Date();
             const emprestimosAtualizados = emprestimos.map((e) => {
@@ -164,6 +165,7 @@ const emprestimoController = {
             const emprestimos = await Emprestimo.findAll({
                 where: { leitor_id: leitor_id },
                 include: [{ model: Livro, attributes: ["titulo"] }],
+                order: [["id", "ASC"]],
             });
             const hoje = new Date();
             const emprestimosAtualizados = emprestimos.map((e) => {

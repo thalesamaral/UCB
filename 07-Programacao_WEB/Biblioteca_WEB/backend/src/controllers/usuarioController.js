@@ -79,7 +79,7 @@ const usuarioController = {
     async getAll(req, res) {
         try {
             // Usa o método findAll do Sequelize para buscar todos os registros
-            const usuarios = await Usuario.findAll();
+            const usuarios = await Usuario.findAll({ order: [['id', 'ASC']] });
             // Retorna a lista de usuários com status 200 (OK)
             res.status(200).json(usuarios);
         } catch (error) {

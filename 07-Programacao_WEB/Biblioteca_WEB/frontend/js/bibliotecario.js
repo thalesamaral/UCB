@@ -13,39 +13,65 @@ document.addEventListener("DOMContentLoaded", () => {
         .getElementById("tabela-emprestimos")
         .querySelector("tbody");
     const formAdicionarLivro = document.getElementById("form-adicionar-livro");
+    const toggleFiltro = document.getElementById("toggle-filtro-emprestimos");
 
     // Seletores do Modal
     const modalEditar = document.getElementById("modal-editar");
     const closeButton = document.querySelector(".close-button");
     const formEditarLivro = document.getElementById("form-editar-livro");
 
-    async function carregarLivros() {
-        const response = await fetch("http://localhost:3000/livros");
-        const livros = await response.json();
-        tabelaLivros.innerHTML = ""; // Limpa a tabela antes de preencher
-        livros.forEach((livro) => {
+    let todosOsEmprestimos = []; // <<< Variável para guardar a lista completa
+    
+    // --- LÓGICA DE RENDERIZAÇÃO E FILTRO ---
+    function renderizarTabelaEmprestimos() {
+        // Verifica o estado do toggle
+        const mostrarApenasAtivos = toggleFiltro.checked;
+
+        const emprestimosParaRenderizar = mostrarApenasAtivos
+            ? todosOsEmprestimos.filter(
+                  (e) =>
+                      e.status === "ativo" ||
+                      e.status === "pendente" ||
+                      e.status === "atrasado"
+              )
+            : todosOsEmprestimos;
+
+        tabelaEmprestimos.innerHTML = "";
+        emprestimosParaRenderizar.forEach((emprestimo) => {
             const tr = document.createElement("tr");
+            let acaoHtml = "";
+            if (emprestimo.status === "pendente") {
+                acaoHtml = `<button class="btn-aprovar" data-id="${emprestimo.id}">Aprovar</button> <button class="btn-reprovar" data-id="${emprestimo.id}">Reprovar</button>`;
+            } else if (
+                emprestimo.status === "ativo" ||
+                emprestimo.status === "atrasado"
+            ) {
+                acaoHtml = `<button class="btn-devolver" data-id="${emprestimo.id}">Registrar Devolução</button>`;
+            } else {
+                acaoHtml = "Finalizado";
+            }
             tr.innerHTML = `
-                <td>${livro.id}</td>
-                <td>${livro.titulo}</td>
-                <td>${livro.autor}</td>
-                <td>${livro.ano_publicacao || "N/A"}</td>
-                <td>${livro.quantidade_disponivel}</td>
-                <td>
-                    <button class="btn-editar" data-id="${
-                        livro.id
-                    }">Editar</button>
-                    <button class="btn-excluir" data-id="${
-                        livro.id
-                    }">Excluir</button>
-                </td>
+                <td>${emprestimo.id}</td>
+                <td>${emprestimo.Usuario?.nome || "N/A"}</td>
+                <td>${emprestimo.Livro?.titulo || "N/A"}</td>
+                <td>${new Date(
+                    emprestimo.data_emprestimo
+                ).toLocaleDateString()}</td>
+                <td>${new Date(
+                    emprestimo.data_devolucao_prevista
+                ).toLocaleDateString()}</td>
+                <td>${emprestimo.status}</td>
+                <td>${acaoHtml}</td>
             `;
-            tabelaLivros.appendChild(tr);
+            tabelaEmprestimos.appendChild(tr);
         });
     }
 
     async function carregarEmprestimos() {
         const response = await fetch("http://localhost:3000/emprestimos");
+        todosOsEmprestimos = await response.json();
+        renderizarTabelaEmprestimos(); // Renderiza a tabela com o filtro padrão
+
         const emprestimos = await response.json();
         tabelaEmprestimos.innerHTML = "";
 
@@ -86,6 +112,33 @@ document.addEventListener("DOMContentLoaded", () => {
             <td>${acaoHtml}</td>
         `;
             tabelaEmprestimos.appendChild(tr);
+        });
+    }
+
+    toggleFiltro.addEventListener("change", renderizarTabelaEmprestimos);
+
+    async function carregarLivros() {
+        const response = await fetch("http://localhost:3000/livros");
+        const livros = await response.json();
+        tabelaLivros.innerHTML = ""; // Limpa a tabela antes de preencher
+        livros.forEach((livro) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${livro.id}</td>
+                <td>${livro.titulo}</td>
+                <td>${livro.autor}</td>
+                <td>${livro.ano_publicacao || "N/A"}</td>
+                <td>${livro.quantidade_disponivel}</td>
+                <td>
+                    <button class="btn-editar" data-id="${
+                        livro.id
+                    }">Editar</button>
+                    <button class="btn-excluir" data-id="${
+                        livro.id
+                    }">Excluir</button>
+                </td>
+            `;
+            tabelaLivros.appendChild(tr);
         });
     }
 
