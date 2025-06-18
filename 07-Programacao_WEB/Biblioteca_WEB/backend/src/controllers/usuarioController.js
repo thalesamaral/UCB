@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Usuario, Emprestimo } = require("../models");
 const bcrypt = require("bcrypt");
 
@@ -78,13 +79,35 @@ const usuarioController = {
 
     async getAll(req, res) {
         try {
-            // Usa o método findAll do Sequelize para buscar todos os registros
-            const usuarios = await Usuario.findAll({ order: [['id', 'ASC']] });
-            // Retorna a lista de usuários com status 200 (OK)
-            res.status(200).json(usuarios);
+            // 1. Busca todos os usuários
+            const usuarios = await Usuario.findAll({ order: [["id", "ASC"]] });
+
+            // 2. Busca todos os empréstimos que impedem a exclusão
+            const emprestimosEmAndamento = await Emprestimo.findAll({
+                where: {
+                    status: { [Op.in]: ["ativo", "pendente", "atrasado"] },
+                },
+                attributes: ["leitor_id"], // Só precisamos do ID do leitor
+            });
+
+            // 3. Cria um conjunto (Set) com os IDs dos leitores que têm pendências.
+            // Usar um Set é muito mais rápido para fazer buscas.
+            const leitoresComPendencias = new Set(
+                emprestimosEmAndamento.map((e) => e.leitor_id)
+            );
+
+            // 4. Adiciona o campo 'podeSerExcluido' a cada usuário
+            const resultado = usuarios.map((usuario) => {
+                const usuarioJSON = usuario.toJSON(); // Converte para um objeto simples
+                usuarioJSON.podeSerExcluido = !leitoresComPendencias.has(
+                    usuario.id
+                );
+                return usuarioJSON;
+            });
+
+            res.status(200).json(resultado);
         } catch (error) {
             console.error(error);
-            // Em caso de erro no servidor, retorna 500
             res.status(500).json({ error: "Erro no servidor" });
         }
     },
@@ -116,7 +139,6 @@ const usuarioController = {
         try {
             const { id } = req.params;
 
-            // 1. Verificar se o usuário existe
             const usuario = await Usuario.findByPk(id);
             if (!usuario) {
                 return res
@@ -124,25 +146,27 @@ const usuarioController = {
                     .json({ error: "Usuário não encontrado" });
             }
 
-            // 2. VERIFICAR SE EXISTEM EMPRÉSTIMOS ATIVOS PARA ESTE USUÁRIO
-            const emprestimosAtivos = await Emprestimo.findOne({
+            // --- LÓGICA ATUALIZADA ---
+            // Procura se existe algum empréstimo que NÃO esteja finalizado ('devolvido' ou 'reprovado')
+            const emprestimoEmAndamento = await Emprestimo.findOne({
                 where: {
                     leitor_id: id,
-                    status: "ativo",
+                    status: {
+                        [Op.in]: ["ativo", "pendente", "atrasado"], // Procura por qualquer um destes status
+                    },
                 },
             });
 
-            if (emprestimosAtivos) {
-                // Se encontrou algum empréstimo ativo, bloqueia a exclusão
-                return res.status(400).json({
-                    error: "Não é possível excluir o usuário pois ele possui empréstimos ativos.",
+            if (emprestimoEmAndamento) {
+                return res.status(409).json({
+                    error: "Não é possível excluir o usuário pois ele possui empréstimos em andamento.",
                 });
             }
 
-            // 3. Se não houver empréstimos ativos, deleta o usuário
+            // Se não encontrou pendências, pode excluir
             await usuario.destroy();
 
-            res.status(204).send(); // Sucesso, sem conteúdo
+            res.status(204).send();
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: "Erro ao deletar usuário" });

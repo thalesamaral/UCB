@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    if (!usuario) {
+    if (!usuario || usuario.perfil !== "leitor") {
         window.location.href = "index.html";
         return;
     }
@@ -61,10 +61,11 @@ document.addEventListener("DOMContentLoaded", () => {
             ) {
                 idsLivrosAtivos.add(emprestimo.livro_id);
             }
+
             const tr = document.createElement("tr");
             tr.innerHTML = `
                 <td>${emprestimo.id}</td>
-                <td>${emprestimo.Livro.titulo}</td>
+                <td>${emprestimo.Livro?.titulo}</td>
                 <td>${new Date(
                     emprestimo.data_emprestimo
                 ).toLocaleDateString()}</td>

@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const formEditarLivro = document.getElementById("form-editar-livro");
 
     let todosOsEmprestimos = []; // <<< Variável para guardar a lista completa
-    
+
     // --- LÓGICA DE RENDERIZAÇÃO E FILTRO ---
     function renderizarTabelaEmprestimos() {
         // Verifica o estado do toggle
@@ -119,25 +119,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function carregarLivros() {
         const response = await fetch("http://localhost:3000/livros");
-        const livros = await response.json();
-        tabelaLivros.innerHTML = ""; // Limpa a tabela antes de preencher
+        const livros = await response.json(); // A lista de livros agora vem com o campo 'podeSerExcluido'
+        tabelaLivros.innerHTML = "";
         livros.forEach((livro) => {
             const tr = document.createElement("tr");
+
+            // --- LÓGICA DO BOTÃO ATUALIZADA ---
+            // Adiciona o atributo 'disabled' ao botão se 'podeSerExcluido' for false
+            const botaoExcluirHtml = `
+            <button class="btn-excluir" data-id="${livro.id}" ${
+                !livro.podeSerExcluido
+                    ? 'disabled title="Não é possível excluir o livro, pois ele está associado a empréstimos em andamento"'
+                    : ""
+            }>
+                Excluir
+            </button>
+        `;
+
             tr.innerHTML = `
-                <td>${livro.id}</td>
-                <td>${livro.titulo}</td>
-                <td>${livro.autor}</td>
-                <td>${livro.ano_publicacao || "N/A"}</td>
-                <td>${livro.quantidade_disponivel}</td>
-                <td>
-                    <button class="btn-editar" data-id="${
-                        livro.id
-                    }">Editar</button>
-                    <button class="btn-excluir" data-id="${
-                        livro.id
-                    }">Excluir</button>
-                </td>
-            `;
+            <td>${livro.id}</td>
+            <td>${livro.titulo}</td>
+            <td>${livro.autor}</td>
+            <td>${livro.ano_publicacao || "N/A"}</td>
+            <td>${livro.quantidade_disponivel}</td>
+            <td>
+                <button class="btn-editar" data-id="${livro.id}">Editar</button>
+                ${botaoExcluirHtml}
+            </td>
+        `;
             tabelaLivros.appendChild(tr);
         });
     }
