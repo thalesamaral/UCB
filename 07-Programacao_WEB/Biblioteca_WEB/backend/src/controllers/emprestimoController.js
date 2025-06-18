@@ -88,50 +88,6 @@ const emprestimoController = {
         }
     },
 
-    // A função devolver agora também é transacional para garantir consistência
-    async devolver(req, res) {
-        const t = await sequelize.transaction();
-        try {
-            const { id } = req.params;
-            const emprestimo = await Emprestimo.findByPk(id, {
-                include: Livro,
-                transaction: t,
-            });
-            if (!emprestimo) {
-                await t.rollback();
-                return res
-                    .status(404)
-                    .json({ error: "Empréstimo não encontrado" });
-            }
-            if (
-                emprestimo.status !== "ativo" &&
-                emprestimo.status !== "atrasado"
-            ) {
-                await t.rollback();
-                return res.status(400).json({
-                    error: "Apenas empréstimos ativos ou atrasados podem ser devolvidos.",
-                });
-            }
-
-            emprestimo.status = "devolvido";
-            emprestimo.data_devolucao_real = new Date();
-            await emprestimo.save({ transaction: t });
-
-            const livro = emprestimo.Livro;
-            livro.quantidade_disponivel += 1;
-            await livro.save({ transaction: t });
-
-            await t.commit();
-            res.status(200).json(emprestimo);
-        } catch (error) {
-            await t.rollback();
-            console.error(error);
-            res.status(500).json({
-                error: "Erro ao processar devolução: " + error.message,
-            });
-        }
-    },
-
     async getAll(req, res) {
         try {
             const emprestimos = await Emprestimo.findAll({
@@ -237,6 +193,85 @@ const emprestimoController = {
         } catch (error) {
             await t.rollback();
             res.status(500).json({ error: "Erro ao reprovar empréstimo." });
+        }
+    },
+
+    // A função devolver agora também é transacional para garantir consistência
+    async devolver(req, res) {
+        const t = await sequelize.transaction();
+        try {
+            const { id } = req.params;
+            const emprestimo = await Emprestimo.findByPk(id, {
+                include: Livro,
+                transaction: t,
+            });
+            if (!emprestimo) {
+                await t.rollback();
+                return res
+                    .status(404)
+                    .json({ error: "Empréstimo não encontrado" });
+            }
+            if (
+                emprestimo.status !== "ativo" &&
+                emprestimo.status !== "atrasado"
+            ) {
+                await t.rollback();
+                return res.status(400).json({
+                    error: "Apenas empréstimos ativos ou atrasados podem ser devolvidos.",
+                });
+            }
+
+            emprestimo.status = "devolvido";
+            emprestimo.data_devolucao_real = new Date();
+            await emprestimo.save({ transaction: t });
+
+            const livro = emprestimo.Livro;
+            livro.quantidade_disponivel += 1;
+            await livro.save({ transaction: t });
+
+            await t.commit();
+            res.status(200).json(emprestimo);
+        } catch (error) {
+            await t.rollback();
+            console.error(error);
+            res.status(500).json({
+                error: "Erro ao processar devolução: " + error.message,
+            });
+        }
+    },
+
+    async registrarPerda(req, res) {
+        try {
+            const { id } = req.params;
+            const emprestimo = await Emprestimo.findByPk(id);
+
+            if (!emprestimo) {
+                return res
+                    .status(404)
+                    .json({ error: "Empréstimo não encontrado." });
+            }
+            // A perda só pode ser registrada para um livro que estava 'ativo' ou 'atrasado'
+            if (
+                emprestimo.status !== "ativo" &&
+                emprestimo.status !== "atrasado"
+            ) {
+                return res.status(400).json({
+                    error: "Ação não permitida para este status de empréstimo.",
+                });
+            }
+
+            emprestimo.status = "perdido";
+            await emprestimo.save();
+
+            // IMPORTANTE: Note que NÃO incrementamos a quantidade de livros disponíveis.
+            // O livro foi perdido e não voltou ao estoque.
+
+            res.status(200).json(emprestimo);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                error: "Erro ao registrar perda do livro.",
+            });
         }
     },
 };

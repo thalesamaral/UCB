@@ -20,7 +20,8 @@ const Emprestimo = sequelize.define("Emprestimo", {
             "devolvido",
             "atrasado",
             "pendente",
-            "reprovado"
+            "reprovado",
+            "perdido"
         ),
         allowNull: false, // Corresponde à restrição "Obrigatório"
         defaultValue: "pendente",

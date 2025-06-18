@@ -1,54 +1,74 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // --- 1. VERIFICAÇÃO DE ACESSO E SELETORES DE ELEMENTOS ---
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario || usuario.perfil !== "bibliotecario") {
         window.location.href = "index.html";
         return;
     }
 
-    // Seletores dos elementos da página
-    const tabelaLivros = document
+    const tabelaLivrosBody = document
         .getElementById("tabela-livros")
         .querySelector("tbody");
-    const tabelaEmprestimos = document
+    const tabelaEmprestimosBody = document
         .getElementById("tabela-emprestimos")
         .querySelector("tbody");
     const formAdicionarLivro = document.getElementById("form-adicionar-livro");
     const toggleFiltro = document.getElementById("toggle-filtro-emprestimos");
-
-    // Seletores do Modal
     const modalEditar = document.getElementById("modal-editar");
     const closeButton = document.querySelector(".close-button");
     const formEditarLivro = document.getElementById("form-editar-livro");
 
-    let todosOsEmprestimos = []; // <<< Variável para guardar a lista completa
+    // --- 2. ESTADO DA APLICAÇÃO ---
+    let todosOsEmprestimos = [];
+    let todosOsLivros = [];
 
-    // --- LÓGICA DE RENDERIZAÇÃO E FILTRO ---
+    // --- 3. FUNÇÕES DE RENDERIZAÇÃO (Manipulação do DOM) ---
+
+    function renderizarTabelaLivros() {
+        tabelaLivrosBody.innerHTML = "";
+        todosOsLivros.forEach((livro) => {
+            const tr = document.createElement("tr");
+            const botaoExcluirHtml = `<button class="btn-excluir" data-id="${
+                livro.id
+            }" ${
+                !livro.podeSerExcluido
+                    ? 'disabled title="Não é possível excluir o livro, pois ele está associado a empréstimos em andamento."'
+                    : ""
+            }>Excluir</button>`;
+
+            tr.innerHTML = `
+                <td>${livro.id}</td>
+                <td>${livro.titulo}</td>
+                <td>${livro.autor}</td>
+                <td>${livro.ano_publicacao || "N/A"}</td>
+                <td>${livro.quantidade_disponivel}</td>
+                <td>
+                    <button class="btn-editar" data-id="${
+                        livro.id
+                    }">Editar</button>
+                    ${botaoExcluirHtml}
+                </td>
+            `;
+            tabelaLivrosBody.appendChild(tr);
+        });
+    }
+
     function renderizarTabelaEmprestimos() {
-        // Verifica o estado do toggle
-        const mostrarApenasAtivos = toggleFiltro.checked;
-
-        const emprestimosParaRenderizar = mostrarApenasAtivos
-            ? todosOsEmprestimos.filter(
-                  (e) =>
-                      e.status === "ativo" ||
-                      e.status === "pendente" ||
-                      e.status === "atrasado"
+        const mostrarPendentes = toggleFiltro.checked;
+        const emprestimosParaRenderizar = mostrarPendentes
+            ? todosOsEmprestimos.filter((e) =>
+                  ["ativo", "pendente", "atrasado"].includes(e.status)
               )
             : todosOsEmprestimos;
 
-        tabelaEmprestimos.innerHTML = "";
+        tabelaEmprestimosBody.innerHTML = "";
         emprestimosParaRenderizar.forEach((emprestimo) => {
             const tr = document.createElement("tr");
-            let acaoHtml = "";
+            let acaoHtml = "Finalizado";
             if (emprestimo.status === "pendente") {
                 acaoHtml = `<button class="btn-aprovar" data-id="${emprestimo.id}">Aprovar</button> <button class="btn-reprovar" data-id="${emprestimo.id}">Reprovar</button>`;
-            } else if (
-                emprestimo.status === "ativo" ||
-                emprestimo.status === "atrasado"
-            ) {
-                acaoHtml = `<button class="btn-devolver" data-id="${emprestimo.id}">Registrar Devolução</button>`;
-            } else {
-                acaoHtml = "Finalizado";
+            } else if (["ativo", "atrasado"].includes(emprestimo.status)) {
+                acaoHtml = `<button class="btn-devolver" data-id="${emprestimo.id}">Devolver</button> <button class="btn-perda" data-id="${emprestimo.id}">Registrar Perda</button>`;
             }
             tr.innerHTML = `
                 <td>${emprestimo.id}</td>
@@ -63,96 +83,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${emprestimo.status}</td>
                 <td>${acaoHtml}</td>
             `;
-            tabelaEmprestimos.appendChild(tr);
+            tabelaEmprestimosBody.appendChild(tr);
         });
     }
 
-    async function carregarEmprestimos() {
-        const response = await fetch("http://localhost:3000/emprestimos");
-        todosOsEmprestimos = await response.json();
-        renderizarTabelaEmprestimos(); // Renderiza a tabela com o filtro padrão
+    // --- 4. FUNÇÃO PARA CARREGAR DADOS INICIAIS ---
 
-        const emprestimos = await response.json();
-        tabelaEmprestimos.innerHTML = "";
-
-        emprestimos.forEach((emprestimo) => {
-            const tr = document.createElement("tr");
-
-            let acaoHtml = "";
-            // Se o status for pendente, mostra os botões de Aprovar/Reprovar
-            if (emprestimo.status === "pendente") {
-                acaoHtml = `
-                <button class="btn-aprovar" data-id="${emprestimo.id}">Aprovar</button>
-                <button class="btn-reprovar" data-id="${emprestimo.id}">Reprovar</button>
-            `;
-            }
-            // Se for ativo, mostra o botão de Devolver
-            else if (
-                emprestimo.status === "ativo" ||
-                emprestimo.status === "atrasado"
-            ) {
-                acaoHtml = `<button class="btn-devolver" data-id="${emprestimo.id}">Registrar Devolução</button>`;
-            }
-            // Se for devolvido ou reprovado, não mostra ação
-            else {
-                acaoHtml = "Finalizado";
-            }
-
-            tr.innerHTML = `
-            <td>${emprestimo.id}</td>
-            <td>${emprestimo.Usuario?.nome || "N/A"}</td>
-            <td>${emprestimo.Livro?.titulo || "N/A"}</td>
-            <td>${new Date(emprestimo.data_emprestimo).toLocaleDateString()}
-            </td>
-            <td>${new Date(
-                emprestimo.data_devolucao_prevista
-            ).toLocaleDateString()}
-            </td>
-            <td>${emprestimo.status}</td>
-            <td>${acaoHtml}</td>
-        `;
-            tabelaEmprestimos.appendChild(tr);
-        });
+    async function carregarDadosIniciais() {
+        try {
+            const [livrosResponse, emprestimosResponse] = await Promise.all([
+                fetch("http://localhost:3000/livros"),
+                fetch("http://localhost:3000/emprestimos"),
+            ]);
+            todosOsLivros = await livrosResponse.json();
+            todosOsEmprestimos = await emprestimosResponse.json();
+            renderizarTabelaLivros();
+            renderizarTabelaEmprestimos();
+        } catch (error) {
+            console.error("Erro ao carregar dados iniciais:", error);
+            alert("Não foi possível carregar os dados do servidor.");
+        }
     }
 
-    toggleFiltro.addEventListener("change", renderizarTabelaEmprestimos);
+    // --- 5. MANIPULADORES DE EVENTOS (Handlers) ---
 
-    async function carregarLivros() {
-        const response = await fetch("http://localhost:3000/livros");
-        const livros = await response.json(); // A lista de livros agora vem com o campo 'podeSerExcluido'
-        tabelaLivros.innerHTML = "";
-        livros.forEach((livro) => {
-            const tr = document.createElement("tr");
-
-            // --- LÓGICA DO BOTÃO ATUALIZADA ---
-            // Adiciona o atributo 'disabled' ao botão se 'podeSerExcluido' for false
-            const botaoExcluirHtml = `
-            <button class="btn-excluir" data-id="${livro.id}" ${
-                !livro.podeSerExcluido
-                    ? 'disabled title="Não é possível excluir o livro, pois ele está associado a empréstimos em andamento"'
-                    : ""
-            }>
-                Excluir
-            </button>
-        `;
-
-            tr.innerHTML = `
-            <td>${livro.id}</td>
-            <td>${livro.titulo}</td>
-            <td>${livro.autor}</td>
-            <td>${livro.ano_publicacao || "N/A"}</td>
-            <td>${livro.quantidade_disponivel}</td>
-            <td>
-                <button class="btn-editar" data-id="${livro.id}">Editar</button>
-                ${botaoExcluirHtml}
-            </td>
-        `;
-            tabelaLivros.appendChild(tr);
-        });
-    }
-
-    // --- LÓGICA PARA ADICIONAR LIVRO ---
-    formAdicionarLivro.addEventListener("submit", async (event) => {
+    async function handleAdicionarLivro(event) {
         event.preventDefault();
         const dadosLivro = {
             titulo: document.getElementById("livro-titulo").value,
@@ -160,49 +115,87 @@ document.addEventListener("DOMContentLoaded", () => {
             ano_publicacao: document.getElementById("livro-ano").value,
             quantidade_disponivel: document.getElementById("livro-qtd").value,
         };
-
         await fetch("http://localhost:3000/livros", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(dadosLivro),
         });
-
         alert("Livro adicionado com sucesso!");
         formAdicionarLivro.reset();
-        carregarLivros(); // Recarrega a lista de livros
-    });
-
-    // --- NOVA LÓGICA PARA ABRIR E PREENCHER O MODAL DE EDIÇÃO ---
-    async function abrirModalEditar(id) {
-        // Busca os dados atuais do livro na API
-        const response = await fetch(`http://localhost:3000/livros/${id}`);
-        const livro = await response.json();
-
-        // Preenche o formulário do modal com os dados do livro
-        document.getElementById("edit-livro-id").value = livro.id;
-        document.getElementById("edit-livro-titulo").value = livro.titulo;
-        document.getElementById("edit-livro-autor").value = livro.autor;
-        document.getElementById("edit-livro-ano").value = livro.ano_publicacao;
-        document.getElementById("edit-livro-qtd").value =
-            livro.quantidade_disponivel;
-
-        // Exibe o modal
-        modalEditar.style.display = "block";
+        carregarDadosIniciais();
     }
 
-    // --- NOVA LÓGICA PARA FECHAR O MODAL ---
+    async function handleTabelaLivrosClick(event) {
+        const target = event.target;
+        const id = target.dataset.id;
+        if (target.classList.contains("btn-excluir")) {
+            if (
+                confirm(`Tem certeza que deseja excluir o livro com ID ${id}?`)
+            ) {
+                const response = await fetch(
+                    `http://localhost:3000/livros/${id}`,
+                    { method: "DELETE" }
+                );
+                if (response.ok) {
+                    alert("Livro excluído com sucesso!");
+                    carregarDadosIniciais();
+                } else {
+                    const erro = await response.json();
+                    alert("Erro ao excluir: " + erro.error);
+                }
+            }
+        } else if (target.classList.contains("btn-editar")) {
+            abrirModalEditar(id);
+        }
+    }
+
+    async function handleTabelaEmprestimosClick(event) {
+        const target = event.target;
+        if (!target.dataset.id) return;
+
+        const id = target.dataset.id;
+        let url = "";
+        if (target.classList.contains("btn-aprovar")) url = `/aprovar`;
+        else if (target.classList.contains("btn-reprovar")) url = `/reprovar`;
+        else if (target.classList.contains("btn-devolver")) url = `/devolver`;
+        else if (target.classList.contains("btn-perda")) url = `/perda`;
+        else return;
+
+        try {
+            const response = await fetch(
+                `http://localhost:3000/emprestimos/${id}${url}`,
+                { method: "PUT" }
+            );
+            if (!response.ok) {
+                const erro = await response.json();
+                throw new Error(erro.error);
+            }
+            alert("Operação realizada com sucesso!");
+            carregarDadosIniciais();
+        } catch (error) {
+            alert("Erro na operação: " + error.message);
+        }
+    }
+
+    function abrirModalEditar(id) {
+        const livro = todosOsLivros.find((l) => l.id == id);
+        if (livro) {
+            document.getElementById("edit-livro-id").value = livro.id;
+            document.getElementById("edit-livro-titulo").value = livro.titulo;
+            document.getElementById("edit-livro-autor").value = livro.autor;
+            document.getElementById("edit-livro-ano").value =
+                livro.ano_publicacao;
+            document.getElementById("edit-livro-qtd").value =
+                livro.quantidade_disponivel;
+            modalEditar.style.display = "block";
+        }
+    }
+
     function fecharModal() {
         modalEditar.style.display = "none";
     }
-    closeButton.addEventListener("click", fecharModal);
-    window.addEventListener("click", (event) => {
-        if (event.target == modalEditar) {
-            fecharModal();
-        }
-    });
 
-    // --- NOVA LÓGICA PARA ENVIAR O FORMULÁRIO DE EDIÇÃO ---
-    formEditarLivro.addEventListener("submit", async (event) => {
+    async function handleEditarLivro(event) {
         event.preventDefault();
         const id = document.getElementById("edit-livro-id").value;
         const dadosAtualizados = {
@@ -212,63 +205,38 @@ document.addEventListener("DOMContentLoaded", () => {
             quantidade_disponivel:
                 document.getElementById("edit-livro-qtd").value,
         };
-
         await fetch(`http://localhost:3000/livros/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(dadosAtualizados),
         });
-
         alert("Livro atualizado com sucesso!");
         fecharModal();
-        carregarLivros(); // Recarrega a lista para mostrar os dados atualizados
-    });
+        carregarDadosIniciais();
+    }
 
-    // --- ATUALIZAÇÃO NO EVENT LISTENER DA TABELA ---
-    tabelaLivros.addEventListener("click", async (event) => {
-        // Lógica para Excluir (já existente)
-        if (event.target.classList.contains("btn-excluir")) {
-            const id = event.target.dataset.id;
-            if (
-                confirm(`Tem certeza que deseja excluir o livro com ID ${id}?`)
-            ) {
-                await fetch(`http://localhost:3000/livros/${id}`, {
-                    method: "DELETE",
-                });
-                alert("Livro excluído com sucesso!");
-                carregarLivros();
-            }
-        }
-        // NOVA Lógica para Editar
-        if (event.target.classList.contains("btn-editar")) {
-            const id = event.target.dataset.id;
-            abrirModalEditar(id);
-        }
-    });
+    // --- 6. INICIALIZAÇÃO ---
 
-    // --- LÓGICA PARA DEVOLVER LIVRO ---
-    tabelaEmprestimos.addEventListener("click", async (event) => {
-        const id = event.target.dataset.id;
-        let url = "";
-        let method = "PUT";
+    function init() {
+        formAdicionarLivro.addEventListener("submit", handleAdicionarLivro);
+        formEditarLivro.addEventListener("submit", handleEditarLivro);
 
-        if (event.target.classList.contains("btn-devolver")) {
-            url = `http://localhost:3000/emprestimos/${id}/devolver`;
-        } else if (event.target.classList.contains("btn-aprovar")) {
-            url = `http://localhost:3000/emprestimos/${id}/aprovar`;
-        } else if (event.target.classList.contains("btn-reprovar")) {
-            url = `http://localhost:3000/emprestimos/${id}/reprovar`;
-        } else {
-            return; // Sai se não for um botão de ação
-        }
+        // --- CORREÇÃO APLICADA AQUI ---
+        // Usando os nomes corretos das variáveis: 'tabelaLivrosBody' e 'tabelaEmprestimosBody'
+        tabelaLivrosBody.addEventListener("click", handleTabelaLivrosClick);
+        tabelaEmprestimosBody.addEventListener(
+            "click",
+            handleTabelaEmprestimosClick
+        );
 
-        await fetch(url, { method: method });
-        alert("Operação realizada com sucesso!");
-        carregarLivros();
-        carregarEmprestimos();
-    });
+        toggleFiltro.addEventListener("change", renderizarTabelaEmprestimos);
+        closeButton.addEventListener("click", fecharModal);
+        window.addEventListener("click", (event) => {
+            if (event.target == modalEditar) fecharModal();
+        });
 
-    // Carrega os dados iniciais ao abrir a página
-    carregarLivros();
-    carregarEmprestimos();
+        carregarDadosIniciais();
+    }
+
+    init();
 });
