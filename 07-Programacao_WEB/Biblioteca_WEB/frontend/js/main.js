@@ -1,86 +1,97 @@
-// Aguarda o DOM ser completamente carregado para executar o script
 document.addEventListener("DOMContentLoaded", () => {
+    // --- 1. SELETORES DO DOM ---
     const formRegistro = document.getElementById("form-registro");
-    const formLogin = document.getElementById("form-login"); // Pega o formulário de login
+    const formLogin = document.getElementById("form-login");
+    const mensagemLogin = document.getElementById("mensagem-login");
 
-    formRegistro.addEventListener("submit", async (event) => {
-        // Impede o comportamento padrão do formulário (que é recarregar a página)
-        event.preventDefault();
+    // --- 2. FUNÇÕES DE API ---
 
-        // 1. Coletar os dados do formulário
-        const nome = document.getElementById("registro-nome").value;
-        const email = document.getElementById("registro-email").value;
-        const senha = document.getElementById("registro-senha").value;
-        const perfil = document.getElementById("registro-perfil").value;
+    // Função para registrar um novo usuário
+    async function registrarUsuario(dadosUsuario) {
+        const response = await fetch("http://localhost:3000/usuarios", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dadosUsuario),
+        });
 
-        // 2. Criar o objeto de dados para enviar
-        const dadosUsuario = { nome, email, senha, perfil };
-
-        // 3. Enviar a requisição para o backend usando fetch
-        try {
-            const response = await fetch("http://localhost:3000/usuarios", {
-                method: "POST", // Método da requisição
-                headers: {
-                    "Content-Type": "application/json", // Informa que o corpo é JSON
-                },
-                body: JSON.stringify(dadosUsuario), // Converte o objeto JS para uma string JSON
-            });
-
-            if (response.ok) {
-                // Se a resposta for bem-sucedida (status 201)
-                alert("Usuário registrado com sucesso!");
-                formRegistro.reset(); // Limpa o formulário
-            } else {
-                // Se houver erro (ex: email duplicado)
-                const erro = await response.json();
-                alert("Erro ao registrar: " + erro.error);
-            }
-        } catch (error) {
-            console.error("Falha na comunicação com o servidor:", error);
-            alert(
-                "Não foi possível conectar ao servidor. Verifique o console."
-            );
+        if (!response.ok) {
+            const erro = await response.json();
+            throw new Error(erro.error);
         }
-    });
+        return await response.json();
+    }
 
-    // --- NOVA LÓGICA DE LOGIN ---
-    formLogin.addEventListener("submit", async (event) => {
+    // Função para fazer o login
+    async function loginUsuario(email, senha) {
+        const response = await fetch("http://localhost:3000/usuarios/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, senha }),
+        });
+
+        if (!response.ok) {
+            const erro = await response.json();
+            throw new Error(erro.error || "Email ou senha inválidos.");
+        }
+        return await response.json();
+    }
+
+    // --- 3. MANIPULADORES DE EVENTOS (Handlers) ---
+
+    async function handleRegistroSubmit(event) {
+        event.preventDefault(); // Impede o recarregamento da página
+
+        const dadosUsuario = {
+            nome: document.getElementById("registro-nome").value,
+            email: document.getElementById("registro-email").value,
+            senha: document.getElementById("registro-senha").value,
+            perfil: document.getElementById("registro-perfil").value,
+        };
+
+        try {
+            await registrarUsuario(dadosUsuario);
+            alert("Usuário registrado com sucesso!");
+            formRegistro.reset(); // Limpa o formulário
+        } catch (error) {
+            alert("Erro ao registrar: " + error.message);
+        }
+    }
+
+    async function handleLoginSubmit(event) {
         event.preventDefault();
+        mensagemLogin.textContent = ""; // Limpa mensagens de erro anteriores
 
         const email = document.getElementById("login-email").value;
         const senha = document.getElementById("login-senha").value;
 
         try {
-            const response = await fetch(
-                "http://localhost:3000/usuarios/login",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, senha }),
-                }
-            );
+            const usuario = await loginUsuario(email, senha);
 
-            if (response.ok) {
-                const usuario = await response.json();
+            // Guarda os dados do usuário no navegador para usar em outras páginas
+            localStorage.setItem("usuario", JSON.stringify(usuario));
 
-                // Guarda os dados do usuário no navegador para usar em outras páginas
-                localStorage.setItem("usuario", JSON.stringify(usuario));
-
-                // Redireciona com base no perfil do usuário
-                if (usuario.perfil === "bibliotecario") {
-                    window.location.href = "bibliotecario.html"; // Redireciona para a página do bibliotecário
-                } else {
-                    window.location.href = "leitor.html"; // Redireciona para a página do leitor
-                }
+            // Redireciona com base no perfil do usuário
+            if (usuario.perfil === "bibliotecario") {
+                window.location.href = "bibliotecario.html";
             } else {
-                // Se a resposta não for OK (ex: 401), mostra uma mensagem de erro
-                document.getElementById("mensagem-login").textContent =
-                    "Email ou senha inválidos.";
+                window.location.href = "leitor.html";
             }
         } catch (error) {
-            console.error("Falha na comunicação com o servidor:", error);
-            document.getElementById("mensagem-login").textContent =
-                "Falha ao conectar. Tente novamente.";
+            console.error("Falha no login:", error);
+            mensagemLogin.textContent = error.message;
         }
-    });
+    }
+
+    // --- 4. INICIALIZAÇÃO ---
+
+    function init() {
+        if (formRegistro) {
+            formRegistro.addEventListener("submit", handleRegistroSubmit);
+        }
+        if (formLogin) {
+            formLogin.addEventListener("submit", handleLoginSubmit);
+        }
+    }
+
+    init(); // Roda a função de inicialização
 });
