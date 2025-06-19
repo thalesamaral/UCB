@@ -1,6 +1,5 @@
 const { Sequelize } = require("sequelize");
 
-// Substitua pelos seus dados!
 const sequelize = new Sequelize(
     "biblioteca-web",
     process.env.DB_USERNAME,
@@ -11,7 +10,6 @@ const sequelize = new Sequelize(
     }
 );
 
-// Testar a conexão
 async function testarConexao() {
     try {
         await sequelize.authenticate();
@@ -23,7 +21,6 @@ async function testarConexao() {
     }
 }
 
-// Chamamos a função de teste
 testarConexao();
 
 module.exports = sequelize;

@@ -2,11 +2,16 @@ const { Op } = require("sequelize");
 const { Livro, Emprestimo, sequelize } = require("../models");
 
 const livroController = {
+    /**
+     * Cria um novo livro no banco de dados.
+     * Rota: POST /livros
+     */
     async create(req, res) {
         try {
-            // Os campos vêm do documento de descrição do projeto
             const { titulo, autor, quantidade_disponivel } = req.body;
+            // Converte o ano de publicação para null se o campo vier vazio
             const ano_publicacao = req.body.ano_publicacao || null;
+
             const novoLivro = await Livro.create({
                 titulo,
                 autor,
@@ -22,12 +27,16 @@ const livroController = {
         }
     },
 
-    // --- FUNÇÃO GETALL ATUALIZADA ---
-    // Agora verifica apenas empréstimos em andamento para desabilitar o botão
+    /**
+     * Lista todos os livros e adiciona um campo 'podeSerExcluido' para uso no frontend.
+     * Rota: GET /livros
+     */
     async getAll(req, res) {
         try {
+            // 1. Busca todos os livros, ordenando pelos mais recentes primeiro.
             const livros = await Livro.findAll({ order: [["id", "ASC"]] });
 
+            // 2. Busca os IDs de todos os livros que têm empréstimos em andamento.
             const emprestimosEmAndamento = await Emprestimo.findAll({
                 where: {
                     status: { [Op.in]: ["ativo", "pendente", "atrasado"] },
@@ -40,10 +49,12 @@ const livroController = {
                 ],
             });
 
+            // 3. Cria um conjunto (Set) com esses IDs para uma busca rápida.
             const livrosComPendencias = new Set(
                 emprestimosEmAndamento.map((e) => e.livro_id)
             );
 
+            // 4. Mapeia os resultados, adicionando a flag 'podeSerExcluido'.
             const resultado = livros.map((livro) => {
                 const livroJSON = livro.toJSON();
                 livroJSON.podeSerExcluido = !livrosComPendencias.has(livro.id);
@@ -57,6 +68,10 @@ const livroController = {
         }
     },
 
+    /**
+     * Busca um livro específico pelo seu ID.
+     * Rota: GET /livros/:id
+     */
     async getById(req, res) {
         try {
             const { id } = req.params;
@@ -72,11 +87,16 @@ const livroController = {
         }
     },
 
+    /**
+     * Atualiza os dados de um livro existente.
+     * Rota: PUT /livros/:id
+     */
     async update(req, res) {
         try {
             const { id } = req.params;
             const { titulo, autor, quantidade_disponivel } = req.body;
             const ano_publicacao = req.body.ano_publicacao || null;
+
             const livro = await Livro.findByPk(id);
             if (!livro) {
                 return res.status(404).json({ error: "Livro não encontrado" });
@@ -95,12 +115,15 @@ const livroController = {
         }
     },
 
-    // --- FUNÇÃO DELETE ATUALIZADA ---
-    // Agora só bloqueia a exclusão se houver empréstimos em andamento
+    /**
+     * Exclui um livro, se ele não tiver nenhum empréstimo em andamento.
+     * Rota: DELETE /livros/:id
+     */
     async delete(req, res) {
         try {
             const { id } = req.params;
 
+            // Validação: Verifica se há empréstimos em andamento para este livro.
             const emprestimoEmAndamento = await Emprestimo.findOne({
                 where: {
                     livro_id: id,

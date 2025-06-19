@@ -4,15 +4,15 @@ const sequelize = require("../config/database"); // Importa a conexão
 const Emprestimo = sequelize.define("Emprestimo", {
     data_emprestimo: {
         type: DataTypes.DATE,
-        allowNull: false, // Corresponde à restrição "Obrigatório"
+        allowNull: false, // "Obrigatório"
     },
     data_devolucao_prevista: {
         type: DataTypes.DATE,
-        allowNull: false, // Corresponde à restrição "Obrigatório"
+        allowNull: false, // "Obrigatório"
     },
     data_devolucao_real: {
         type: DataTypes.DATE,
-        allowNull: true, // Corresponde à restrição "Opcional"
+        allowNull: true, // "Opcional"
     },
     status: {
         type: DataTypes.ENUM(
@@ -23,7 +23,7 @@ const Emprestimo = sequelize.define("Emprestimo", {
             "reprovado",
             "perdido"
         ),
-        allowNull: false, // Corresponde à restrição "Obrigatório"
+        allowNull: false, // "Obrigatório"
         defaultValue: "pendente",
     },
 });

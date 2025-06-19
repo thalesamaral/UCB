@@ -11,7 +11,6 @@ Emprestimo.belongsTo(Usuario, { foreignKey: "leitor_id" });
 Livro.hasMany(Emprestimo, { foreignKey: "livro_id" });
 Emprestimo.belongsTo(Livro, { foreignKey: "livro_id" });
 
-// Sincronizar o banco de dados
 async function syncDatabase() {
     try {
         // O { force: false } garante que as tabelas não sejam recriadas a cada vez.

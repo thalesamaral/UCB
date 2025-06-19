@@ -4,19 +4,19 @@ const sequelize = require("../config/database"); // Importa a conexão
 const Livro = sequelize.define("Livro", {
     titulo: {
         type: DataTypes.STRING,
-        allowNull: false, // Corresponde à restrição "Obrigatório"
+        allowNull: false, // "Obrigatório"
     },
     autor: {
         type: DataTypes.STRING,
-        allowNull: false, // Corresponde à restrição "Obrigatório"
+        allowNull: false, // "Obrigatório"
     },
     ano_publicacao: {
         type: DataTypes.INTEGER,
-        allowNull: true, // Corresponde à restrição "Opcional"
+        allowNull: true, // "Opcional"
     },
     quantidade_disponivel: {
         type: DataTypes.INTEGER,
-        allowNull: false, // Corresponde à restrição "Obrigatório"
+        allowNull: false, // "Obrigatório"
     },
 });
 
