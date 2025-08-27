@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atividade 3 - Funções</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    table {
+      width: 400px;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .marcado {
+      background-color: yellow;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Adicionar Item à Tabela</h1>
+
+  <div>
+    <input type="text" id="inputItem" placeholder="Digite um item" />
+    <button id="btnAdicionar">Adicionar</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tabela de Itens</th>
+      </tr>
+    </thead>
+    <tbody id="tabelaItens"></tbody>
+  </table>
+
+  <div>
+    <h2>Marcar, Desmarcar ou Remover o Item</h2>
+    <select id="selectItens">
+      <option value="">Selecione um item</option>
+    </select>
+    <button id="btnMarcar">Marcar</button>
+    <button id="btnDesmarcar">Desmarcar</button>
+    <button id="btnRemover">Remover</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  color: goldenrod;
+  background-image: url(assets/sky.jpg);
+  background-size: cover;
+  /* border: solid blue; */
+}
+
+#page {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 20px;
+
+  /* border: solid red; */
+  height: 100vh;
+}
+
+#castle {
+  position: fixed;
+  bottom: 0;
+  z-index: -1;
+  height: 50%;
+}
+
+p {
+  font-weight: 600;
+  font-size: larger;
+}
+
+.escondido {
+  display: none;
+}
+
+.tela {
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 15px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+img {
+  height: 300px;
+  width: auto;
+}

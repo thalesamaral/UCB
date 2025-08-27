@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atividade 02</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .contador {
+      margin-bottom: 20px;
+    }
+    .mensagem {
+      margin-bottom: 20px;
+    }
+    .output {
+      margin-top: 20px;
+    }
+    #inputTexto {
+      width: 250px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Atividade 2 – DOM: conceitos básicos</h1>
+
+  <div class="contador">
+    <button id="incrementBtn">Incrementar</button>
+    <button id="decrementBtn">Decrementar</button>
+    <span>Contador: <span id="contadorValor">0</span></span>
+  </div>
+
+  <div class="mensagem">
+    <input
+      type="text"
+      id="inputTexto"
+      placeholder="Digite sua mensagem e pressione Enter"
+    />
+    <div>Caracteres (sem espaço): <span id="contadorCaracteres">0</span></div>
+  </div>
+
+  <div class="adicionar-item">
+    <button id="addItemBtn">Adicionar novo item (lista)</button>
+  </div>
+
+  <div class="resetar">
+    <button id="resetBtn">Resetar Página</button>
+  </div>
+
+  <div class="output" id="outputArea"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
