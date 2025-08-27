@@ -1,0 +1,66 @@
+- Envio pelo AVA dia 16/06
+
+- Será permitido o uso de qualquer uma das linguagens: C, Swift, Java, Python, Ruby, Dart, JavaScript, TypeScript ou C++.
+
+* Independente da linguagem escolhida pelo grupo, deverá ser entregue em APENAS 1 (UM) arquivo fonte (mesmo quebrando algumas boas práticas de componentização).
+
+Elabore um programa onde o usuário armazenará produtos, UFs, fabricantes e clientes, serão cadastrados pelo usuário no mínimo 2 fabricantes (máximo 5), mínimo 3 clientes (máximo 30) e no mínimo 5 produtos (máximo 50), todas as 27 Unidades da Federação.
+
+ALGUMAS variáveis membros e estruturas que serão desenvolvidas:
+
+Produto: Descrição, peso, valor de compra, valor de venda, valor do lucro(calculado automaticamente), percentual do lucro(calculado automaticamente) e fabricante.
+
+    Ex: Fosbovi confinamento, 25kg, 100,00 , 250,00 , 150,00 , 150%
+
+ 
+
+Fabricante: Código, Marca(nome), site, telefone, UF(AC, AM, AP,.., SP, TO).
+
+    Ex: 908070, Tortuga, tortuga.com.br, (41) 4141-4141, PR
+
+ 
+
+UF: sigla, nome
+
+    Ex: AC, Acre
+
+ 
+
+Cliente: nome, idade
+
+   Ex:  Joaquim, 99
+
+ 
+
+Elabore um menu para ser acessado a qualquer momento na aplicação com as seguintes opções:
+
+[a] Listar os produtos de um determinado fabricante (filtrar por código do fabricante) em ordem alfabética (sugestão: utilizem a função strcmp que retornará sempre -1,0 e 1 para comparação entre duas strings associada ao bubble sort).
+
+[b] Apresentar o(s) estado(s) onde tenha(m) algum produto com o valor igual ao maior valor registrado no sistema.
+
+[c] Apresentar o(s) fabricante(s) onde tenha(m) algum produto com o valor igual ao menor valor registrado no sistema.
+
+[d] Listar todos os produtos em ordem crescente de valor
+
+[e] Listar todos os produtos em ordem crescente de maior "valor do lucro"
+
+[f] Cadastrar novo cliente para atendimento na lista
+
+[g] Verificar se existe algum cliente para atendimento na lista com idade superior a 60 anos (busca sequencial).
+
+    (Caso existam mais de 3 clientes com idade igual ou superior a 60 anos crie um vetor seguindo a ordem de chegada originalmente cadastrada, lembrando de remover os clientes da lista original)
+
+[h] Verificar se existe algum produto com o valor especificado pelo usuário (busca binária).
+
+[i] Usuário do sistema realizará o atendimento dos clientes que estão na lista original com "ordem de acesso" baseado em fila.
+
+[j] Usuário do sistema realizará o atendimento dos clientes que estão na lista_60 com "ordem de acesso" baseado em pilha.
+
+[s] Sair
+
+Deverá ser realizado em grupo, apenas um representante do grupo deverá enviar para o AVA um arquivo  integrantes_link.txt contendo nome e matrícula dos integrantes com o link para o GitHub.
+- O grupo deverá gravar o programa em execução apresentando suas funcionalidades.
+- Os estudantes não deverão aparecerem nos vídeos, apenas gravação da tela e vozes.
+- Não é necessário que todos apresentem.
+- O vídeo deverá ser postado no YouTube como "não listado" e o link deverá ser enviado junto ao arquivo no AVA.
+- É importante que os grupos apontem de forma rápida onde utilizaram as estruturas de dados no projeto, basta um simples apontamento uma vez que o código será avaliado de forma detalhada pelo professor.

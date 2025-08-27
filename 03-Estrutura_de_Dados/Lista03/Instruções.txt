@@ -1,0 +1,16 @@
+## **Instruções**
+
+# Entrega 3
+
+- Envio pelo AVA até dia 10/06
+- Deverão utilizar a Linguagem C para os exemplos
+
+> Realize um estudo para as definições teóricas e códigos demonstrando aplicação isolada  de cada item abaixo (um programa para demonstrar da forma mais objetiva possível cada um dos conceitos).
+
+- Listas encadeada
+- Filas
+- Pilhas
+- Tabelas Hash
+- Busca sequencial
+- Busca binária
+- Deverá ser realizado em grupo, apenas um representante do grupo deverá enviar para o AVA um arquivo em PDF com o estudo realizado, outro arquivo integrantes_link.txt contendo nome e matrícula dos integrantes com o link para o GitHub.
